@@ -35,4 +35,12 @@ contract DeriverTest is Test {
         );
         assertEq(c2, 0xA55B9626A950D34CCAD73EEB13E3510861C6B4C9462668627F1A7DE500B6A1AB);
     }
+
+    function test_PubkeyFromAddree() public {
+        (uint256 x, uint256 y) = deriver.getPubkeyFromAddress(
+            deriver.userAddress()
+        );
+        assertEq(x, 0xF841B419521509E6C50754F2801D94FA3F25D62AA2F55039DA1F7A848FDF7BBD);
+        assertEq(y, 0xB2445FEAA4E63449F7770E56C153A997F4E1B75707B7BF44ED4B69DEFAFD6813);
+    }
 }
