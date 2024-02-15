@@ -25,7 +25,20 @@ contract Deriver {
 
     uint256 public constant P3X = 0x786BA0CC9B0DA200D11CC085D41BBD5F1471DF8DF216CD775B924F4CAC80F341;
     uint256 public constant P3Y = 0xD351E3FE211B48C6A8C8421F25767ED5D29F7E66944EB5DCD98F47DAF769F897;
-    
+
+    // https://www.geeksforgeeks.org/address-in-solidity/
+    address public userAddress = 0x71C7656EC7ab88b098defB751B7401B5f6d8976F;
+
+    // https://ethereum.stackexchange.com/questions/884/how-to-convert-an-address-to-bytes-in-solidity
+    function toBytes(address a) public pure returns (bytes memory) {
+        return abi.encodePacked(a);
+    }
+
+    function getCoefficient(uint256 x1, uint256 y1, address a) public pure returns (uint256) {
+        uint256 c = uint256(sha256(abi.encode(x1, y1, a)));
+        return c;
+    }
+        
     /// @notice Public Key derivation from private key
     /// Warning: this is just an example. Do not expose your private key.
     /// @param privKey The private key
@@ -50,5 +63,10 @@ contract Deriver {
         return addPubkeys(x1, y1, x2, y2);
    }
 
+   function getPubkeyFromAddress(address addr) public pure returns (uint256, uint256) {
+        uint256 c1 = getCoefficient(P1X, P1Y, addr);
+        uint256 c2 = getCoefficient(P2X, P2Y, addr);
+        return getCombinedPubkey(c1, c2);
+   }
 }
 
