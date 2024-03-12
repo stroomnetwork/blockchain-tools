@@ -1,15 +1,40 @@
 // https://github.com/gregdhill/bech32-sol/blob/master/src/Bech32.sol
 // TODO(mkl): what License?
+// based on https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki
+// https://github.com/sipa/bech32/blob/master/ref/python/segwit_addr.py
 pragma solidity ^0.8;
 
 import {BytesLib} from "./BytesLib.sol";
 
-library Bech32 {
+enum BechEncoding {
+    // Used is SegWit v.0
+    BECH32,
+
+    // Used in SegWit v.1, e.g. Taproot
+    BECH32M
+}
+
+library Bech32m {
     using BytesLib for bytes;
 
-    bytes constant CHARSET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
+    // CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
+    bytes constant public CHARSET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
 
-    function polymod(uint[] memory values) internal pure returns(uint) {
+    // BECH32M_CONST = 0x2bc830a3
+    uint256 constant public BECH32M_CONST= 0x2bc830a3;
+
+    // def bech32_polymod(values):
+    // """Internal function that computes the Bech32 checksum."""
+    // generator = [0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3]
+    // chk = 1
+    // for value in values:
+    //     top = chk >> 25
+    //     chk = (chk & 0x1ffffff) << 5 ^ value
+    //     for i in range(5):
+    //         chk ^= generator[i] if ((top >> i) & 1) else 0
+    // return chk
+    // TODO(mkl): what this function is actually doing?
+    function polymod(uint[] memory values) public pure returns(uint) {
         uint32[5] memory GENERATOR = [0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3];
         uint chk = 1;
         for (uint p = 0; p < values.length; p++) {
