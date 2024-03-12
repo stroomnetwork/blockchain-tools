@@ -16,7 +16,7 @@ contract Bech32Test is Test {
     }
 
     function testPolymod() public {
-        // This test was generated automatically by gen_ref_data_bech32_polymod
+        // This test was generated automatically by gen_ref_data_bech32_polymod.py
 
         // bech32_polymod([0]) == 32
         uint[] memory values0 = new uint[](1);
@@ -84,7 +84,7 @@ contract Bech32Test is Test {
     }
 
     function testHrpExpand() public {
-        // This test was generated automatically by gen_ref_data_bech32_hrp_expand
+        // This test was generated automatically by gen_ref_data_bech32_hrp_expand.py
 
         // bech32_hrp_expand("""a""") == [3, 0, 1]
         bytes memory hrp0 = hex"61";
@@ -105,5 +105,33 @@ contract Bech32Test is Test {
             memory hrpExpandExpected2 = hex"01010101010101010101010101010101010101010101010101010101010101020202020202020202020202020202020202020202020202020202020202020203030303030303030303030303030303030303030303030303030303030303000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e";
         bytes memory hrpExpandActual2 = Bech32m.hrpExpand(hrp2);
         assertEq(hrpExpandExpected2, hrpExpandActual2);
+    }
+
+    function testCreateChecksum() public {
+        // This test was generated automatically by gen_ref_data_bech32_create_checksum.py
+
+        // bech32_create_checksum("""tb""", [], Encoding.BECH32) == [24, 4, 15, 0, 30, 1]
+        bytes memory hrp0 = hex"7462";
+        bytes memory data0 = hex"";
+        Bech32m.BechEncoding spec0 = Bech32m.BechEncoding.BECH32;
+        bytes memory chkExpected0 = hex"18040f001e01";
+        bytes memory chkActual0 = Bech32m.createChecksum(hrp0, data0, spec0);
+        assertEq(chkExpected0, chkActual0);
+
+        // bech32_create_checksum("""bt""", [115, 111, 109, 101, 32, 100, 97, 116, 97], Encoding.BECH32M) == [13, 9, 17, 27, 29, 26]
+        bytes memory hrp1 = hex"6274";
+        bytes memory data1 = hex"736f6d652064617461";
+        Bech32m.BechEncoding spec1 = Bech32m.BechEncoding.BECH32M;
+        bytes memory chkExpected1 = hex"0d09111b1d1a";
+        bytes memory chkActual1 = Bech32m.createChecksum(hrp1, data1, spec1);
+        assertEq(chkExpected1, chkActual1);
+
+        // bech32_create_checksum("""btcdd""", [0, 100, 115, 10, 9, 0], Encoding.BECH32M) == [5, 13, 30, 5, 31, 0]
+        bytes memory hrp2 = hex"6274636464";
+        bytes memory data2 = hex"0064730a0900";
+        Bech32m.BechEncoding spec2 = Bech32m.BechEncoding.BECH32M;
+        bytes memory chkExpected2 = hex"050d1e051f00";
+        bytes memory chkActual2 = Bech32m.createChecksum(hrp2, data2, spec2);
+        assertEq(chkExpected2, chkActual2);
     }
 }
