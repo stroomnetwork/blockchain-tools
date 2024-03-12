@@ -82,4 +82,28 @@ contract Bech32Test is Test {
         uint256 polymodActual6 = Bech32m.polymod(values6);
         assertEq(polymodExpected6, polymodActual6);
     }
+
+    function testHrpExpand() public {
+        // This test was generated automatically by gen_ref_data_bech32_hrp_expand
+
+        // bech32_hrp_expand("""a""") == [3, 0, 1]
+        bytes memory hrp0 = hex"61";
+        bytes memory hrpExpandExpected0 = hex"030001";
+        bytes memory hrpExpandActual0 = Bech32m.hrpExpand(hrp0);
+        assertEq(hrpExpandExpected0, hrpExpandActual0);
+
+        // bech32_hrp_expand("""tb""") == [3, 3, 0, 20, 2]
+        bytes memory hrp1 = hex"7462";
+        bytes memory hrpExpandExpected1 = hex"0303001402";
+        bytes memory hrpExpandActual1 = Bech32m.hrpExpand(hrp1);
+        assertEq(hrpExpandExpected1, hrpExpandActual1);
+
+        // bech32_hrp_expand("""!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~""") == [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+        bytes
+            memory hrp2 = hex"2122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e";
+        bytes
+            memory hrpExpandExpected2 = hex"01010101010101010101010101010101010101010101010101010101010101020202020202020202020202020202020202020202020202020202020202020203030303030303030303030303030303030303030303030303030303030303000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e";
+        bytes memory hrpExpandActual2 = Bech32m.hrpExpand(hrp2);
+        assertEq(hrpExpandExpected2, hrpExpandActual2);
+    }
 }

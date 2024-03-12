@@ -49,92 +49,111 @@ library Bech32m {
         return chk;
     }
 
-    function hrpExpand(uint[] memory hrp) internal pure returns (uint[] memory) {
-        uint[] memory ret = new uint[](hrp.length+hrp.length+1);
-        for (uint p = 0; p < hrp.length; p++) {
-            ret[p] = hrp[p] >> 5;
+    // def bech32_hrp_expand(hrp):
+    //     """Expand the HRP into values for checksum computation."""
+    //     return [ord(x) >> 5 for x in hrp] + [0] + [ord(x) & 31 for x in hrp]
+    // According to https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki
+    // The human-readable part, which is intended to convey the type of data, or anything else that is relevant to the reader. 
+    // This part MUST contain 1 to 83 US-ASCII characters, with each character having a value in the range [33-126]. 
+    // HRP validity may be further restricted by specific applications.
+    // hrpExpand DOES NOT check the validity of the HRP
+    function hrpExpand(bytes memory hrp) public pure returns (bytes memory) {
+        bytes memory a = new bytes(hrp.length+hrp.length+1);
+        for (uint i = 0; i < hrp.length; i+=1) {
+            a[i] = hrp[i] >> 5;
+            a[i+hrp.length+1] = bytes1(uint8(hrp[i]) & 31);
         }
-        ret[hrp.length] = 0;
-        for (uint p = 0; p < hrp.length; p++) {
-            ret[p+hrp.length+1] = hrp[p] & 31;
-        }
-        return ret;
+        a[hrp.length] = 0;
+        return a;
     }
 
-    function concat(uint[] memory left, uint[] memory right) internal pure returns(uint[] memory) {
-        uint[] memory ret = new uint[](left.length + right.length);
 
-        uint i = 0;
-        for (; i < left.length; i++) {
-            ret[i] = left[i];
-        }
+    // function hrpExpand(uint[] memory hrp) public pure returns (uint[] memory) {
+    //     uint[] memory ret = new uint[](hrp.length+hrp.length+1);
+    //     for (uint p = 0; p < hrp.length; p++) {
+    //         ret[p] = hrp[p] >> 5;
+    //     }
+    //     ret[hrp.length] = 0;
+    //     for (uint p = 0; p < hrp.length; p++) {
+    //         ret[p+hrp.length+1] = hrp[p] & 31;
+    //     }
+    //     return ret;
+    // }
 
-        uint j = 0;
-        while (j < right.length) {
-            ret[i++] = right[j++];
-        }
+    // function concat(uint[] memory left, uint[] memory right) internal pure returns(uint[] memory) {
+    //     uint[] memory ret = new uint[](left.length + right.length);
 
-        return ret;
-    }
+    //     uint i = 0;
+    //     for (; i < left.length; i++) {
+    //         ret[i] = left[i];
+    //     }
 
-    function extend(uint[] memory array, uint val, uint num) internal pure returns(uint[] memory) {
-        uint[] memory ret = new uint[](array.length + num);
+    //     uint j = 0;
+    //     while (j < right.length) {
+    //         ret[i++] = right[j++];
+    //     }
 
-        uint i = 0;
-        for (; i < array.length; i++) {
-            ret[i] = array[i];
-        }
+    //     return ret;
+    // }
 
-        uint j = 0;
-        while (j < num) {
-            ret[i++] = val;
-            j++;
-        }
+    // function extend(uint[] memory array, uint val, uint num) internal pure returns(uint[] memory) {
+    //     uint[] memory ret = new uint[](array.length + num);
 
-        return ret;
-    }
+    //     uint i = 0;
+    //     for (; i < array.length; i++) {
+    //         ret[i] = array[i];
+    //     }
 
-    function createChecksum(uint[] memory hrp, uint[] memory data) internal pure returns (uint[] memory) {
-        uint[] memory values = extend(concat(hrpExpand(hrp), data), 0, 6);
-        uint mod = polymod(values) ^ 1;
-        uint[] memory ret = new uint[](6);
-        for (uint p = 0; p < 6; p++) {
-            ret[p] = (mod >> 5 * (5 - p)) & 31;
-        }
-        return ret;
-    }
+    //     uint j = 0;
+    //     while (j < num) {
+    //         ret[i++] = val;
+    //         j++;
+    //     }
 
-    function encode(uint[] memory hrp, uint[] memory data) internal pure returns (bytes memory) {
-        uint[] memory combined = concat(data, createChecksum(hrp, data));
-        // TODO: prepend hrp
+    //     return ret;
+    // }
 
-        bytes memory ret = new bytes(combined.length);
-        for (uint p = 0; p < combined.length; p++) {
-            ret[p] = CHARSET[combined[p]];
-        }
+    // function createChecksum(uint[] memory hrp, uint[] memory data) internal pure returns (uint[] memory) {
+    //     uint[] memory values = extend(concat(hrpExpand(hrp), data), 0, 6);
+    //     uint mod = polymod(values) ^ 1;
+    //     uint[] memory ret = new uint[](6);
+    //     for (uint p = 0; p < 6; p++) {
+    //         ret[p] = (mod >> 5 * (5 - p)) & 31;
+    //     }
+    //     return ret;
+    // }
 
-        return ret;
-    }
+    // function encode(uint[] memory hrp, uint[] memory data) internal pure returns (bytes memory) {
+    //     uint[] memory combined = concat(data, createChecksum(hrp, data));
+    //     // TODO: prepend hrp
 
-    function convert(uint[] memory data, uint inBits, uint outBits) internal pure returns (uint[] memory) {
-        uint value = 0;
-        uint bits = 0;
-        uint maxV = (1 << outBits) - 1;
+    //     bytes memory ret = new bytes(combined.length);
+    //     for (uint p = 0; p < combined.length; p++) {
+    //         ret[p] = CHARSET[combined[p]];
+    //     }
 
-        uint[] memory ret = new uint[](32);
-        uint j = 0;
-        for (uint i = 0; i < data.length; ++i) {
-            value = (value << inBits) | data[i];
-            bits += inBits;
+    //     return ret;
+    // }
 
-            while (bits >= outBits) {
-                bits -= outBits;
-                ret[j] = (value >> bits) & maxV;
-                j += 1;
-            }
-        }
+    // function convert(uint[] memory data, uint inBits, uint outBits) internal pure returns (uint[] memory) {
+    //     uint value = 0;
+    //     uint bits = 0;
+    //     uint maxV = (1 << outBits) - 1;
 
-        return ret;
-    }
+    //     uint[] memory ret = new uint[](32);
+    //     uint j = 0;
+    //     for (uint i = 0; i < data.length; ++i) {
+    //         value = (value << inBits) | data[i];
+    //         bits += inBits;
+
+    //         while (bits >= outBits) {
+    //             bits -= outBits;
+    //             ret[j] = (value >> bits) & maxV;
+    //             j += 1;
+    //         }
+    //     }
+
+    //     return ret;
+    // }
 
 }
