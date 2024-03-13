@@ -1,5 +1,6 @@
 from segwit_addr import bech32_create_checksum, Encoding
 
+# TODO(mkl): should these values be 5bits ?
 tests = [
     # hrp, data, spec
     ["tb", b"", Encoding.BECH32],

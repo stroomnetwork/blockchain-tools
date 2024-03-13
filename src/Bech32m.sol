@@ -11,7 +11,10 @@ library Bech32m {
         // Used is SegWit v.0
         BECH32,
         // Used in SegWit v.1, e.g. Taproot
-        BECH32M
+        BECH32M,
+        // Specifies an uknown encoding
+        // Usually it means some error
+        UKNOWN
     }
     // using BytesLib for bytes;
 
@@ -147,6 +150,7 @@ library Bech32m {
         bytes memory data,
         BechEncoding spec
     ) public pure returns (bytes memory) {
+        // TODO(mkl): add check for UNKNOWN encoding
         uint const = spec == BechEncoding.BECH32M ? BECH32M_CONST : 1;
         bytes memory hrpExpandBytes = hrpExpand(hrp);
         uint[] memory polymodArg = new uint[](
@@ -168,19 +172,41 @@ library Bech32m {
             chk[p] = bytes1(uint8((polymodVal >> (5 * (5 - p))) & 31));
         }
         return chk;
+    }
 
-        // bytes memory values = hrpExpand(hrp).concat(data);
-        // uint[] memory valuesUint = new uint[](values.length);
-        // for (uint i = 0; i < values.length; i+=1) {
-        //     valuesUint[i] = uint8(values[i]);
-        // }
-        // uint const = spec == BechEncoding.BECH32M ? BECH32M_CONST : 1;
-        // uint polymod = polymod(valuesUint.concat(new uint[](6))) ^ const;
-        // bytes memory ret = new bytes(6);
-        // for (uint p = 0; p < 6; p+=1) {
-        //     ret[p] = bytes1(uint8((polymod >> 5 * (5 - p)) & 31));
-        // }
-        // return ret;
+    // def bech32_verify_checksum(hrp, data):
+    //     """Verify a checksum given HRP and converted data characters."""
+    //     const = bech32_polymod(bech32_hrp_expand(hrp) + data)
+    //     if const == 1:
+    //         return Encoding.BECH32
+    //     if const == BECH32M_CONST:
+    //         return Encoding.BECH32M
+    //     return None
+    function verifyChecksum(
+        bytes memory hrp,
+        bytes memory data
+    ) public pure returns (BechEncoding) {
+        bytes memory hrpExpandBytes = hrpExpand(hrp);
+
+        uint[] memory polymodArg = new uint[](
+            hrpExpandBytes.length + data.length
+        );
+        for (uint i = 0; i < hrpExpandBytes.length; i += 1) {
+            polymodArg[i] = uint8(hrpExpandBytes[i]);
+        }
+        for (uint i = 0; i < data.length; i += 1) {
+            polymodArg[i + hrpExpandBytes.length] = uint8(data[i]);
+        }
+
+        uint polymodVal = polymod(polymodArg);
+        if (polymodVal == 1) {
+            return BechEncoding.BECH32;
+        }
+        if (polymodVal == BECH32M_CONST) {
+            return BechEncoding.BECH32M;
+        }
+
+        return BechEncoding.UKNOWN;
     }
 
     // function concat(uint[] memory left, uint[] memory right) internal pure returns(uint[] memory) {
