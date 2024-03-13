@@ -6,6 +6,8 @@ pragma solidity ^0.8;
 
 import {BytesLib} from "./BytesLib.sol";
 
+error EncodingIsUnknown();
+
 library Bech32m {
     enum BechEncoding {
         // Used is SegWit v.0
@@ -209,48 +211,44 @@ library Bech32m {
         return BechEncoding.UKNOWN;
     }
 
-    // function concat(uint[] memory left, uint[] memory right) internal pure returns(uint[] memory) {
-    //     uint[] memory ret = new uint[](left.length + right.length);
+    // def bech32_encode(hrp, data, spec):
+    //     """Compute a Bech32 string given HRP and data values."""
+    //     combined = data + bech32_create_checksum(hrp, data, spec)
+    //     return hrp + '1' + ''.join([CHARSET[d] for d in combined])
+    // data shold be converted to 5bit format before calling this function
+    function bech32Encode(
+        bytes memory hrp,
+        bytes memory data,
+        BechEncoding spec
+    ) public pure returns (bytes memory) {
+        if (spec == BechEncoding.UKNOWN) {
+            revert EncodingIsUnknown();
+        }
+        // 6 bytes of the checksum in a 5-bit format
+        bytes memory chk = createChecksum(hrp, data, spec);
+        
+        // <hrp> 1 <data-5bit-format> <6bytes of chk-5bit-format>
+        // so total length is hrp.length + data.length + 7
+        bytes memory ret = new bytes(hrp.length + data.length + 7);
 
-    //     uint i = 0;
-    //     for (; i < left.length; i++) {
-    //         ret[i] = left[i];
-    //     }
+        for (uint i = 0; i < hrp.length; i += 1) {
+            ret[i] = hrp[i];
+        }
 
-    //     uint j = 0;
-    //     while (j < right.length) {
-    //         ret[i++] = right[j++];
-    //     }
+        ret[hrp.length] = 0x31; // '1'
 
-    //     return ret;
-    // }
+        for (uint i = 0; i < data.length; i += 1) {
+            ret[i + hrp.length + 1] = CHARSET[uint8(data[i])];
+        }
 
-    // function extend(uint[] memory array, uint val, uint num) internal pure returns(uint[] memory) {
-    //     uint[] memory ret = new uint[](array.length + num);
+        // index of start of the checksum
+        uint startChk = hrp.length + 1 + data.length;
+        for (uint i = 0; i < 6; i += 1) {
+            ret[startChk + i] = CHARSET[uint8(chk[i])];
+        }
 
-    //     uint i = 0;
-    //     for (; i < array.length; i++) {
-    //         ret[i] = array[i];
-    //     }
-
-    //     uint j = 0;
-    //     while (j < num) {
-    //         ret[i++] = val;
-    //         j++;
-    //     }
-
-    //     return ret;
-    // }
-
-    // function createChecksum(uint[] memory hrp, uint[] memory data) internal pure returns (uint[] memory) {
-    //     uint[] memory values = extend(concat(hrpExpand(hrp), data), 0, 6);
-    //     uint mod = polymod(values) ^ 1;
-    //     uint[] memory ret = new uint[](6);
-    //     for (uint p = 0; p < 6; p++) {
-    //         ret[p] = (mod >> 5 * (5 - p)) & 31;
-    //     }
-    //     return ret;
-    // }
+        return ret;
+    }
 
     // function encode(uint[] memory hrp, uint[] memory data) internal pure returns (bytes memory) {
     //     uint[] memory combined = concat(data, createChecksum(hrp, data));

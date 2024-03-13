@@ -134,4 +134,40 @@ contract Bech32Test is Test {
         bytes memory chkActual2 = Bech32m.createChecksum(hrp2, data2, spec2);
         assertEq(chkExpected2, chkActual2);
     }
+
+    function testBech32Encode() public {
+        // This test was generated automatically by gen_ref_data_bech32_encode.py
+
+        // bech32_encode("""tb""", [], Encoding.BECH32) == """tb1cy0q7p"""
+        bytes memory hrp0 = hex"7462";
+        bytes memory data0 = hex"";
+        Bech32m.BechEncoding spec0 = Bech32m.BechEncoding.BECH32;
+        bytes memory encodedExpected0 = hex"746231637930713770";
+        bytes memory encodedActual0 = Bech32m.bech32Encode(hrp0, data0, spec0);
+        assertEq(encodedExpected0, encodedActual0);
+
+        // bech32_encode("""bt""", [1, 2, 3, 4, 5], Encoding.BECH32M) == """bt1pzry9l8q0k3"""
+        bytes memory hrp1 = hex"6274";
+        bytes memory data1 = hex"0102030405";
+        Bech32m.BechEncoding spec1 = Bech32m.BechEncoding.BECH32M;
+        bytes memory encodedExpected1 = hex"627431707a7279396c3871306b33";
+        bytes memory encodedActual1 = Bech32m.bech32Encode(hrp1, data1, spec1);
+        assertEq(encodedExpected1, encodedActual1);
+
+        // bech32_encode("""abcd""", [0, 1, 30, 31], Encoding.BECH32M) == """abcd1qp7l3anr3m"""
+        bytes memory hrp2 = hex"61626364";
+        bytes memory data2 = hex"00011e1f";
+        Bech32m.BechEncoding spec2 = Bech32m.BechEncoding.BECH32M;
+        bytes memory encodedExpected2 = hex"61626364317170376c33616e72336d";
+        bytes memory encodedActual2 = Bech32m.bech32Encode(hrp2, data2, spec2);
+        assertEq(encodedExpected2, encodedActual2);
+
+        // bech32_encode(""""12""", [12, 31, 0], Encoding.BECH32) == """"121vlqllgkxv"""
+        bytes memory hrp3 = hex"223132";
+        bytes memory data3 = hex"0c1f00";
+        Bech32m.BechEncoding spec3 = Bech32m.BechEncoding.BECH32;
+        bytes memory encodedExpected3 = hex"22313231766c716c6c676b7876";
+        bytes memory encodedActual3 = Bech32m.bech32Encode(hrp3, data3, spec3);
+        assertEq(encodedExpected3, encodedActual3);
+    }
 }
