@@ -226,7 +226,7 @@ library Bech32m {
         }
         // 6 bytes of the checksum in a 5-bit format
         bytes memory chk = createChecksum(hrp, data, spec);
-        
+
         // <hrp> 1 <data-5bit-format> <6bytes of chk-5bit-format>
         // so total length is hrp.length + data.length + 7
         bytes memory ret = new bytes(hrp.length + data.length + 7);
@@ -250,17 +250,80 @@ library Bech32m {
         return ret;
     }
 
-    // function encode(uint[] memory hrp, uint[] memory data) internal pure returns (bytes memory) {
-    //     uint[] memory combined = concat(data, createChecksum(hrp, data));
-    //     // TODO: prepend hrp
+    // with padding
+    function conver8To5(bytes memory a) public pure returns (bytes memory) {
+        // We group the data into 5-byte groups
+        // Because 5-byte group has the bitlength 40
+        // Thus it can be easily converted to 8 5-bit groups.
+        uint nGroup40bit = a.length / 5;
 
-    //     bytes memory ret = new bytes(combined.length);
-    //     for (uint p = 0; p < combined.length; p++) {
-    //         ret[p] = CHARSET[combined[p]];
-    //     }
+        // Some input bytes may not get into 5-byte input group
+        // so we need to process the remaining bytes
+        uint nRemainInp8bit = a.length % 5;
 
-    //     return ret;
-    // }
+        // 0: 0 -> 0
+        // 1: 8 -> 2
+        // 2: 16 -> 4
+        // 3: 24 -> 5
+        // 4: 32 -> 7
+        // Number of additional 5-bits should be added
+        uint nRemainOut5Bit = 0;
+        // Number of padding bits should be added
+        uint nPadBits = 0;
+        if (nRemainInp8bit == 1) {
+            nRemainOut5Bit = 2;
+            nPadBits = 2;
+        } else if (nRemainInp8bit == 2) {
+            nRemainOut5Bit = 4;
+            nPadBits = 4;
+        } else if (nRemainInp8bit == 3) {
+            nRemainOut5Bit = 5;
+            nPadBits = 1;
+        } else if (nRemainInp8bit == 4) {
+            nRemainOut5Bit = 7;
+            nPadBits = 3;
+        }
+
+        uint outLen = nGroup40bit * 8 + nRemainOut5Bit;
+        bytes memory b = new bytes(outLen);
+
+        for (uint ig = 0; ig < nGroup40bit; ig += 1) {
+            uint i = ig * 5;
+            uint j = ig * 8;
+            uint w = 256 ** 4 *
+                uint(uint8(a[i])) +
+                256 ** 3 *
+                uint(uint8(a[i + 1])) +
+                256 ** 2 *
+                uint(uint8(a[i + 2])) +
+                256 *
+                uint(uint8(a[i + 3])) +
+                uint(uint8(a[i + 4]));
+            b[j + 7] = bytes1(uint8(w & 31));
+            b[j + 6] = bytes1(uint8((w >> 5) & 31));
+            b[j + 5] = bytes1(uint8((w >> 10) & 31));
+            b[j + 4] = bytes1(uint8((w >> 15) & 31));
+            b[j + 3] = bytes1(uint8((w >> 20) & 31));
+            b[j + 2] = bytes1(uint8((w >> 25) & 31));
+            b[j + 1] = bytes1(uint8((w >> 30) & 31));
+            b[j] = bytes1(uint8((w >> 35) & 31));
+        }
+
+        if (nRemainOut5Bit > 0) {
+            uint w;
+            for (uint i = nGroup40bit * 5; i < a.length; i += 1) {
+                w = (w << 8) + uint(uint8(a[i]));
+            }
+            w <<= nPadBits;
+            for (uint j = 0; j < nRemainOut5Bit; j += 1) {
+                b[nGroup40bit * 8 + j] = bytes1(
+                    uint8((w >> (5 * (nRemainOut5Bit - j - 1))) & 31)
+                );
+            }
+        }
+
+        return b;
+    }
 
     // function convert(uint[] memory data, uint inBits, uint outBits) internal pure returns (uint[] memory) {
     //     uint value = 0;

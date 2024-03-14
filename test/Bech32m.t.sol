@@ -7,6 +7,16 @@ import {Bech32m} from "../src/Bech32m.sol";
 // Tests from https://github.com/sipa/bech32/blob/master/ref/python/tests.py
 // https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki
 contract Bech32Test is Test {
+    function bytesToUintArr(
+        bytes memory b
+    ) internal pure returns (uint[] memory) {
+        uint[] memory result = new uint[](b.length);
+        for (uint i = 0; i < b.length; i += 1) {
+            result[i] = uint(uint8(b[i]));
+        }
+        return result;
+    }
+
     function testCharset() public {
         assertEq(Bech32m.CHARSET, "qpzry9x8gf2tvdw0s3jn54khce6mua7l");
     }
@@ -169,5 +179,110 @@ contract Bech32Test is Test {
         bytes memory encodedExpected3 = hex"22313231766c716c6c676b7876";
         bytes memory encodedActual3 = Bech32m.bech32Encode(hrp3, data3, spec3);
         assertEq(encodedExpected3, encodedActual3);
+    }
+
+    function testConvert8To5() public {
+        // This test was generated automatically by gen_ref_data_convertbits_8_to_5.py
+
+        // convertbits(b'', 8, 5) == []
+        bytes memory dataIn0 = hex"";
+        bytes memory dataOutExpected0 = hex"";
+        bytes memory dataOutActual0 = Bech32m.conver8To5(dataIn0);
+        assertEq(dataOutExpected0, dataOutActual0);
+
+        // convertbits(b'Q', 8, 5) == [10, 4]
+        bytes memory dataIn1 = hex"51";
+        bytes memory dataOutExpected1 = hex"0a04";
+        bytes memory dataOutActual1 = Bech32m.conver8To5(dataIn1);
+        assertEq(dataOutExpected1, dataOutActual1);
+
+        // convertbits(b'Q(', 8, 5) == [10, 4, 20, 0]
+        bytes memory dataIn2 = hex"5128";
+        bytes memory dataOutExpected2 = hex"0a041400";
+        bytes memory dataOutActual2 = Bech32m.conver8To5(dataIn2);
+        assertEq(dataOutExpected2, dataOutActual2);
+
+        // convertbits(b'Q(u', 8, 5) == [10, 4, 20, 7, 10]
+        bytes memory dataIn3 = hex"512875";
+        bytes memory dataOutExpected3 = hex"0a0414070a";
+        bytes memory dataOutActual3 = Bech32m.conver8To5(dataIn3);
+        assertEq(dataOutExpected3, dataOutActual3);
+
+        // convertbits(b'Q(u\x1e', 8, 5) == [10, 4, 20, 7, 10, 7, 16]
+        bytes memory dataIn4 = hex"5128751e";
+        bytes memory dataOutExpected4 = hex"0a0414070a0710";
+        bytes memory dataOutActual4 = Bech32m.conver8To5(dataIn4);
+        assertEq(dataOutExpected4, dataOutActual4);
+
+        // convertbits(b'Q(u\x1ev', 8, 5) == [10, 4, 20, 7, 10, 7, 19, 22]
+        bytes memory dataIn5 = hex"5128751e76";
+        bytes memory dataOutExpected5 = hex"0a0414070a071316";
+        bytes memory dataOutActual5 = Bech32m.conver8To5(dataIn5);
+        assertEq(dataOutExpected5, dataOutActual5);
+
+        // convertbits(b'Q(u\x1ev\xe8', 8, 5) == [10, 4, 20, 7, 10, 7, 19, 22, 29, 0]
+        bytes memory dataIn6 = hex"5128751e76e8";
+        bytes memory dataOutExpected6 = hex"0a0414070a0713161d00";
+        bytes memory dataOutActual6 = Bech32m.conver8To5(dataIn6);
+        assertEq(dataOutExpected6, dataOutActual6);
+
+        // convertbits(b'Q(u\x1ev\xe8\x19', 8, 5) == [10, 4, 20, 7, 10, 7, 19, 22, 29, 0, 12, 16]
+        bytes memory dataIn7 = hex"5128751e76e819";
+        bytes memory dataOutExpected7 = hex"0a0414070a0713161d000c10";
+        bytes memory dataOutActual7 = Bech32m.conver8To5(dataIn7);
+        assertEq(dataOutExpected7, dataOutActual7);
+
+        // convertbits(b'Q(u\x1ev\xe8\x19\x91', 8, 5) == [10, 4, 20, 7, 10, 7, 19, 22, 29, 0, 12, 25, 2]
+        bytes memory dataIn8 = hex"5128751e76e81991";
+        bytes memory dataOutExpected8 = hex"0a0414070a0713161d000c1902";
+        bytes memory dataOutActual8 = Bech32m.conver8To5(dataIn8);
+        assertEq(dataOutExpected8, dataOutActual8);
+
+        // convertbits(b'Q(u\x1ev\xe8\x19\x91\x96', 8, 5) == [10, 4, 20, 7, 10, 7, 19, 22, 29, 0, 12, 25, 3, 5, 16]
+        bytes memory dataIn9 = hex"5128751e76e8199196";
+        bytes memory dataOutExpected9 = hex"0a0414070a0713161d000c19030510";
+        bytes memory dataOutActual9 = Bech32m.conver8To5(dataIn9);
+        assertEq(dataOutExpected9, dataOutActual9);
+
+        // convertbits(b'Q(u\x1ev\xe8\x19\x91\x96\xd4', 8, 5) == [10, 4, 20, 7, 10, 7, 19, 22, 29, 0, 12, 25, 3, 5, 22, 20]
+        bytes memory dataIn10 = hex"5128751e76e8199196d4";
+        bytes memory dataOutExpected10 = hex"0a0414070a0713161d000c1903051614";
+        bytes memory dataOutActual10 = Bech32m.conver8To5(dataIn10);
+        assertEq(dataOutExpected10, dataOutActual10);
+
+        // convertbits(b'Q(u\x1ev\xe8\x19\x91\x96\xd4T', 8, 5) == [10, 4, 20, 7, 10, 7, 19, 22, 29, 0, 12, 25, 3, 5, 22, 20, 10, 16]
+        bytes memory dataIn11 = hex"5128751e76e8199196d454";
+        bytes
+            memory dataOutExpected11 = hex"0a0414070a0713161d000c19030516140a10";
+        bytes memory dataOutActual11 = Bech32m.conver8To5(dataIn11);
+        assertEq(dataOutExpected11, dataOutActual11);
+
+        // convertbits(b'Q(u\x1ev\xe8\x19\x91\x96\xd4T\x94', 8, 5) == [10, 4, 20, 7, 10, 7, 19, 22, 29, 0, 12, 25, 3, 5, 22, 20, 10, 18, 10, 0]
+        bytes memory dataIn12 = hex"5128751e76e8199196d45494";
+        bytes
+            memory dataOutExpected12 = hex"0a0414070a0713161d000c19030516140a120a00";
+        bytes memory dataOutActual12 = Bech32m.conver8To5(dataIn12);
+        assertEq(dataOutExpected12, dataOutActual12);
+
+        // convertbits(b'Q(u\x1ev\xe8\x19\x91\x96\xd4T\x94\x1c', 8, 5) == [10, 4, 20, 7, 10, 7, 19, 22, 29, 0, 12, 25, 3, 5, 22, 20, 10, 18, 10, 1, 24]
+        bytes memory dataIn13 = hex"5128751e76e8199196d454941c";
+        bytes
+            memory dataOutExpected13 = hex"0a0414070a0713161d000c19030516140a120a0118";
+        bytes memory dataOutActual13 = Bech32m.conver8To5(dataIn13);
+        assertEq(dataOutExpected13, dataOutActual13);
+
+        // convertbits(b'Q(u\x1ev\xe8\x19\x91\x96\xd4T\x94\x1cE', 8, 5) == [10, 4, 20, 7, 10, 7, 19, 22, 29, 0, 12, 25, 3, 5, 22, 20, 10, 18, 10, 1, 24, 17, 8]
+        bytes memory dataIn14 = hex"5128751e76e8199196d454941c45";
+        bytes
+            memory dataOutExpected14 = hex"0a0414070a0713161d000c19030516140a120a01181108";
+        bytes memory dataOutActual14 = Bech32m.conver8To5(dataIn14);
+        assertEq(dataOutExpected14, dataOutActual14);
+
+        // convertbits(b'Q(u\x1ev\xe8\x19\x91\x96\xd4T\x94\x1cE\xd1', 8, 5) == [10, 4, 20, 7, 10, 7, 19, 22, 29, 0, 12, 25, 3, 5, 22, 20, 10, 18, 10, 1, 24, 17, 14, 17]
+        bytes memory dataIn15 = hex"5128751e76e8199196d454941c45d1";
+        bytes
+            memory dataOutExpected15 = hex"0a0414070a0713161d000c19030516140a120a0118110e11";
+        bytes memory dataOutActual15 = Bech32m.conver8To5(dataIn15);
+        assertEq(dataOutExpected15, dataOutActual15);
     }
 }
