@@ -325,6 +325,23 @@ library Bech32m {
         return b;
     }
 
+    
+    function encodeSegwitAddress(
+        bytes memory hrp,
+        uint8 witVer,
+        bytes memory witProg
+    ) public pure returns (bytes memory) {
+        BechEncoding spec = witVer == 0 ? BechEncoding.BECH32 : BechEncoding.BECH32M;
+        bytes memory witProg5bit = conver8To5(witProg);
+        bytes memory encArg = new bytes(witProg5bit.length + 1);
+        encArg[0] = bytes1(witVer);
+        for (uint i = 0; i < witProg5bit.length; i += 1) {
+            encArg[i + 1] = witProg5bit[i];
+        }
+        return bech32Encode(hrp, encArg, spec);
+    }
+
+
     // function convert(uint[] memory data, uint inBits, uint outBits) internal pure returns (uint[] memory) {
     //     uint value = 0;
     //     uint bits = 0;

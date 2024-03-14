@@ -285,4 +285,63 @@ contract Bech32Test is Test {
         bytes memory dataOutActual15 = Bech32m.conver8To5(dataIn15);
         assertEq(dataOutExpected15, dataOutActual15);
     }
+
+    function testEncodeSegwitAddress() public {
+        // This test was generated automatically by gen_ref_data_encode.py
+
+        // encode("bt", 0, b'01010101010101010101') == "bt1qxqcnqvfsxycrzvp3xqcnqvfsxycrzvp3ytzryq"
+        bytes memory hrp0 = hex"6274";
+        uint8 witver0 = 0;
+        bytes memory witprog0 = hex"3031303130313031303130313031303130313031";
+        bytes
+            memory expectedAddr0 = hex"627431717871636e71766673787963727a7670337871636e71766673787963727a76703379747a727971";
+        bytes memory actualAddr0 = Bech32m.encodeSegwitAddress(
+            hrp0,
+            witver0,
+            witprog0
+        );
+        assertEq(expectedAddr0, actualAddr0);
+
+        // encode("tb", 0, b'02020202020202020202020202020202') == "tb1qxqerqv3sxgcryvpjxqerqv3sxgcryvpjxqerqv3sxgcryvpjxqeqesyjw8"
+        bytes memory hrp1 = hex"7462";
+        uint8 witver1 = 0;
+        bytes
+            memory witprog1 = hex"3032303230323032303230323032303230323032303230323032303230323032";
+        bytes
+            memory expectedAddr1 = hex"746231717871657271763373786763727976706a7871657271763373786763727976706a7871657271763373786763727976706a787165716573796a7738";
+        bytes memory actualAddr1 = Bech32m.encodeSegwitAddress(
+            hrp1,
+            witver1,
+            witprog1
+        );
+        assertEq(expectedAddr1, actualAddr1);
+
+        // encode("bt", 1, b'03030303030303030303030303030303') == "bt1pxqenqvesxvcrxvpnxqenqvesxvcrxvpnxqenqvesxvcrxvpnxqessp3jae"
+        bytes memory hrp2 = hex"6274";
+        uint8 witver2 = 1;
+        bytes
+            memory witprog2 = hex"3033303330333033303330333033303330333033303330333033303330333033";
+        bytes
+            memory expectedAddr2 = hex"627431707871656e71766573787663727876706e7871656e71766573787663727876706e7871656e71766573787663727876706e787165737370336a6165";
+        bytes memory actualAddr2 = Bech32m.encodeSegwitAddress(
+            hrp2,
+            witver2,
+            witprog2
+        );
+        assertEq(expectedAddr2, actualAddr2);
+
+        // encode("tb", 1, b'04040404040404040404040404040404') == "tb1pxq6rqdpsxscrgvp5xq6rqdpsxscrgvp5xq6rqdpsxscrgvp5xq6qw2ty9q"
+        bytes memory hrp3 = hex"7462";
+        uint8 witver3 = 1;
+        bytes
+            memory witprog3 = hex"3034303430343034303430343034303430343034303430343034303430343034";
+        bytes
+            memory expectedAddr3 = hex"7462317078713672716470737873637267767035787136727164707378736372677670357871367271647073787363726776703578713671773274793971";
+        bytes memory actualAddr3 = Bech32m.encodeSegwitAddress(
+            hrp3,
+            witver3,
+            witprog3
+        );
+        assertEq(expectedAddr3, actualAddr3);
+    }
 }
