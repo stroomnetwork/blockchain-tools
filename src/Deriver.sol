@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import "../lib/elliptic-curve-solidity/contracts/EllipticCurve.sol";
 
+import {Bech32m} from "./Bech32m.sol";
 
 contract Deriver {
     uint256 public constant GX =
@@ -67,6 +68,11 @@ contract Deriver {
         uint256 c1 = getCoefficient(P1X, P1Y, addr);
         uint256 c2 = getCoefficient(P2X, P2Y, addr);
         return getCombinedPubkey(c1, c2);
+   }
+
+   function getBtcAddressFromEth(address addr) public pure returns (string memory) {
+        (uint256 x, uint256 y) = getPubkeyFromAddress(addr);
+        return string(Bech32m.encodeSegwitAddress(bytes("tb"), 1, abi.encodePacked(x)));
    }
 }
 
