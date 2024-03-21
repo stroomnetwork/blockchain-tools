@@ -18,6 +18,13 @@ library Bech32m {
         // Usually it means some error
         UKNOWN
     }
+
+    enum DecodeError {
+        NoError,
+        IncorrectPadding,
+        IncorrectLength
+    }
+
     // using BytesLib for bytes;
 
     // CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
@@ -325,13 +332,14 @@ library Bech32m {
         return b;
     }
 
-    
     function encodeSegwitAddress(
         bytes memory hrp,
         uint8 witVer,
         bytes memory witProg
     ) public pure returns (bytes memory) {
-        BechEncoding spec = witVer == 0 ? BechEncoding.BECH32 : BechEncoding.BECH32M;
+        BechEncoding spec = witVer == 0
+            ? BechEncoding.BECH32
+            : BechEncoding.BECH32M;
         bytes memory witProg5bit = conver8To5(witProg);
         bytes memory encArg = new bytes(witProg5bit.length + 1);
         encArg[0] = bytes1(witVer);
@@ -341,6 +349,112 @@ library Bech32m {
         return bech32Encode(hrp, encArg, spec);
     }
 
+    function convert5to8(
+        bytes memory data5Bits
+    ) public pure returns (bytes memory, DecodeError) {
+        uint vRest;
+        uint nRest5Bits = data5Bits.length % 8;
+        uint nRest8Bits;
+        uint nGroups40Bits = data5Bits.length / 8;
+        uint startRest5Bit = nGroups40Bits * 8;
+        uint startRest8Bit = nGroups40Bits * 5;
+
+        if (nRest5Bits == 1) {
+            return (new bytes(0), DecodeError.IncorrectLength);
+        } else if (nRest5Bits == 2) {
+            if (uint8(data5Bits[data5Bits.length - 1]) & 3 == 0) {
+                vRest =
+                    (uint(uint8(data5Bits[startRest5Bit]) << 5)) +
+                    uint8(data5Bits[startRest5Bit + 1]);
+                vRest >>= 2;
+                nRest8Bits = 1;
+            } else {
+                return (new bytes(0), DecodeError.IncorrectPadding);
+            }
+        } else if (nRest5Bits == 3) {
+            return (new bytes(0), DecodeError.IncorrectLength);
+        } else if (nRest5Bits == 4) {
+            if (uint8(data5Bits[data5Bits.length - 1]) & 15 == 0) {
+                vRest =
+                    (uint(uint8(data5Bits[startRest5Bit])) << 15) +
+                    (uint(uint8(data5Bits[startRest5Bit + 1])) << 10) +
+                    (uint(uint8(data5Bits[startRest5Bit + 2])) << 5) +
+                    uint(uint8(data5Bits[startRest5Bit + 3]));
+                vRest >>= 4;
+                nRest8Bits = 2;
+            } else {
+                return (new bytes(0), DecodeError.IncorrectPadding);
+            }
+        } else if (nRest5Bits == 5) {
+            if (uint8(data5Bits[data5Bits.length - 1]) & 1 == 0) {
+                vRest =
+                    (uint(uint8(data5Bits[startRest5Bit])) << 20) +
+                    (uint(uint8(data5Bits[startRest5Bit + 1])) << 15) +
+                    (uint(uint8(data5Bits[startRest5Bit + 2])) << 10) +
+                    (uint(uint8(data5Bits[startRest5Bit + 3])) << 5) +
+                    (uint(uint8(data5Bits[startRest5Bit + 4])));
+                vRest >>= 1;
+                nRest8Bits = 3;
+            } else {
+                return (new bytes(0), DecodeError.IncorrectPadding);
+            }
+        } else if (nRest5Bits == 6) {
+            return (new bytes(0), DecodeError.IncorrectLength);
+        } else if (nRest5Bits == 7) {
+            if (uint8(data5Bits[data5Bits.length - 1]) & 7 == 0) {
+                vRest =
+                    (uint(uint8(data5Bits[startRest5Bit])) << 30) +
+                    (uint(uint8(data5Bits[startRest5Bit + 1])) << 25) +
+                    (uint(uint8(data5Bits[startRest5Bit + 2])) << 20) +
+                    (uint(uint8(data5Bits[startRest5Bit + 3])) << 15) +
+                    (uint(uint8(data5Bits[startRest5Bit + 4])) << 10) +
+                    (uint(uint8(data5Bits[startRest5Bit + 5])) << 5) +
+                    uint(uint8(data5Bits[startRest5Bit + 6]));
+                vRest >>= 3;
+                nRest8Bits = 4;
+            } else {
+                return (new bytes(0), DecodeError.IncorrectPadding);
+            }
+        }
+
+        bytes memory rez8Bits = new bytes(nGroups40Bits * 5 + nRest8Bits);
+
+        for (uint ig = 0; ig < nGroups40Bits; ig += 1) {
+            uint i = ig * 8;
+            uint j = ig * 5;
+            uint v = (uint(uint8(data5Bits[i])) << 35);
+            v += (uint(uint8(data5Bits[i + 1])) << 30);
+            v += (uint(uint8(data5Bits[i + 2])) << 25);
+            v += (uint(uint8(data5Bits[i + 3])) << 20);
+            v += (uint(uint8(data5Bits[i + 4])) << 15);
+            v += (uint(uint8(data5Bits[i + 5])) << 10);
+            v += (uint(uint8(data5Bits[i + 6])) << 5);
+            v += uint(uint8(data5Bits[i + 7]));
+            rez8Bits[j] = bytes1(uint8((v >> 32) & 255));
+            rez8Bits[j + 1] = bytes1(uint8((v >> 24) & 255));
+            rez8Bits[j + 2] = bytes1(uint8((v >> 16) & 255));
+            rez8Bits[j + 3] = bytes1(uint8((v >> 8) & 255));
+            rez8Bits[j + 4] = bytes1(uint8((v) & 255));
+        }
+
+        if (nRest8Bits == 1) {
+            rez8Bits[startRest8Bit] = bytes1(uint8(vRest & 255));
+        } else if (nRest8Bits == 2) {
+            rez8Bits[startRest8Bit] = bytes1(uint8((vRest >> 8) & 255));
+            rez8Bits[startRest8Bit + 1] = bytes1(uint8(vRest & 255));
+        } else if (nRest8Bits == 3) {
+            rez8Bits[startRest8Bit] = bytes1(uint8((vRest >> 16) & 255));
+            rez8Bits[startRest8Bit + 1] = bytes1(uint8((vRest >> 8) & 255));
+            rez8Bits[startRest8Bit + 2] = bytes1(uint8(vRest & 255));
+        } else if (nRest8Bits == 4) {
+            rez8Bits[startRest8Bit] = bytes1(uint8((vRest >> 24) & 255));
+            rez8Bits[startRest8Bit + 1] = bytes1(uint8((vRest >> 16) & 255));
+            rez8Bits[startRest8Bit + 2] = bytes1(uint8((vRest >> 8) & 255));
+            rez8Bits[startRest8Bit + 3] = bytes1(uint8(vRest & 255));
+        }
+
+        return (rez8Bits, DecodeError.NoError);
+    }
 
     // function convert(uint[] memory data, uint inBits, uint outBits) internal pure returns (uint[] memory) {
     //     uint value = 0;
