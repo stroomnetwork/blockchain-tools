@@ -364,8 +364,8 @@ library Bech32m {
         } else if (nRest5Bits == 2) {
             if (uint8(data5Bits[data5Bits.length - 1]) & 3 == 0) {
                 vRest =
-                    (uint(uint8(data5Bits[startRest5Bit]) << 5)) +
-                    uint8(data5Bits[startRest5Bit + 1]);
+                    (uint(uint8(data5Bits[startRest5Bit])) << 5) +
+                    uint(uint8(data5Bits[startRest5Bit + 1]));
                 vRest >>= 2;
                 nRest8Bits = 1;
             } else {
