@@ -1272,4 +1272,18 @@ contract Bech32Test is Test {
         assertEq(data8BitExpected102, data8BitActual102);
         assertTrue(err102 != Bech32m.DecodeError.NoError);
     }
+
+    function testIsValidCharacterRange() public {
+        bytes memory s1 = bytes("abcdef");
+        assertTrue(Bech32m.isValidCharacterRange(s1));
+
+        bytes memory s2 = bytes("ABCDEF");
+        assertTrue(Bech32m.isValidCharacterRange(s2));
+
+        bytes memory s3 = hex"00a1";
+        assertFalse(Bech32m.isValidCharacterRange(s3)); 
+
+        bytes memory s4 = hex"ff";
+        assertFalse(Bech32m.isValidCharacterRange(s4));
+    }
 }

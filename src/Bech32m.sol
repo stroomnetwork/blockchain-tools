@@ -22,7 +22,9 @@ library Bech32m {
     enum DecodeError {
         NoError,
         IncorrectPadding,
-        IncorrectLength
+        IncorrectLength,
+        CharacterOutOfRange,
+        MixedCase
     }
 
     // using BytesLib for bytes;
@@ -456,24 +458,45 @@ library Bech32m {
         return (rez8Bits, DecodeError.NoError);
     }
 
-    // function convert(uint[] memory data, uint inBits, uint outBits) internal pure returns (uint[] memory) {
-    //     uint value = 0;
-    //     uint bits = 0;
-    //     uint maxV = (1 << outBits) - 1;
+    // check that all characters are in the range 33-126 inclusive\
+    function isValidCharacterRange(bytes memory bech) public pure returns (bool) {
+        for (uint i = 0; i < bech.length; i += 1) {
+            if (uint8(bech[i]) < 33 || uint8(bech[i]) > 126) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-    //     uint[] memory ret = new uint[](32);
-    //     uint j = 0;
-    //     for (uint i = 0; i < data.length; ++i) {
-    //         value = (value << inBits) | data[i];
-    //         bits += inBits;
-
-    //         while (bits >= outBits) {
-    //             bits -= outBits;
-    //             ret[j] = (value >> bits) & maxV;
-    //             j += 1;
-    //         }
-    //     }
-
-    //     return ret;
+    // check that all characters are in the same case
+    //     validateCharactersRange(bytes memory bech) DecodeError() {
+    //     returns if character out of range 33-126 inclusive
+    //     returns if there are mixed case: some characters 
     // }
+
+    function bech32Decode(
+        bytes memory bech
+    )
+        public
+        pure
+        returns (bytes memory, bytes memory data5Bit, BechEncoding, DecodeError)
+    {
+        // def bech32_decode(bech):
+        // """Validate a Bech32/Bech32m string, and determine HRP and data."""
+        // if ((any(ord(x) < 33 or ord(x) > 126 for x in bech)) or
+        //         (bech.lower() != bech and bech.upper() != bech)):
+        //     return (None, None, None)
+        // bech = bech.lower()
+        // pos = bech.rfind('1')
+        // if pos < 1 or pos + 7 > len(bech) or len(bech) > 90:
+        //     return (None, None, None)
+        // if not all(x in CHARSET for x in bech[pos+1:]):
+        //     return (None, None, None)
+        // hrp = bech[:pos]
+        // data = [CHARSET.find(x) for x in bech[pos+1:]]
+        // spec = bech32_verify_checksum(hrp, data)
+        // if spec is None:
+        //     return (None, None, None)
+        // return (hrp, data[:-6], spec)
+    }
 }
