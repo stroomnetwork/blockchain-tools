@@ -468,6 +468,27 @@ library Bech32m {
         return true;
     }
 
+    
+    function isMixedCase(bytes memory b) public returns (bool) {
+        bool hasLower = false;
+        bool hasUpper = false;
+
+        // The range of ASCII values for uppercase letters A-Z is 65-90, 
+        // and the range for lowercase letters a-z is 97-122.
+        for (uint i = 0; i < b.length; i += 1) {
+            if (uint8(b[i]) >= 97 && uint8(b[i]) <= 122) {
+                hasLower = true;
+            } else if (uint8(b[i]) >= 65 && uint8(b[i]) <= 90) {
+                hasUpper = true;
+            }
+            if (hasLower && hasUpper) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
     // check that all characters are in the same case
     //     validateCharactersRange(bytes memory bech) DecodeError() {
     //     returns if character out of range 33-126 inclusive

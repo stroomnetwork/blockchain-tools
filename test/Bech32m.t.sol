@@ -1286,4 +1286,11 @@ contract Bech32Test is Test {
         bytes memory s4 = hex"ff";
         assertFalse(Bech32m.isValidCharacterRange(s4));
     }
+
+    function testIsMixedCase() public {
+        assertTrue(Bech32m.isMixedCase(bytes("aBcDeF")));
+        assertFalse(Bech32m.isMixedCase(bytes("aaaa")));
+        assertFalse(Bech32m.isMixedCase(bytes("AAAAA")));
+         assertFalse(Bech32m.isMixedCase(bytes("")));
+    }
 }
