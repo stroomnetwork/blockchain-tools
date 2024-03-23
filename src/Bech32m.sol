@@ -26,9 +26,11 @@ library Bech32m {
         CharacterOutOfRange,
         MixedCase,
         IncorrectChecksum,
+        TooShortChecksum,
         InputIsTooLong,
         NotBech32Character,
-        HRPIsEmpty
+        HRPIsEmpty,
+        NoDelimiter
     }
 
     // using BytesLib for bytes;
@@ -481,7 +483,7 @@ library Bech32m {
         return true;
     }
 
-    function isMixedCase(bytes memory b) public returns (bool) {
+    function isMixedCase(bytes memory b) public pure returns (bool) {
         bool hasLower = false;
         bool hasUpper = false;
 
@@ -536,24 +538,63 @@ library Bech32m {
     )
         public
         pure
-        returns (bytes memory, bytes memory data5Bit, BechEncoding, DecodeError)
-    {
-        // def bech32_decode(bech):
-        // """Validate a Bech32/Bech32m string, and determine HRP and data."""
-        // if ((any(ord(x) < 33 or ord(x) > 126 for x in bech)) or
-        //         (bech.lower() != bech and bech.upper() != bech)):
-        //     return (None, None, None)
-        // bech = bech.lower()
-        // pos = bech.rfind('1')
-        // if pos < 1 or pos + 7 > len(bech) or len(bech) > 90:
-        //     return (None, None, None)
-        // if not all(x in CHARSET for x in bech[pos+1:]):
-        //     return (None, None, None)
-        // hrp = bech[:pos]
-        // data = [CHARSET.find(x) for x in bech[pos+1:]]
-        // spec = bech32_verify_checksum(hrp, data)
-        // if spec is None:
-        //     return (None, None, None)
-        // return (hrp, data[:-6], spec)
+        returns (bytes memory, bytes memory, BechEncoding, DecodeError)
+    {   
+        if (bech.length > 90) {
+            return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, DecodeError.InputIsTooLong);
+        }
+
+        if (isValidCharacterRange(bech)) {
+            return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, DecodeError.CharacterOutOfRange);
+        }
+
+        if (isMixedCase(bech)) {
+            return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, DecodeError.MixedCase);
+        }
+
+        bytes memory bechLow = toLower(bech);
+        int delimiterPos = -1;
+        while (true) {
+            delimiterPos += 1;
+            if (delimiterPos >= int256(bechLow.length)) {
+                return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, DecodeError.NoDelimiter);
+            }
+            // 0x31 is '1'
+            if (bechLow[uint256(delimiterPos)] == 0x31) {
+                break;
+            }
+        }
+        if (delimiterPos < 1) {
+            return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, DecodeError.HRPIsEmpty);
+        }
+        if (delimiterPos + 7 > int(bechLow.length)) {
+            return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, DecodeError.TooShortChecksum);
+        }
+
+        bytes memory hrp = new bytes(uint(delimiterPos));
+        for (uint i = 0; i < uint(delimiterPos); i += 1) {
+            hrp[i] = bechLow[i];
+        }
+
+        (bytes memory dataAll5Bit, DecodeError err) = decodeCharactersBech32(
+            bechLow,
+            uint(delimiterPos + 1),
+            bechLow.length
+        );
+        if (err != DecodeError.NoError) {
+            return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, err);
+        }
+
+        BechEncoding spec = verifyChecksum(hrp, dataAll5Bit);
+        if (spec == BechEncoding.UKNOWN) {
+            return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, DecodeError.IncorrectChecksum);
+        }
+
+        bytes memory data5Bit = new bytes(dataAll5Bit.length - 6);
+        for (uint i = 0; i < data5Bit.length; i += 1) {
+            data5Bit[i] = dataAll5Bit[i];
+        }
+
+        return (hrp, data5Bit, spec, DecodeError.NoError);
     }
 }
