@@ -5,6 +5,7 @@
 pragma solidity ^0.8;
 
 import {BytesLib} from "./BytesLib.sol";
+import {console} from "forge-std/console.sol";
 
 error EncodingIsUnknown();
 
@@ -537,26 +538,28 @@ library Bech32m {
         bytes memory bech
     )
         public
-        pure
         returns (bytes memory, bytes memory, BechEncoding, DecodeError)
     {   
+        console.log("bech32Decode 1");
         if (bech.length > 90) {
             return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.InputIsTooLong);
         }
+        console.log("bech32Decode 2");
 
-        if (isValidCharacterRange(bech)) {
+        if (!isValidCharacterRange(bech)) {
             return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.CharacterOutOfRange);
         }
 
         if (isMixedCase(bech)) {
             return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.MixedCase);
         }
+        console.log("bech32Decode 3");
 
         bytes memory bechLow = toLower(bech);
-        int delimiterPos = -1;
+        int delimiterPos = int256(bechLow.length) - 1;
         while (true) {
-            delimiterPos += 1;
-            if (delimiterPos >= int256(bechLow.length)) {
+            delimiterPos -= 1;
+            if (delimiterPos < 0) {
                 return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.NoDelimiter);
             }
             // 0x31 is '1'

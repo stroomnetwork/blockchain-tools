@@ -1374,4 +1374,51 @@ contract Bech32Test is Test {
         assertEq(rezExpected6, rezActual6);
         assertTrue(errExpected6 == errActual6);
     }
+
+    function testBech32Decode() public {
+        // This test was generated automatically by gen_ref_data_bech32_decode.py
+
+        // bech32_encode('''tb''', [0, 1, 2], Encoding.BECH32) == '''tb1qpz0a0mjz'''
+        bytes memory encodedData0 = hex"74623171707a3061306d6a7a";
+        (
+            bytes memory hrpActual0,
+            bytes memory dataActual0,
+            Bech32m.BechEncoding specActual0,
+            Bech32m.DecodeError err0
+        ) = Bech32m.bech32Decode(encodedData0);
+        assertEq(hrpActual0, hex"7462"); // tb
+        assertEq(dataActual0, hex"000102");
+        assertTrue(specActual0 == Bech32m.BechEncoding.BECH32);
+        assertTrue(err0 == Bech32m.DecodeError.NoError);
+
+        // bech32_encode('''bc''', [], Encoding.BECH32M) == '''bc1a8xfp7'''
+        bytes memory encodedData1 = hex"626331613878667037";
+        (
+            bytes memory hrpActual1,
+            bytes memory dataActual1,
+            Bech32m.BechEncoding specActual1,
+            Bech32m.DecodeError err1
+        ) = Bech32m.bech32Decode(encodedData1);
+        assertEq(hrpActual1, hex"6263"); // bc
+        assertEq(dataActual1, hex"");
+        assertTrue(specActual1 == Bech32m.BechEncoding.BECH32M);
+        assertTrue(err1 == Bech32m.DecodeError.NoError);
+
+        // bech32_encode('''tb''', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31], Encoding.BECH32M) == '''tb1qpzry9x8gf2tvdw0s3jn54khce6mua7l29t8na'''
+        bytes
+            memory encodedData2 = hex"74623171707a7279397838676632747664773073336a6e35346b686365366d7561376c323974386e61";
+        (
+            bytes memory hrpActual2,
+            bytes memory dataActual2,
+            Bech32m.BechEncoding specActual2,
+            Bech32m.DecodeError err2
+        ) = Bech32m.bech32Decode(encodedData2);
+        assertEq(hrpActual2, hex"7462"); // tb
+        assertEq(
+            dataActual2,
+            hex"000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+        );
+        assertTrue(specActual2 == Bech32m.BechEncoding.BECH32M);
+        assertTrue(err2 == Bech32m.DecodeError.NoError);
+    }
 }
