@@ -489,6 +489,18 @@ library Bech32m {
         return false;
     }
 
+    function toLower(bytes memory a) public pure returns (bytes memory) {
+        bytes memory b = new bytes(a.length);
+        for (uint i = 0; i < a.length; i += 1) {
+            if (uint8(a[i]) >= 65 && uint8(a[i]) <= 90) {
+                b[i] = bytes1(uint8(a[i]) + 32);
+            } else {
+                b[i] = a[i];
+            }
+        }
+        return b;
+    }
+
     // check that all characters are in the same case
     //     validateCharactersRange(bytes memory bech) DecodeError() {
     //     returns if character out of range 33-126 inclusive

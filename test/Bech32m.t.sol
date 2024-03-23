@@ -1281,7 +1281,7 @@ contract Bech32Test is Test {
         assertTrue(Bech32m.isValidCharacterRange(s2));
 
         bytes memory s3 = hex"00a1";
-        assertFalse(Bech32m.isValidCharacterRange(s3)); 
+        assertFalse(Bech32m.isValidCharacterRange(s3));
 
         bytes memory s4 = hex"ff";
         assertFalse(Bech32m.isValidCharacterRange(s4));
@@ -1291,6 +1291,16 @@ contract Bech32Test is Test {
         assertTrue(Bech32m.isMixedCase(bytes("aBcDeF")));
         assertFalse(Bech32m.isMixedCase(bytes("aaaa")));
         assertFalse(Bech32m.isMixedCase(bytes("AAAAA")));
-         assertFalse(Bech32m.isMixedCase(bytes("")));
+        assertFalse(Bech32m.isMixedCase(bytes("")));
+    }
+
+    function testToLower() public {
+        assertEq(Bech32m.toLower(bytes("aaaBB")), bytes("aaabb"));
+        assertEq(Bech32m.toLower(bytes("+a1+B- ")), bytes("+a1+b- "));
+        assertEq(Bech32m.toLower(bytes("")), bytes(""));
+        assertEq(
+            Bech32m.toLower(bytes("ABCDEFGHIJKLMNOPQRSTUVWXYZ")),
+            bytes("abcdefghijklmnopqrstuvwxyz")
+        );
     }
 }
