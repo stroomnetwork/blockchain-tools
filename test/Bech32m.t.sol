@@ -1303,4 +1303,75 @@ contract Bech32Test is Test {
             bytes("abcdefghijklmnopqrstuvwxyz")
         );
     }
+
+    function testDecodeCharactersBech32() public {
+        // This test was generated automatically by gen_reverse_charset_test_data.py
+
+        bytes
+            memory data0 = hex"71707a7279397838676632747664773073336a6e35346b686365366d7561376c";
+        bytes
+            memory rezExpected0 = hex"000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f";
+        Bech32m.DecodeError errExpected0 = Bech32m.DecodeError.NoError;
+        (bytes memory rezActual0, Bech32m.DecodeError errActual0) = Bech32m
+            .decodeCharactersBech32(data0, 0, 32);
+        assertEq(rezExpected0, rezActual0);
+        assertTrue(errExpected0 == errActual0);
+
+        bytes
+            memory data1 = hex"32747664773073336a6e35346b686365366d7561376c71707a72793978386766";
+        bytes
+            memory rezExpected1 = hex"0a0b0c0d0e0f101112131415161718191a1b1c1d1e1f00010203040506070809";
+        Bech32m.DecodeError errExpected1 = Bech32m.DecodeError.NoError;
+        (bytes memory rezActual1, Bech32m.DecodeError errActual1) = Bech32m
+            .decodeCharactersBech32(data1, 0, 32);
+        assertEq(rezExpected1, rezActual1);
+        assertTrue(errExpected1 == errActual1);
+
+        bytes
+            memory data2 = hex"32747664773073336a6e35346b686365366d7561376c71707a72793978386766";
+        bytes memory rezExpected2 = hex"0a0b0c0d0e0f10111213";
+        Bech32m.DecodeError errExpected2 = Bech32m.DecodeError.NoError;
+        (bytes memory rezActual2, Bech32m.DecodeError errActual2) = Bech32m
+            .decodeCharactersBech32(data2, 0, 10);
+        assertEq(rezExpected2, rezActual2);
+        assertTrue(errExpected2 == errActual2);
+
+        bytes
+            memory data3 = hex"32747664773073336a6e35346b686365366d7561376c71707a72793978386766";
+        bytes memory rezExpected3 = hex"191a1b1c1d1e1f00010203040506070809";
+        Bech32m.DecodeError errExpected3 = Bech32m.DecodeError.NoError;
+        (bytes memory rezActual3, Bech32m.DecodeError errActual3) = Bech32m
+            .decodeCharactersBech32(data3, 15, 32);
+        assertEq(rezExpected3, rezActual3);
+        assertTrue(errExpected3 == errActual3);
+
+        bytes
+            memory data4 = hex"32747664773073336a6e35346b686365366d7561376c71707a72793978386766";
+        bytes memory rezExpected4 = hex"0f101112131415161718191a1b1c1d1e";
+        Bech32m.DecodeError errExpected4 = Bech32m.DecodeError.NoError;
+        (bytes memory rezActual4, Bech32m.DecodeError errActual4) = Bech32m
+            .decodeCharactersBech32(data4, 5, 21);
+        assertEq(rezExpected4, rezActual4);
+        assertTrue(errExpected4 == errActual4);
+
+        bytes memory data5 = hex"316162";
+        bytes memory rezExpected5 = hex"";
+        Bech32m.DecodeError errExpected5 = Bech32m
+            .DecodeError
+            .NotBech32Character;
+        (bytes memory rezActual5, Bech32m.DecodeError errActual5) = Bech32m
+            .decodeCharactersBech32(data5, 0, 3);
+        assertEq(rezExpected5, rezActual5);
+        assertTrue(errExpected5 == errActual5);
+
+        bytes memory data6 = hex"c3bf";
+        bytes memory rezExpected6 = hex"";
+        Bech32m.DecodeError errExpected6 = Bech32m
+            .DecodeError
+            .NotBech32Character;
+        (bytes memory rezActual6, Bech32m.DecodeError errActual6) = Bech32m
+            .decodeCharactersBech32(data6, 0, 1);
+        assertEq(rezExpected6, rezActual6);
+        assertTrue(errExpected6 == errActual6);
+    }
 }

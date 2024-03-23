@@ -24,13 +24,24 @@ library Bech32m {
         IncorrectPadding,
         IncorrectLength,
         CharacterOutOfRange,
-        MixedCase
+        MixedCase,
+        IncorrectChecksum,
+        InputIsTooLong,
+        NotBech32Character,
+        HRPIsEmpty
     }
 
     // using BytesLib for bytes;
 
     // CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
     bytes public constant CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
+
+    // generatated by gen_reverse_charset.py
+    // index is character code in ASCII
+    // value is Bech32 character value
+    // if value is 0x7f=127 then character is not in the Bech32 charset
+    bytes public constant REVERSE_CHARSET =
+        hex"7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f0f7f0a1115141a1e07057f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f1d7f180d190908177f12161f1b137f010003100b1c0c0e0604027f7f7f7f7f";
 
     // BECH32M_CONST = 0x2bc830a3
     uint256 public constant BECH32M_CONST = 0x2bc830a3;
@@ -459,7 +470,9 @@ library Bech32m {
     }
 
     // check that all characters are in the range 33-126 inclusive\
-    function isValidCharacterRange(bytes memory bech) public pure returns (bool) {
+    function isValidCharacterRange(
+        bytes memory bech
+    ) public pure returns (bool) {
         for (uint i = 0; i < bech.length; i += 1) {
             if (uint8(bech[i]) < 33 || uint8(bech[i]) > 126) {
                 return false;
@@ -468,12 +481,11 @@ library Bech32m {
         return true;
     }
 
-    
     function isMixedCase(bytes memory b) public returns (bool) {
         bool hasLower = false;
         bool hasUpper = false;
 
-        // The range of ASCII values for uppercase letters A-Z is 65-90, 
+        // The range of ASCII values for uppercase letters A-Z is 65-90,
         // and the range for lowercase letters a-z is 97-122.
         for (uint i = 0; i < b.length; i += 1) {
             if (uint8(b[i]) >= 97 && uint8(b[i]) <= 122) {
@@ -485,7 +497,7 @@ library Bech32m {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -501,11 +513,23 @@ library Bech32m {
         return b;
     }
 
-    // check that all characters are in the same case
-    //     validateCharactersRange(bytes memory bech) DecodeError() {
-    //     returns if character out of range 33-126 inclusive
-    //     returns if there are mixed case: some characters 
-    // }
+    // start included
+    // stop excluded
+    function decodeCharactersBech32(
+        bytes memory bech,
+        uint start,
+        uint stop
+    ) public pure returns (bytes memory, DecodeError) {
+        bytes memory decoded = new bytes(stop - start);
+        for (uint i = start; i < stop; i += 1) {
+            uint8 c = uint8(bech[i]);
+            if (c >= REVERSE_CHARSET.length || REVERSE_CHARSET[c] == 0x7f) {
+                return (new bytes(0), DecodeError.NotBech32Character);
+            }
+            decoded[i - start] = REVERSE_CHARSET[c];
+        }
+        return (decoded, DecodeError.NoError);
+    }
 
     function bech32Decode(
         bytes memory bech
