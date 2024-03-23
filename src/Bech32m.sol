@@ -14,9 +14,9 @@ library Bech32m {
         BECH32,
         // Used in SegWit v.1, e.g. Taproot
         BECH32M,
-        // Specifies an uknown encoding
+        // Specifies an unknown encoding
         // Usually it means some error
-        UKNOWN
+        UNKNOWN
     }
 
     enum DecodeError {
@@ -230,7 +230,7 @@ library Bech32m {
             return BechEncoding.BECH32M;
         }
 
-        return BechEncoding.UKNOWN;
+        return BechEncoding.UNKNOWN;
     }
 
     // def bech32_encode(hrp, data, spec):
@@ -243,7 +243,7 @@ library Bech32m {
         bytes memory data,
         BechEncoding spec
     ) public pure returns (bytes memory) {
-        if (spec == BechEncoding.UKNOWN) {
+        if (spec == BechEncoding.UNKNOWN) {
             revert EncodingIsUnknown();
         }
         // 6 bytes of the checksum in a 5-bit format
@@ -541,15 +541,15 @@ library Bech32m {
         returns (bytes memory, bytes memory, BechEncoding, DecodeError)
     {   
         if (bech.length > 90) {
-            return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, DecodeError.InputIsTooLong);
+            return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.InputIsTooLong);
         }
 
         if (isValidCharacterRange(bech)) {
-            return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, DecodeError.CharacterOutOfRange);
+            return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.CharacterOutOfRange);
         }
 
         if (isMixedCase(bech)) {
-            return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, DecodeError.MixedCase);
+            return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.MixedCase);
         }
 
         bytes memory bechLow = toLower(bech);
@@ -557,7 +557,7 @@ library Bech32m {
         while (true) {
             delimiterPos += 1;
             if (delimiterPos >= int256(bechLow.length)) {
-                return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, DecodeError.NoDelimiter);
+                return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.NoDelimiter);
             }
             // 0x31 is '1'
             if (bechLow[uint256(delimiterPos)] == 0x31) {
@@ -565,10 +565,10 @@ library Bech32m {
             }
         }
         if (delimiterPos < 1) {
-            return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, DecodeError.HRPIsEmpty);
+            return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.HRPIsEmpty);
         }
         if (delimiterPos + 7 > int(bechLow.length)) {
-            return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, DecodeError.TooShortChecksum);
+            return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.TooShortChecksum);
         }
 
         bytes memory hrp = new bytes(uint(delimiterPos));
@@ -582,12 +582,12 @@ library Bech32m {
             bechLow.length
         );
         if (err != DecodeError.NoError) {
-            return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, err);
+            return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, err);
         }
 
         BechEncoding spec = verifyChecksum(hrp, dataAll5Bit);
-        if (spec == BechEncoding.UKNOWN) {
-            return (new bytes(0), new bytes(0), BechEncoding.UKNOWN, DecodeError.IncorrectChecksum);
+        if (spec == BechEncoding.UNKNOWN) {
+            return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.IncorrectChecksum);
         }
 
         bytes memory data5Bit = new bytes(dataAll5Bit.length - 6);
