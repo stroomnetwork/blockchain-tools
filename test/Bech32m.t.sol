@@ -1421,4 +1421,10 @@ contract Bech32Test is Test {
         assertTrue(specActual2 == Bech32m.BechEncoding.BECH32M);
         assertTrue(err2 == Bech32m.DecodeError.NoError);
     }
+
+    function testAreBytesEqual() public {
+        assertTrue(Bech32m.areBytesEqual(bytes("abc"), bytes("abc")));
+        assertFalse(Bech32m.areBytesEqual(bytes("abc"), bytes("ab")));
+         assertFalse(Bech32m.areBytesEqual(bytes("abc"), bytes("bbb")));
+    }
 }

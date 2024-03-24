@@ -19,6 +19,7 @@ library Bech32m {
         UNKNOWN
     }
 
+    // TODO(mkl): add comment about errors.
     enum DecodeError {
         NoError,
         IncorrectPadding,
@@ -31,7 +32,32 @@ library Bech32m {
         NotBech32Character,
         HRPIsEmpty,
         NoDelimiter
+
+        // // decoded HRP is different from expected HRP
+        // HRPMismatch
+
+        // // witness program should be at least 2 bytes
+        // WitnessProgramTooSmall
+
+        // // witness program should be maximum 40 bytes
+        // WitnessProgramTooLarge
+
+        // // segwit version should be from 0 to 16 (including). Got some larger number.
+        // SegwitVersionTooLarge
+
+        // // Length of segwit v0 program should be either 20 or 32 bytes. 20 for PWKH, 32 for P2WSH
+        // IncorrectSegwitV0Program
+
+        // // Segwit v0 should be encoded using Bech32
+        // IncorrectEncodingForSegwitV0
+
+        // // Segwit with versions 1-16 should be encoded with Bech32m
+        // IncorrectEncodingForSegwitVn
     }
+
+
+
+    // TODO(mkl): implement ExplainDecodeError(DecodeError err) -> string
 
     // using BytesLib for bytes;
 
@@ -596,4 +622,32 @@ library Bech32m {
 
         return (hrp, data5Bit, spec, DecodeError.NoError);
     }
+
+    function areBytesEqual(bytes memory a, bytes memory b) public pure returns (bool) {
+        if (a.length != b.length) {
+            return false;
+        }
+        for (uint i = 0; i < a.length; i += 1) {
+            if (a[i] != b[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // def decode(hrp, addr):
+    // """Decode a segwit address."""
+    // hrpgot, data, spec = bech32_decode(addr)
+    // if hrpgot != hrp:
+    //     return (None, None)
+    // decoded = convertbits(data[1:], 5, 8, False)
+    // if decoded is None or len(decoded) < 2 or len(decoded) > 40:
+    //     return (None, None)
+    // if data[0] > 16:
+    //     return (None, None)
+    // if data[0] == 0 and len(decoded) != 20 and len(decoded) != 32:
+    //     return (None, None)
+    // if data[0] == 0 and spec != Encoding.BECH32 or data[0] != 0 and spec != Encoding.BECH32M:
+    //     return (None, None)
+    // return (data[0], decoded)
 }
