@@ -31,31 +31,22 @@ library Bech32m {
         InputIsTooLong,
         NotBech32Character,
         HRPIsEmpty,
-        NoDelimiter
-
-        // // decoded HRP is different from expected HRP
-        // HRPMismatch
-
-        // // witness program should be at least 2 bytes
-        // WitnessProgramTooSmall
-
-        // // witness program should be maximum 40 bytes
-        // WitnessProgramTooLarge
-
-        // // segwit version should be from 0 to 16 (including). Got some larger number.
-        // SegwitVersionTooLarge
-
-        // // Length of segwit v0 program should be either 20 or 32 bytes. 20 for PWKH, 32 for P2WSH
-        // IncorrectSegwitV0Program
-
-        // // Segwit v0 should be encoded using Bech32
-        // IncorrectEncodingForSegwitV0
-
-        // // Segwit with versions 1-16 should be encoded with Bech32m
-        // IncorrectEncodingForSegwitVn
+        NoDelimiter,
+        // decoded HRP is different from expected HRP
+        HRPMismatch,
+        // witness program should be at least 2 bytes
+        WitnessProgramTooSmall,
+        // witness program should be maximum 40 bytes
+        WitnessProgramTooLarge,
+        // segwit version should be from 0 to 16 (including). Got some larger number.
+        SegwitVersionTooLarge,
+        // Length of segwit v0 program should be either 20 or 32 bytes. 20 for PWKH, 32 for P2WSH
+        IncorrectSegwitV0Program,
+        // Segwit v0 should be encoded using Bech32
+        IncorrectEncodingForSegwitV0,
+        // Segwit with versions 1-16 should be encoded with Bech32m
+        IncorrectEncodingForSegwitVn
     }
-
-
 
     // TODO(mkl): implement ExplainDecodeError(DecodeError err) -> string
 
@@ -561,20 +552,32 @@ library Bech32m {
 
     function bech32Decode(
         bytes memory bech
-    )
-        public
-        returns (bytes memory, bytes memory, BechEncoding, DecodeError)
-    {   
+    ) public returns (bytes memory, bytes memory, BechEncoding, DecodeError) {
         if (bech.length > 90) {
-            return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.InputIsTooLong);
+            return (
+                new bytes(0),
+                new bytes(0),
+                BechEncoding.UNKNOWN,
+                DecodeError.InputIsTooLong
+            );
         }
 
         if (!isValidCharacterRange(bech)) {
-            return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.CharacterOutOfRange);
+            return (
+                new bytes(0),
+                new bytes(0),
+                BechEncoding.UNKNOWN,
+                DecodeError.CharacterOutOfRange
+            );
         }
 
         if (isMixedCase(bech)) {
-            return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.MixedCase);
+            return (
+                new bytes(0),
+                new bytes(0),
+                BechEncoding.UNKNOWN,
+                DecodeError.MixedCase
+            );
         }
 
         bytes memory bechLow = toLower(bech);
@@ -582,7 +585,12 @@ library Bech32m {
         while (true) {
             delimiterPos -= 1;
             if (delimiterPos < 0) {
-                return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.NoDelimiter);
+                return (
+                    new bytes(0),
+                    new bytes(0),
+                    BechEncoding.UNKNOWN,
+                    DecodeError.NoDelimiter
+                );
             }
             // 0x31 is '1'
             if (bechLow[uint256(delimiterPos)] == 0x31) {
@@ -590,10 +598,20 @@ library Bech32m {
             }
         }
         if (delimiterPos < 1) {
-            return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.HRPIsEmpty);
+            return (
+                new bytes(0),
+                new bytes(0),
+                BechEncoding.UNKNOWN,
+                DecodeError.HRPIsEmpty
+            );
         }
         if (delimiterPos + 7 > int(bechLow.length)) {
-            return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.TooShortChecksum);
+            return (
+                new bytes(0),
+                new bytes(0),
+                BechEncoding.UNKNOWN,
+                DecodeError.TooShortChecksum
+            );
         }
 
         bytes memory hrp = new bytes(uint(delimiterPos));
@@ -612,7 +630,12 @@ library Bech32m {
 
         BechEncoding spec = verifyChecksum(hrp, dataAll5Bit);
         if (spec == BechEncoding.UNKNOWN) {
-            return (new bytes(0), new bytes(0), BechEncoding.UNKNOWN, DecodeError.IncorrectChecksum);
+            return (
+                new bytes(0),
+                new bytes(0),
+                BechEncoding.UNKNOWN,
+                DecodeError.IncorrectChecksum
+            );
         }
 
         bytes memory data5Bit = new bytes(dataAll5Bit.length - 6);
@@ -623,7 +646,10 @@ library Bech32m {
         return (hrp, data5Bit, spec, DecodeError.NoError);
     }
 
-    function areBytesEqual(bytes memory a, bytes memory b) public pure returns (bool) {
+    function areBytesEqual(
+        bytes memory a,
+        bytes memory b
+    ) public pure returns (bool) {
         if (a.length != b.length) {
             return false;
         }
@@ -650,4 +676,64 @@ library Bech32m {
     // if data[0] == 0 and spec != Encoding.BECH32 or data[0] != 0 and spec != Encoding.BECH32M:
     //     return (None, None)
     // return (data[0], decoded)
+    // returns witVer, witProg, err
+    function decodeSegwitAddress(
+        bytes memory expectedHrp,
+        bytes memory addr
+    ) public returns (uint8, bytes memory, DecodeError) {
+        (
+            bytes memory hrpGot,
+            bytes memory data5Bit,
+            BechEncoding spec,
+            DecodeError err
+        ) = bech32Decode(addr);
+        if (err != DecodeError.NoError) {
+            return (0, new bytes(0), err);
+        }
+
+        if (!areBytesEqual(expectedHrp, hrpGot)) {
+            return (0, new bytes(0), DecodeError.HRPMismatch);
+        }
+
+        if (uint8(data5Bit[0]) > 16) {
+            return (0, new bytes(0), DecodeError.SegwitVersionTooLarge);
+        }
+
+        bytes memory data5BitNoVer = new bytes(data5Bit.length - 1);
+        for (uint i = 0; i < data5BitNoVer.length; i += 1) {
+            data5BitNoVer[i] = data5Bit[i + 1];
+        }
+
+        bytes memory data8Bit;
+        (data8Bit, err) = convert5to8(data5BitNoVer);
+        if (err != DecodeError.NoError) {
+            return (0, new bytes(0), err);
+        }
+
+        if (data8Bit.length < 2) {
+            return (0, new bytes(0), DecodeError.WitnessProgramTooSmall);
+        }
+
+        if (data8Bit.length > 40) {
+            return (0, new bytes(0), DecodeError.WitnessProgramTooLarge);
+        }
+
+        if (
+            uint8(data5Bit[0]) == 0 &&
+            data8Bit.length != 20 &&
+            data8Bit.length != 32
+        ) {
+            return (0, new bytes(0), DecodeError.IncorrectSegwitV0Program);
+        }
+
+        if (uint8(data5Bit[0]) == 0 && spec != BechEncoding.BECH32) {
+            return (0, new bytes(0), DecodeError.IncorrectEncodingForSegwitV0);
+        }
+
+        if (uint8(data5Bit[0]) != 0 && spec != BechEncoding.BECH32M) {
+            return (0, new bytes(0), DecodeError.IncorrectEncodingForSegwitVn);
+        }
+
+        return (uint8(data5Bit[0]), data8Bit, DecodeError.NoError);
+    }
 }
