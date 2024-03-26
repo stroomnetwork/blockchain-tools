@@ -2551,4 +2551,329 @@ contract Bech32Test is Test {
             unicode"error code is incorrect after parsing invalid bech32m: '1p2gdwpf'"
         );
     }
+
+    function testValidAddressDecodeEncode() public {
+        // tests from reference python implementation VALID_ADDRESS
+        // this tests was generated automatically by gen_ref_data_spec_valid_address.py
+
+        // BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4
+        bytes memory hrp0 = bytes("bc");
+        bytes memory address0 = bytes(
+            "BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4"
+        );
+        bytes memory addressLowerExpected0 = bytes(
+            "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4"
+        );
+        uint8 expectedWitver0 = 0;
+        bytes
+            memory expectedWitprog0 = hex"751e76e8199196d454941c45d1b3a323f1433bd6";
+        (
+            uint8 actualWitver0,
+            bytes memory actualWitprog0,
+            Bech32m.DecodeError err0
+        ) = Bech32m.decodeSegwitAddress(hrp0, address0);
+        assertEq(
+            expectedWitver0,
+            actualWitver0,
+            "incorrect witver after decoding address: 'BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4'"
+        );
+        assertEq(
+            expectedWitprog0,
+            actualWitprog0,
+            "incorrect witprog after decoding address: 'BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4'"
+        );
+        assertTrue(
+            err0 == Bech32m.DecodeError.NoError,
+            "unexpected error decoding address: 'BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4'"
+        );
+        bytes memory addrEncodedActual0 = Bech32m.encodeSegwitAddress(
+            hrp0,
+            actualWitver0,
+            actualWitprog0
+        );
+        assertEq(
+            addressLowerExpected0,
+            addrEncodedActual0,
+            "incorrect address after decoding and then encoding address: 'BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4'"
+        );
+
+        // tb1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3q0sl5k7
+        bytes memory hrp1 = bytes("tb");
+        bytes memory address1 = bytes(
+            "tb1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3q0sl5k7"
+        );
+        bytes memory addressLowerExpected1 = bytes(
+            "tb1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3q0sl5k7"
+        );
+        uint8 expectedWitver1 = 0;
+        bytes
+            memory expectedWitprog1 = hex"1863143c14c5166804bd19203356da136c985678cd4d27a1b8c6329604903262";
+        (
+            uint8 actualWitver1,
+            bytes memory actualWitprog1,
+            Bech32m.DecodeError err1
+        ) = Bech32m.decodeSegwitAddress(hrp1, address1);
+        assertEq(
+            expectedWitver1,
+            actualWitver1,
+            "incorrect witver after decoding address: 'tb1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3q0sl5k7'"
+        );
+        assertEq(
+            expectedWitprog1,
+            actualWitprog1,
+            "incorrect witprog after decoding address: 'tb1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3q0sl5k7'"
+        );
+        assertTrue(
+            err1 == Bech32m.DecodeError.NoError,
+            "unexpected error decoding address: 'tb1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3q0sl5k7'"
+        );
+        bytes memory addrEncodedActual1 = Bech32m.encodeSegwitAddress(
+            hrp1,
+            actualWitver1,
+            actualWitprog1
+        );
+        assertEq(
+            addressLowerExpected1,
+            addrEncodedActual1,
+            "incorrect address after decoding and then encoding address: 'tb1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3q0sl5k7'"
+        );
+
+        // bc1pw508d6qejxtdg4y5r3zarvary0c5xw7kw508d6qejxtdg4y5r3zarvary0c5xw7kt5nd6y
+        bytes memory hrp2 = bytes("bc");
+        bytes memory address2 = bytes(
+            "bc1pw508d6qejxtdg4y5r3zarvary0c5xw7kw508d6qejxtdg4y5r3zarvary0c5xw7kt5nd6y"
+        );
+        bytes memory addressLowerExpected2 = bytes(
+            "bc1pw508d6qejxtdg4y5r3zarvary0c5xw7kw508d6qejxtdg4y5r3zarvary0c5xw7kt5nd6y"
+        );
+        uint8 expectedWitver2 = 1;
+        bytes
+            memory expectedWitprog2 = hex"751e76e8199196d454941c45d1b3a323f1433bd6751e76e8199196d454941c45d1b3a323f1433bd6";
+        (
+            uint8 actualWitver2,
+            bytes memory actualWitprog2,
+            Bech32m.DecodeError err2
+        ) = Bech32m.decodeSegwitAddress(hrp2, address2);
+        assertEq(
+            expectedWitver2,
+            actualWitver2,
+            "incorrect witver after decoding address: 'bc1pw508d6qejxtdg4y5r3zarvary0c5xw7kw508d6qejxtdg4y5r3zarvary0c5xw7kt5nd6y'"
+        );
+        assertEq(
+            expectedWitprog2,
+            actualWitprog2,
+            "incorrect witprog after decoding address: 'bc1pw508d6qejxtdg4y5r3zarvary0c5xw7kw508d6qejxtdg4y5r3zarvary0c5xw7kt5nd6y'"
+        );
+        assertTrue(
+            err2 == Bech32m.DecodeError.NoError,
+            "unexpected error decoding address: 'bc1pw508d6qejxtdg4y5r3zarvary0c5xw7kw508d6qejxtdg4y5r3zarvary0c5xw7kt5nd6y'"
+        );
+        bytes memory addrEncodedActual2 = Bech32m.encodeSegwitAddress(
+            hrp2,
+            actualWitver2,
+            actualWitprog2
+        );
+        assertEq(
+            addressLowerExpected2,
+            addrEncodedActual2,
+            "incorrect address after decoding and then encoding address: 'bc1pw508d6qejxtdg4y5r3zarvary0c5xw7kw508d6qejxtdg4y5r3zarvary0c5xw7kt5nd6y'"
+        );
+
+        // BC1SW50QGDZ25J
+        bytes memory hrp3 = bytes("bc");
+        bytes memory address3 = bytes("BC1SW50QGDZ25J");
+        bytes memory addressLowerExpected3 = bytes("bc1sw50qgdz25j");
+        uint8 expectedWitver3 = 16;
+        bytes memory expectedWitprog3 = hex"751e";
+        (
+            uint8 actualWitver3,
+            bytes memory actualWitprog3,
+            Bech32m.DecodeError err3
+        ) = Bech32m.decodeSegwitAddress(hrp3, address3);
+        assertEq(
+            expectedWitver3,
+            actualWitver3,
+            "incorrect witver after decoding address: 'BC1SW50QGDZ25J'"
+        );
+        assertEq(
+            expectedWitprog3,
+            actualWitprog3,
+            "incorrect witprog after decoding address: 'BC1SW50QGDZ25J'"
+        );
+        assertTrue(
+            err3 == Bech32m.DecodeError.NoError,
+            "unexpected error decoding address: 'BC1SW50QGDZ25J'"
+        );
+        bytes memory addrEncodedActual3 = Bech32m.encodeSegwitAddress(
+            hrp3,
+            actualWitver3,
+            actualWitprog3
+        );
+        assertEq(
+            addressLowerExpected3,
+            addrEncodedActual3,
+            "incorrect address after decoding and then encoding address: 'BC1SW50QGDZ25J'"
+        );
+
+        // bc1zw508d6qejxtdg4y5r3zarvaryvaxxpcs
+        bytes memory hrp4 = bytes("bc");
+        bytes memory address4 = bytes("bc1zw508d6qejxtdg4y5r3zarvaryvaxxpcs");
+        bytes memory addressLowerExpected4 = bytes(
+            "bc1zw508d6qejxtdg4y5r3zarvaryvaxxpcs"
+        );
+        uint8 expectedWitver4 = 2;
+        bytes memory expectedWitprog4 = hex"751e76e8199196d454941c45d1b3a323";
+        (
+            uint8 actualWitver4,
+            bytes memory actualWitprog4,
+            Bech32m.DecodeError err4
+        ) = Bech32m.decodeSegwitAddress(hrp4, address4);
+        assertEq(
+            expectedWitver4,
+            actualWitver4,
+            "incorrect witver after decoding address: 'bc1zw508d6qejxtdg4y5r3zarvaryvaxxpcs'"
+        );
+        assertEq(
+            expectedWitprog4,
+            actualWitprog4,
+            "incorrect witprog after decoding address: 'bc1zw508d6qejxtdg4y5r3zarvaryvaxxpcs'"
+        );
+        assertTrue(
+            err4 == Bech32m.DecodeError.NoError,
+            "unexpected error decoding address: 'bc1zw508d6qejxtdg4y5r3zarvaryvaxxpcs'"
+        );
+        bytes memory addrEncodedActual4 = Bech32m.encodeSegwitAddress(
+            hrp4,
+            actualWitver4,
+            actualWitprog4
+        );
+        assertEq(
+            addressLowerExpected4,
+            addrEncodedActual4,
+            "incorrect address after decoding and then encoding address: 'bc1zw508d6qejxtdg4y5r3zarvaryvaxxpcs'"
+        );
+
+        // tb1qqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesrxh6hy
+        bytes memory hrp5 = bytes("tb");
+        bytes memory address5 = bytes(
+            "tb1qqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesrxh6hy"
+        );
+        bytes memory addressLowerExpected5 = bytes(
+            "tb1qqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesrxh6hy"
+        );
+        uint8 expectedWitver5 = 0;
+        bytes
+            memory expectedWitprog5 = hex"000000c4a5cad46221b2a187905e5266362b99d5e91c6ce24d165dab93e86433";
+        (
+            uint8 actualWitver5,
+            bytes memory actualWitprog5,
+            Bech32m.DecodeError err5
+        ) = Bech32m.decodeSegwitAddress(hrp5, address5);
+        assertEq(
+            expectedWitver5,
+            actualWitver5,
+            "incorrect witver after decoding address: 'tb1qqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesrxh6hy'"
+        );
+        assertEq(
+            expectedWitprog5,
+            actualWitprog5,
+            "incorrect witprog after decoding address: 'tb1qqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesrxh6hy'"
+        );
+        assertTrue(
+            err5 == Bech32m.DecodeError.NoError,
+            "unexpected error decoding address: 'tb1qqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesrxh6hy'"
+        );
+        bytes memory addrEncodedActual5 = Bech32m.encodeSegwitAddress(
+            hrp5,
+            actualWitver5,
+            actualWitprog5
+        );
+        assertEq(
+            addressLowerExpected5,
+            addrEncodedActual5,
+            "incorrect address after decoding and then encoding address: 'tb1qqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesrxh6hy'"
+        );
+
+        // tb1pqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesf3hn0c
+        bytes memory hrp6 = bytes("tb");
+        bytes memory address6 = bytes(
+            "tb1pqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesf3hn0c"
+        );
+        bytes memory addressLowerExpected6 = bytes(
+            "tb1pqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesf3hn0c"
+        );
+        uint8 expectedWitver6 = 1;
+        bytes
+            memory expectedWitprog6 = hex"000000c4a5cad46221b2a187905e5266362b99d5e91c6ce24d165dab93e86433";
+        (
+            uint8 actualWitver6,
+            bytes memory actualWitprog6,
+            Bech32m.DecodeError err6
+        ) = Bech32m.decodeSegwitAddress(hrp6, address6);
+        assertEq(
+            expectedWitver6,
+            actualWitver6,
+            "incorrect witver after decoding address: 'tb1pqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesf3hn0c'"
+        );
+        assertEq(
+            expectedWitprog6,
+            actualWitprog6,
+            "incorrect witprog after decoding address: 'tb1pqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesf3hn0c'"
+        );
+        assertTrue(
+            err6 == Bech32m.DecodeError.NoError,
+            "unexpected error decoding address: 'tb1pqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesf3hn0c'"
+        );
+        bytes memory addrEncodedActual6 = Bech32m.encodeSegwitAddress(
+            hrp6,
+            actualWitver6,
+            actualWitprog6
+        );
+        assertEq(
+            addressLowerExpected6,
+            addrEncodedActual6,
+            "incorrect address after decoding and then encoding address: 'tb1pqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesf3hn0c'"
+        );
+
+        // bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0
+        bytes memory hrp7 = bytes("bc");
+        bytes memory address7 = bytes(
+            "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0"
+        );
+        bytes memory addressLowerExpected7 = bytes(
+            "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0"
+        );
+        uint8 expectedWitver7 = 1;
+        bytes
+            memory expectedWitprog7 = hex"79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798";
+        (
+            uint8 actualWitver7,
+            bytes memory actualWitprog7,
+            Bech32m.DecodeError err7
+        ) = Bech32m.decodeSegwitAddress(hrp7, address7);
+        assertEq(
+            expectedWitver7,
+            actualWitver7,
+            "incorrect witver after decoding address: 'bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0'"
+        );
+        assertEq(
+            expectedWitprog7,
+            actualWitprog7,
+            "incorrect witprog after decoding address: 'bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0'"
+        );
+        assertTrue(
+            err7 == Bech32m.DecodeError.NoError,
+            "unexpected error decoding address: 'bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0'"
+        );
+        bytes memory addrEncodedActual7 = Bech32m.encodeSegwitAddress(
+            hrp7,
+            actualWitver7,
+            actualWitprog7
+        );
+        assertEq(
+            addressLowerExpected7,
+            addrEncodedActual7,
+            "incorrect address after decoding and then encoding address: 'bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0'"
+        );
+    }
 }
