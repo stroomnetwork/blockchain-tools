@@ -34,6 +34,7 @@ library Bech32m {
         NoDelimiter,
         // decoded HRP is different from expected HRP
         HRPMismatch,
+        EmptyData,
         // witness program should be at least 2 bytes
         WitnessProgramTooSmall,
         // witness program should be maximum 40 bytes
@@ -693,6 +694,10 @@ library Bech32m {
 
         if (!areBytesEqual(expectedHrp, hrpGot)) {
             return (0, new bytes(0), DecodeError.HRPMismatch);
+        }
+
+        if (data5Bit.length == 0) {
+            return (0, new bytes(0), DecodeError.EmptyData);
         }
 
         if (uint8(data5Bit[0]) > 16) {
