@@ -1558,4 +1558,133 @@ contract Bech32Test is Test {
         assertTrue(encodingExpected6 == encodingActual6);
         assertTrue(errExpected6 == errActual6);
     }
+
+    function testBech32DecodeSpecBech32m() public {
+        // A1LQFN3A
+        bytes memory bech0 = hex"41314c51464e3341";
+        bytes memory hrpExpected0 = hex"61";
+        bytes memory data5bitExpected0 = hex"";
+        Bech32m.BechEncoding encodingExpected0 = Bech32m.BechEncoding.BECH32M;
+        Bech32m.DecodeError errExpected0 = Bech32m.DecodeError.NoError;
+        (
+            bytes memory hrpActual0,
+            bytes memory data5bitActual0,
+            Bech32m.BechEncoding encodingActual0,
+            Bech32m.DecodeError errActual0
+        ) = Bech32m.bech32Decode(bech0);
+        assertEq(hrpExpected0, hrpActual0);
+        assertEq(data5bitExpected0, data5bitActual0);
+        assertTrue(encodingExpected0 == encodingActual0);
+        assertTrue(errExpected0 == errActual0);
+
+        // a1lqfn3a
+        bytes memory bech1 = hex"61316c71666e3361";
+        bytes memory hrpExpected1 = hex"61";
+        bytes memory data5bitExpected1 = hex"";
+        Bech32m.BechEncoding encodingExpected1 = Bech32m.BechEncoding.BECH32M;
+        Bech32m.DecodeError errExpected1 = Bech32m.DecodeError.NoError;
+        (
+            bytes memory hrpActual1,
+            bytes memory data5bitActual1,
+            Bech32m.BechEncoding encodingActual1,
+            Bech32m.DecodeError errActual1
+        ) = Bech32m.bech32Decode(bech1);
+        assertEq(hrpExpected1, hrpActual1);
+        assertEq(data5bitExpected1, data5bitActual1);
+        assertTrue(encodingExpected1 == encodingActual1);
+        assertTrue(errExpected1 == errActual1);
+
+        // an83characterlonghumanreadablepartthatcontainsthetheexcludedcharactersbioandnumber11sg7hg6
+        bytes
+            memory bech2 = hex"616e38336368617261637465726c6f6e6768756d616e7265616461626c657061727474686174636f6e7461696e737468657468656578636c756465646368617261637465727362696f616e646e756d6265723131736737686736";
+        bytes
+            memory hrpExpected2 = hex"616e38336368617261637465726c6f6e6768756d616e7265616461626c657061727474686174636f6e7461696e737468657468656578636c756465646368617261637465727362696f616e646e756d62657231";
+        bytes memory data5bitExpected2 = hex"";
+        Bech32m.BechEncoding encodingExpected2 = Bech32m.BechEncoding.BECH32M;
+        Bech32m.DecodeError errExpected2 = Bech32m.DecodeError.NoError;
+        (
+            bytes memory hrpActual2,
+            bytes memory data5bitActual2,
+            Bech32m.BechEncoding encodingActual2,
+            Bech32m.DecodeError errActual2
+        ) = Bech32m.bech32Decode(bech2);
+        assertEq(hrpExpected2, hrpActual2);
+        assertEq(data5bitExpected2, data5bitActual2);
+        assertTrue(encodingExpected2 == encodingActual2);
+        assertTrue(errExpected2 == errActual2);
+
+        // abcdef1l7aum6echk45nj3s0wdvt2fg8x9yrzpqzd3ryx
+        bytes
+            memory bech3 = hex"616263646566316c3761756d366563686b34356e6a3373307764767432666738783979727a70717a6433727978";
+        bytes memory hrpExpected3 = hex"616263646566";
+        bytes
+            memory data5bitExpected3 = hex"1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100";
+        Bech32m.BechEncoding encodingExpected3 = Bech32m.BechEncoding.BECH32M;
+        Bech32m.DecodeError errExpected3 = Bech32m.DecodeError.NoError;
+        (
+            bytes memory hrpActual3,
+            bytes memory data5bitActual3,
+            Bech32m.BechEncoding encodingActual3,
+            Bech32m.DecodeError errActual3
+        ) = Bech32m.bech32Decode(bech3);
+        assertEq(hrpExpected3, hrpActual3);
+        assertEq(data5bitExpected3, data5bitActual3);
+        assertTrue(encodingExpected3 == encodingActual3);
+        assertTrue(errExpected3 == errActual3);
+
+        // 11llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllludsr8
+        bytes
+            memory bech4 = hex"31316c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c7564737238";
+        bytes memory hrpExpected4 = hex"31";
+        bytes
+            memory data5bitExpected4 = hex"1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f";
+        Bech32m.BechEncoding encodingExpected4 = Bech32m.BechEncoding.BECH32M;
+        Bech32m.DecodeError errExpected4 = Bech32m.DecodeError.NoError;
+        (
+            bytes memory hrpActual4,
+            bytes memory data5bitActual4,
+            Bech32m.BechEncoding encodingActual4,
+            Bech32m.DecodeError errActual4
+        ) = Bech32m.bech32Decode(bech4);
+        assertEq(hrpExpected4, hrpActual4);
+        assertEq(data5bitExpected4, data5bitActual4);
+        assertTrue(encodingExpected4 == encodingActual4);
+        assertTrue(errExpected4 == errActual4);
+
+        // split1checkupstagehandshakeupstreamerranterredcaperredlc445v
+        bytes
+            memory bech5 = hex"73706c697431636865636b7570737461676568616e647368616b65757073747265616d657272616e74657272656463617065727265646c6334343576";
+        bytes memory hrpExpected5 = hex"73706c6974";
+        bytes
+            memory data5bitExpected5 = hex"18171918161c01100b1d0819171d130d10171d16191c01100b03191d1b1903031d130b190303190d181d01190303190d";
+        Bech32m.BechEncoding encodingExpected5 = Bech32m.BechEncoding.BECH32M;
+        Bech32m.DecodeError errExpected5 = Bech32m.DecodeError.NoError;
+        (
+            bytes memory hrpActual5,
+            bytes memory data5bitActual5,
+            Bech32m.BechEncoding encodingActual5,
+            Bech32m.DecodeError errActual5
+        ) = Bech32m.bech32Decode(bech5);
+        assertEq(hrpExpected5, hrpActual5);
+        assertEq(data5bitExpected5, data5bitActual5);
+        assertTrue(encodingExpected5 == encodingActual5);
+        assertTrue(errExpected5 == errActual5);
+
+        // ?1v759aa
+        bytes memory bech6 = hex"3f31763735396161";
+        bytes memory hrpExpected6 = hex"3f";
+        bytes memory data5bitExpected6 = hex"";
+        Bech32m.BechEncoding encodingExpected6 = Bech32m.BechEncoding.BECH32M;
+        Bech32m.DecodeError errExpected6 = Bech32m.DecodeError.NoError;
+        (
+            bytes memory hrpActual6,
+            bytes memory data5bitActual6,
+            Bech32m.BechEncoding encodingActual6,
+            Bech32m.DecodeError errActual6
+        ) = Bech32m.bech32Decode(bech6);
+        assertEq(hrpExpected6, hrpActual6);
+        assertEq(data5bitExpected6, data5bitActual6);
+        assertTrue(encodingExpected6 == encodingActual6);
+        assertTrue(errExpected6 == errActual6);
+    }
 }
