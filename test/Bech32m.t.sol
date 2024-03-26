@@ -2092,4 +2092,463 @@ contract Bech32Test is Test {
             unicode"error code is incorrect after parsing invalid bech32: '1qzzfhee'"
         );
     }
+
+    function testBech32DecodeSpecInvalidBech32m() public {
+        // tests from reference python implementation INVALID_BECH32M
+        // TODO(mkl): install reference to BIP
+        // mostly generated automatically by gen_ref_data_spec_invalid_bech32m.py
+        // error codes and comments are added manually from comments in test.py and manual analysis
+        // fixed some unicode bugs
+
+        // ' 1xj0phk'
+        bytes memory bech0 = hex"2031786a3070686b";
+        bytes memory hrpExpected0 = hex"";
+        bytes memory data5bitExpected0 = hex"";
+        Bech32m.BechEncoding encodingExpected0 = Bech32m.BechEncoding.UNKNOWN;
+        Bech32m.DecodeError errExpected0 = Bech32m
+            .DecodeError
+            .CharacterOutOfRange;
+        (
+            bytes memory hrpActual0,
+            bytes memory data5bitActual0,
+            Bech32m.BechEncoding encodingActual0,
+            Bech32m.DecodeError errActual0
+        ) = Bech32m.bech32Decode(bech0);
+        assertEq(
+            hrpExpected0,
+            hrpActual0,
+            unicode"hrp is incorrect after parsing invalid bech32m: ' 1xj0phk'"
+        );
+        assertEq(
+            data5bitExpected0,
+            data5bitActual0,
+            unicode"data5bit is incorrect after parsing invalid bech32m: ' 1xj0phk'"
+        );
+        assertTrue(
+            encodingExpected0 == encodingActual0,
+            unicode"encoding is incorrect after parsing invalid bech32m: ' 1xj0phk'"
+        );
+        assertTrue(
+            errExpected0 == errActual0,
+            unicode"error code is incorrect after parsing invalid bech32m: ' 1xj0phk'"
+        );
+
+        // '\x7f1g6xzxy'
+        bytes memory bech1 = hex"7f316736787a7879";
+        bytes memory hrpExpected1 = hex"";
+        bytes memory data5bitExpected1 = hex"";
+        Bech32m.BechEncoding encodingExpected1 = Bech32m.BechEncoding.UNKNOWN;
+        Bech32m.DecodeError errExpected1 = Bech32m
+            .DecodeError
+            .CharacterOutOfRange;
+        (
+            bytes memory hrpActual1,
+            bytes memory data5bitActual1,
+            Bech32m.BechEncoding encodingActual1,
+            Bech32m.DecodeError errActual1
+        ) = Bech32m.bech32Decode(bech1);
+        assertEq(
+            hrpExpected1,
+            hrpActual1,
+            unicode"hrp is incorrect after parsing invalid bech32m: '\x7f1g6xzxy'"
+        );
+        assertEq(
+            data5bitExpected1,
+            data5bitActual1,
+            unicode"data5bit is incorrect after parsing invalid bech32m: '\x7f1g6xzxy'"
+        );
+        assertTrue(
+            encodingExpected1 == encodingActual1,
+            unicode"encoding is incorrect after parsing invalid bech32m: '\x7f1g6xzxy'"
+        );
+        assertTrue(
+            errExpected1 == errActual1,
+            unicode"error code is incorrect after parsing invalid bech32m: '\x7f1g6xzxy'"
+        );
+
+        // '\x801vctc34'
+        bytes memory bech2 = hex"c28031766374633334";
+        bytes memory hrpExpected2 = hex"";
+        bytes memory data5bitExpected2 = hex"";
+        Bech32m.BechEncoding encodingExpected2 = Bech32m.BechEncoding.UNKNOWN;
+        Bech32m.DecodeError errExpected2 = Bech32m
+            .DecodeError
+            .CharacterOutOfRange;
+        (
+            bytes memory hrpActual2,
+            bytes memory data5bitActual2,
+            Bech32m.BechEncoding encodingActual2,
+            Bech32m.DecodeError errActual2
+        ) = Bech32m.bech32Decode(bech2);
+        assertEq(
+            hrpExpected2,
+            hrpActual2,
+            unicode"hrp is incorrect after parsing invalid bech32m: '\\x801vctc34'"
+        );
+        assertEq(
+            data5bitExpected2,
+            data5bitActual2,
+            unicode"data5bit is incorrect after parsing invalid bech32m: '\\x801vctc34'"
+        );
+        assertTrue(
+            encodingExpected2 == encodingActual2,
+            unicode"encoding is incorrect after parsing invalid bech32m: '\\x801vctc34'"
+        );
+        assertTrue(
+            errExpected2 == errActual2,
+            unicode"error code is incorrect after parsing invalid bech32m: '\\x801vctc34'"
+        );
+
+        // 'an84characterslonghumanreadablepartthatcontainsthetheexcludedcharactersbioandnumber11d6pts4'
+        bytes
+            memory bech3 = hex"616e3834636861726163746572736c6f6e6768756d616e7265616461626c657061727474686174636f6e7461696e737468657468656578636c756465646368617261637465727362696f616e646e756d6265723131643670747334";
+        bytes memory hrpExpected3 = hex"";
+        bytes memory data5bitExpected3 = hex"";
+        Bech32m.BechEncoding encodingExpected3 = Bech32m.BechEncoding.UNKNOWN;
+        Bech32m.DecodeError errExpected3 = Bech32m.DecodeError.InputIsTooLong;
+        (
+            bytes memory hrpActual3,
+            bytes memory data5bitActual3,
+            Bech32m.BechEncoding encodingActual3,
+            Bech32m.DecodeError errActual3
+        ) = Bech32m.bech32Decode(bech3);
+        assertEq(
+            hrpExpected3,
+            hrpActual3,
+            unicode"hrp is incorrect after parsing invalid bech32m: 'an84characterslonghumanreadablepartthatcontainsthetheexcludedcharactersbioandnumber11d6pts4'"
+        );
+        assertEq(
+            data5bitExpected3,
+            data5bitActual3,
+            unicode"data5bit is incorrect after parsing invalid bech32m: 'an84characterslonghumanreadablepartthatcontainsthetheexcludedcharactersbioandnumber11d6pts4'"
+        );
+        assertTrue(
+            encodingExpected3 == encodingActual3,
+            unicode"encoding is incorrect after parsing invalid bech32m: 'an84characterslonghumanreadablepartthatcontainsthetheexcludedcharactersbioandnumber11d6pts4'"
+        );
+        assertTrue(
+            errExpected3 == errActual3,
+            unicode"error code is incorrect after parsing invalid bech32m: 'an84characterslonghumanreadablepartthatcontainsthetheexcludedcharactersbioandnumber11d6pts4'"
+        );
+
+        // 'qyrz8wqd2c9m'
+        bytes memory bech4 = hex"7179727a387771643263396d";
+        bytes memory hrpExpected4 = hex"";
+        bytes memory data5bitExpected4 = hex"";
+        Bech32m.BechEncoding encodingExpected4 = Bech32m.BechEncoding.UNKNOWN;
+        Bech32m.DecodeError errExpected4 = Bech32m.DecodeError.NoDelimiter;
+        (
+            bytes memory hrpActual4,
+            bytes memory data5bitActual4,
+            Bech32m.BechEncoding encodingActual4,
+            Bech32m.DecodeError errActual4
+        ) = Bech32m.bech32Decode(bech4);
+        assertEq(
+            hrpExpected4,
+            hrpActual4,
+            unicode"hrp is incorrect after parsing invalid bech32m: 'qyrz8wqd2c9m'"
+        );
+        assertEq(
+            data5bitExpected4,
+            data5bitActual4,
+            unicode"data5bit is incorrect after parsing invalid bech32m: 'qyrz8wqd2c9m'"
+        );
+        assertTrue(
+            encodingExpected4 == encodingActual4,
+            unicode"encoding is incorrect after parsing invalid bech32m: 'qyrz8wqd2c9m'"
+        );
+        assertTrue(
+            errExpected4 == errActual4,
+            unicode"error code is incorrect after parsing invalid bech32m: 'qyrz8wqd2c9m'"
+        );
+
+        // '1qyrz8wqd2c9m'
+        bytes memory bech5 = hex"317179727a387771643263396d";
+        bytes memory hrpExpected5 = hex"";
+        bytes memory data5bitExpected5 = hex"";
+        Bech32m.BechEncoding encodingExpected5 = Bech32m.BechEncoding.UNKNOWN;
+        Bech32m.DecodeError errExpected5 = Bech32m.DecodeError.HRPIsEmpty;
+        (
+            bytes memory hrpActual5,
+            bytes memory data5bitActual5,
+            Bech32m.BechEncoding encodingActual5,
+            Bech32m.DecodeError errActual5
+        ) = Bech32m.bech32Decode(bech5);
+        assertEq(
+            hrpExpected5,
+            hrpActual5,
+            unicode"hrp is incorrect after parsing invalid bech32m: '1qyrz8wqd2c9m'"
+        );
+        assertEq(
+            data5bitExpected5,
+            data5bitActual5,
+            unicode"data5bit is incorrect after parsing invalid bech32m: '1qyrz8wqd2c9m'"
+        );
+        assertTrue(
+            encodingExpected5 == encodingActual5,
+            unicode"encoding is incorrect after parsing invalid bech32m: '1qyrz8wqd2c9m'"
+        );
+        assertTrue(
+            errExpected5 == errActual5,
+            unicode"error code is incorrect after parsing invalid bech32m: '1qyrz8wqd2c9m'"
+        );
+
+        // 'y1b0jsk6g'
+        bytes memory bech6 = hex"793162306a736b3667";
+        bytes memory hrpExpected6 = hex"";
+        bytes memory data5bitExpected6 = hex"";
+        Bech32m.BechEncoding encodingExpected6 = Bech32m.BechEncoding.UNKNOWN;
+        Bech32m.DecodeError errExpected6 = Bech32m
+            .DecodeError
+            .NotBech32Character;
+        (
+            bytes memory hrpActual6,
+            bytes memory data5bitActual6,
+            Bech32m.BechEncoding encodingActual6,
+            Bech32m.DecodeError errActual6
+        ) = Bech32m.bech32Decode(bech6);
+        assertEq(
+            hrpExpected6,
+            hrpActual6,
+            unicode"hrp is incorrect after parsing invalid bech32m: 'y1b0jsk6g'"
+        );
+        assertEq(
+            data5bitExpected6,
+            data5bitActual6,
+            unicode"data5bit is incorrect after parsing invalid bech32m: 'y1b0jsk6g'"
+        );
+        assertTrue(
+            encodingExpected6 == encodingActual6,
+            unicode"encoding is incorrect after parsing invalid bech32m: 'y1b0jsk6g'"
+        );
+        assertTrue(
+            errExpected6 == errActual6,
+            unicode"error code is incorrect after parsing invalid bech32m: 'y1b0jsk6g'"
+        );
+
+        // 'lt1igcx5c0'
+        bytes memory bech7 = hex"6c743169676378356330";
+        bytes memory hrpExpected7 = hex"";
+        bytes memory data5bitExpected7 = hex"";
+        Bech32m.BechEncoding encodingExpected7 = Bech32m.BechEncoding.UNKNOWN;
+        Bech32m.DecodeError errExpected7 = Bech32m
+            .DecodeError
+            .NotBech32Character;
+        (
+            bytes memory hrpActual7,
+            bytes memory data5bitActual7,
+            Bech32m.BechEncoding encodingActual7,
+            Bech32m.DecodeError errActual7
+        ) = Bech32m.bech32Decode(bech7);
+        assertEq(
+            hrpExpected7,
+            hrpActual7,
+            unicode"hrp is incorrect after parsing invalid bech32m: 'lt1igcx5c0'"
+        );
+        assertEq(
+            data5bitExpected7,
+            data5bitActual7,
+            unicode"data5bit is incorrect after parsing invalid bech32m: 'lt1igcx5c0'"
+        );
+        assertTrue(
+            encodingExpected7 == encodingActual7,
+            unicode"encoding is incorrect after parsing invalid bech32m: 'lt1igcx5c0'"
+        );
+        assertTrue(
+            errExpected7 == errActual7,
+            unicode"error code is incorrect after parsing invalid bech32m: 'lt1igcx5c0'"
+        );
+
+        // 'in1muywd'
+        bytes memory bech8 = hex"696e316d75797764";
+        bytes memory hrpExpected8 = hex"";
+        bytes memory data5bitExpected8 = hex"";
+        Bech32m.BechEncoding encodingExpected8 = Bech32m.BechEncoding.UNKNOWN;
+        Bech32m.DecodeError errExpected8 = Bech32m.DecodeError.TooShortChecksum;
+        (
+            bytes memory hrpActual8,
+            bytes memory data5bitActual8,
+            Bech32m.BechEncoding encodingActual8,
+            Bech32m.DecodeError errActual8
+        ) = Bech32m.bech32Decode(bech8);
+        assertEq(
+            hrpExpected8,
+            hrpActual8,
+            unicode"hrp is incorrect after parsing invalid bech32m: 'in1muywd'"
+        );
+        assertEq(
+            data5bitExpected8,
+            data5bitActual8,
+            unicode"data5bit is incorrect after parsing invalid bech32m: 'in1muywd'"
+        );
+        assertTrue(
+            encodingExpected8 == encodingActual8,
+            unicode"encoding is incorrect after parsing invalid bech32m: 'in1muywd'"
+        );
+        assertTrue(
+            errExpected8 == errActual8,
+            unicode"error code is incorrect after parsing invalid bech32m: 'in1muywd'"
+        );
+
+        // 'mm1crxm3i'
+        bytes memory bech9 = hex"6d6d316372786d3369";
+        bytes memory hrpExpected9 = hex"";
+        bytes memory data5bitExpected9 = hex"";
+        Bech32m.BechEncoding encodingExpected9 = Bech32m.BechEncoding.UNKNOWN;
+        Bech32m.DecodeError errExpected9 = Bech32m
+            .DecodeError
+            .NotBech32Character;
+        (
+            bytes memory hrpActual9,
+            bytes memory data5bitActual9,
+            Bech32m.BechEncoding encodingActual9,
+            Bech32m.DecodeError errActual9
+        ) = Bech32m.bech32Decode(bech9);
+        assertEq(
+            hrpExpected9,
+            hrpActual9,
+            unicode"hrp is incorrect after parsing invalid bech32m: 'mm1crxm3i'"
+        );
+        assertEq(
+            data5bitExpected9,
+            data5bitActual9,
+            unicode"data5bit is incorrect after parsing invalid bech32m: 'mm1crxm3i'"
+        );
+        assertTrue(
+            encodingExpected9 == encodingActual9,
+            unicode"encoding is incorrect after parsing invalid bech32m: 'mm1crxm3i'"
+        );
+        assertTrue(
+            errExpected9 == errActual9,
+            unicode"error code is incorrect after parsing invalid bech32m: 'mm1crxm3i'"
+        );
+
+        // 'au1s5cgom'
+        bytes memory bech10 = hex"617531733563676f6d";
+        bytes memory hrpExpected10 = hex"";
+        bytes memory data5bitExpected10 = hex"";
+        Bech32m.BechEncoding encodingExpected10 = Bech32m.BechEncoding.UNKNOWN;
+        Bech32m.DecodeError errExpected10 = Bech32m
+            .DecodeError
+            .NotBech32Character;
+        (
+            bytes memory hrpActual10,
+            bytes memory data5bitActual10,
+            Bech32m.BechEncoding encodingActual10,
+            Bech32m.DecodeError errActual10
+        ) = Bech32m.bech32Decode(bech10);
+        assertEq(
+            hrpExpected10,
+            hrpActual10,
+            unicode"hrp is incorrect after parsing invalid bech32m: 'au1s5cgom'"
+        );
+        assertEq(
+            data5bitExpected10,
+            data5bitActual10,
+            unicode"data5bit is incorrect after parsing invalid bech32m: 'au1s5cgom'"
+        );
+        assertTrue(
+            encodingExpected10 == encodingActual10,
+            unicode"encoding is incorrect after parsing invalid bech32m: 'au1s5cgom'"
+        );
+        assertTrue(
+            errExpected10 == errActual10,
+            unicode"error code is incorrect after parsing invalid bech32m: 'au1s5cgom'"
+        );
+
+        // 'M1VUXWEZ'
+        bytes memory bech11 = hex"4d3156555857455a";
+        bytes memory hrpExpected11 = hex"";
+        bytes memory data5bitExpected11 = hex"";
+        Bech32m.BechEncoding encodingExpected11 = Bech32m.BechEncoding.UNKNOWN;
+        Bech32m.DecodeError errExpected11 = Bech32m
+            .DecodeError
+            .IncorrectChecksum;
+        (
+            bytes memory hrpActual11,
+            bytes memory data5bitActual11,
+            Bech32m.BechEncoding encodingActual11,
+            Bech32m.DecodeError errActual11
+        ) = Bech32m.bech32Decode(bech11);
+        assertEq(
+            hrpExpected11,
+            hrpActual11,
+            unicode"hrp is incorrect after parsing invalid bech32m: 'M1VUXWEZ'"
+        );
+        assertEq(
+            data5bitExpected11,
+            data5bitActual11,
+            unicode"data5bit is incorrect after parsing invalid bech32m: 'M1VUXWEZ'"
+        );
+        assertTrue(
+            encodingExpected11 == encodingActual11,
+            unicode"encoding is incorrect after parsing invalid bech32m: 'M1VUXWEZ'"
+        );
+        assertTrue(
+            errExpected11 == errActual11,
+            unicode"error code is incorrect after parsing invalid bech32m: 'M1VUXWEZ'"
+        );
+
+        // '16plkw9'
+        bytes memory bech12 = hex"3136706c6b7739";
+        bytes memory hrpExpected12 = hex"";
+        bytes memory data5bitExpected12 = hex"";
+        Bech32m.BechEncoding encodingExpected12 = Bech32m.BechEncoding.UNKNOWN;
+        Bech32m.DecodeError errExpected12 = Bech32m.DecodeError.HRPIsEmpty;
+        (
+            bytes memory hrpActual12,
+            bytes memory data5bitActual12,
+            Bech32m.BechEncoding encodingActual12,
+            Bech32m.DecodeError errActual12
+        ) = Bech32m.bech32Decode(bech12);
+        assertEq(
+            hrpExpected12,
+            hrpActual12,
+            unicode"hrp is incorrect after parsing invalid bech32m: '16plkw9'"
+        );
+        assertEq(
+            data5bitExpected12,
+            data5bitActual12,
+            unicode"data5bit is incorrect after parsing invalid bech32m: '16plkw9'"
+        );
+        assertTrue(
+            encodingExpected12 == encodingActual12,
+            unicode"encoding is incorrect after parsing invalid bech32m: '16plkw9'"
+        );
+        assertTrue(
+            errExpected12 == errActual12,
+            unicode"error code is incorrect after parsing invalid bech32m: '16plkw9'"
+        );
+
+        // '1p2gdwpf'
+        bytes memory bech13 = hex"3170326764777066";
+        bytes memory hrpExpected13 = hex"";
+        bytes memory data5bitExpected13 = hex"";
+        Bech32m.BechEncoding encodingExpected13 = Bech32m.BechEncoding.UNKNOWN;
+        Bech32m.DecodeError errExpected13 = Bech32m.DecodeError.HRPIsEmpty;
+        (
+            bytes memory hrpActual13,
+            bytes memory data5bitActual13,
+            Bech32m.BechEncoding encodingActual13,
+            Bech32m.DecodeError errActual13
+        ) = Bech32m.bech32Decode(bech13);
+        assertEq(
+            hrpExpected13,
+            hrpActual13,
+            unicode"hrp is incorrect after parsing invalid bech32m: '1p2gdwpf'"
+        );
+        assertEq(
+            data5bitExpected13,
+            data5bitActual13,
+            unicode"data5bit is incorrect after parsing invalid bech32m: '1p2gdwpf'"
+        );
+        assertTrue(
+            encodingExpected13 == encodingActual13,
+            unicode"encoding is incorrect after parsing invalid bech32m: '1p2gdwpf'"
+        );
+        assertTrue(
+            errExpected13 == errActual13,
+            unicode"error code is incorrect after parsing invalid bech32m: '1p2gdwpf'"
+        );
+    }
 }
