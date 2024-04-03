@@ -5,48 +5,56 @@ import {Test, console} from "forge-std/Test.sol";
 import {Deriver} from "../src/Deriver.sol";
 
 contract DeriverTest is Test {
-    Deriver public deriver;
 
-    function setUp() public {
-        deriver = new Deriver();
-    }
-
-    function test_DerivationPubkey() public {
-        (uint256 x1, uint256 y1) = deriver.getCombinedPubkey(
-            deriver.C1(),
-            deriver.C2()
+    function testDerivationPubkey() public {
+        (uint256 x1, uint256 y1) = Deriver.getCombinedPubkey(
+            0xF22915090CE098748A3783D4E64D5DFEC173808C154CD1D3559F673B1AEA3D9A,
+            0xEE340CB6B7C08A2B96B7C34A70B5B980FAD90AD4E9D0BE50302DA7542A73C0E0,
+            0x8243BB6987C31A7B0EA36B7AFF9D0E24EAA6508997C16BCF83C84688517CE6EC,
+            0x4FEF9EF44EA93A90E91CB9ED229F0D684F6A56EBB0787174369D4DADDCB1A85C,
+            0xAF0AAFE2C1B97A6F64A78BD31CC1ABECC70623D61EB8D92231E0906AD5D2F739,
+            0x71A862373EF0DBB8489B1CE31E0D6F931A5C5AFA2D63FEA663FFAB45D7D467AA
         );
-        assertEq(x1, deriver.P3X());
-        assertEq(y1, deriver.P3Y());
+        assertEq(x1, 0x786BA0CC9B0DA200D11CC085D41BBD5F1471DF8DF216CD775B924F4CAC80F341);
+        assertEq(y1, 0xD351E3FE211B48C6A8C8421F25767ED5D29F7E66944EB5DCD98F47DAF769F897);
     }
 
-    function test_CoefficientDerivation() public {
-        uint256 c1 = deriver.getCoefficient(
-            deriver.P1X(),
-            deriver.P1Y(),
-            deriver.userAddress()
+    function testCoefficientDerivation() public {
+        uint256 c1 = Deriver.getCoefficient(
+            0xF22915090CE098748A3783D4E64D5DFEC173808C154CD1D3559F673B1AEA3D9A,
+            0xEE340CB6B7C08A2B96B7C34A70B5B980FAD90AD4E9D0BE50302DA7542A73C0E0,
+            0x71C7656EC7ab88b098defB751B7401B5f6d8976F
         );
         assertEq(c1, 0x5FD0C009DA282DFE7E047C2190B3F00FF04E58B42F715D5345EBA4CD5BF4DBF9);
 
-        uint256 c2 = deriver.getCoefficient(
-            deriver.P2X(),
-            deriver.P2Y(),
-            deriver.userAddress()
+        uint256 c2 = Deriver.getCoefficient(
+            0x8243BB6987C31A7B0EA36B7AFF9D0E24EAA6508997C16BCF83C84688517CE6EC,
+            0x4FEF9EF44EA93A90E91CB9ED229F0D684F6A56EBB0787174369D4DADDCB1A85C,
+            0x71C7656EC7ab88b098defB751B7401B5f6d8976F
         );
         assertEq(c2, 0xA55B9626A950D34CCAD73EEB13E3510861C6B4C9462668627F1A7DE500B6A1AB);
     }
 
-    function test_PubkeyFromAddree() public {
-        (uint256 x, uint256 y) = deriver.getPubkeyFromAddress(
-            deriver.userAddress()
+    function testPubkeyFromAddree() public {
+        (uint256 x, uint256 y) = Deriver.getPubkeyFromAddress(
+            0xF22915090CE098748A3783D4E64D5DFEC173808C154CD1D3559F673B1AEA3D9A,
+            0xEE340CB6B7C08A2B96B7C34A70B5B980FAD90AD4E9D0BE50302DA7542A73C0E0,
+            0x8243BB6987C31A7B0EA36B7AFF9D0E24EAA6508997C16BCF83C84688517CE6EC,
+            0x4FEF9EF44EA93A90E91CB9ED229F0D684F6A56EBB0787174369D4DADDCB1A85C,
+            0x71C7656EC7ab88b098defB751B7401B5f6d8976F
         );
         assertEq(x, 0xF841B419521509E6C50754F2801D94FA3F25D62AA2F55039DA1F7A848FDF7BBD);
         assertEq(y, 0xB2445FEAA4E63449F7770E56C153A997F4E1B75707B7BF44ED4B69DEFAFD6813);
     }
 
-    function test_getBtcAddressFromEth() public {
-        string memory btcAddress = deriver.getBtcAddressFromEth(
-            deriver.userAddress()
+    function testGetBtcAddressFromEth() public {
+        string memory btcAddress = Deriver.getBtcAddressFromEth(
+            0xF22915090CE098748A3783D4E64D5DFEC173808C154CD1D3559F673B1AEA3D9A,
+            0xEE340CB6B7C08A2B96B7C34A70B5B980FAD90AD4E9D0BE50302DA7542A73C0E0,
+            0x8243BB6987C31A7B0EA36B7AFF9D0E24EAA6508997C16BCF83C84688517CE6EC,
+            0x4FEF9EF44EA93A90E91CB9ED229F0D684F6A56EBB0787174369D4DADDCB1A85C,
+            bytes("tb"),
+            0x71C7656EC7ab88b098defB751B7401B5f6d8976F
         );
         assertEq(btcAddress, "tb1plpqmgx2jz5y7d3g82negq8v5lgljt4325t64qww6raagfr7l0w7sefvmzw");
     }
