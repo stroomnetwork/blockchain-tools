@@ -1,0 +1,69 @@
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.13;
+
+import {Deriver} from "./Deriver.sol";
+import {Bech32m} from "./Bech32m.sol";
+
+error SeedWasNotSetYet();
+
+error CannotParseBtcAddress(
+    string btcAddress,
+    string hrp,
+    Bech32m.DecodeError err
+);
+error UnsupportedBtcAddress(string btcAddress);
+
+contract BTCDepositAddressDeriver {
+    event SeedChanged(string btcAddr1, string btcAddr2, string hrp);
+
+    bool public wasSeedSet;
+    bytes public btcAddr1;
+    bytes public btcAddr2;
+    bytes public networkHrp;
+
+    uint256 public p1x;
+    uint256 public p1y;
+    uint256 public p2x;
+    uint256 public p2y;
+
+    constructor() {
+        wasSeedSet = false;
+    }
+
+    function parseBTCTaprootAddress(
+        string memory hrp,
+        string memory addr
+    ) public pure returns (uint256, uint256) {
+        (uint8 witVer, bytes memory witProg, Bech32m.DecodeError err) = Bech32m
+            .decodeSegwitAddress(bytes(hrp), bytes(addr));
+        if (err != Bech32m.DecodeError.NoError) {
+            revert CannotParseBtcAddress(addr, hrp, err);
+        }
+        if (witVer != 1 || witProg.length != 32) {
+            revert UnsupportedBtcAddress(addr);
+        }
+        uint256 x = uint256(bytes32(witProg));
+        if (x == 0 || x >= Deriver.PP) {
+            revert UnsupportedBtcAddress(addr);
+        }
+
+        uint256 y = Deriver.liftX(x);
+
+        return (x, y);
+    }
+
+    function setSeed(
+        string memory _btcAddr1,
+        string memory _btcAddr2,
+        string memory _hrp
+    ) public {}
+
+    function getBTCDepositAddress(
+        address ethEddr
+    ) public view returns (string memory) {
+        if (!wasSeedSet) {
+            revert SeedWasNotSetYet();
+        }
+    }
+}

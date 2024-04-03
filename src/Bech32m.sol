@@ -551,7 +551,11 @@ library Bech32m {
 
     function bech32Decode(
         bytes memory bech
-    ) public returns (bytes memory, bytes memory, BechEncoding, DecodeError) {
+    )
+        public
+        pure
+        returns (bytes memory, bytes memory, BechEncoding, DecodeError)
+    {
         if (bech.length > 90) {
             return (
                 new bytes(0),
@@ -679,7 +683,7 @@ library Bech32m {
     function decodeSegwitAddress(
         bytes memory expectedHrp,
         bytes memory addr
-    ) public returns (uint8, bytes memory, DecodeError) {
+    ) public pure returns (uint8, bytes memory, DecodeError) {
         (
             bytes memory hrpGot,
             bytes memory data5Bit,
