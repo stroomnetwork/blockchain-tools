@@ -4,8 +4,6 @@
 // https://github.com/sipa/bech32/blob/master/ref/python/segwit_addr.py
 pragma solidity ^0.8;
 
-import {BytesLib} from "./BytesLib.sol";
-
 error EncodingIsUnknown();
 
 library Bech32m {
