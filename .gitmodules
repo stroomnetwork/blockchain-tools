@@ -10,3 +10,6 @@
 [submodule "lib/bitcoin-spv"]
 	path = lib/bitcoin-spv
 	url = https://github.com/summa-tx/bitcoin-spv
+[submodule "lib/foundry-devops"]
+	path = lib/foundry-devops
+	url = https://github.com/Cyfrin/foundry-devops
