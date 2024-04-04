@@ -68,10 +68,19 @@ contract BTCDepositAddressDeriver {
     }
 
     function getBTCDepositAddress(
-        address ethEddr
+        address ethAddr
     ) public view returns (string memory) {
         if (!wasSeedSet) {
             revert SeedWasNotSetYet();
         }
+        return
+            Deriver.getBtcAddressFromEth(
+                p1x,
+                p1y,
+                p2x,
+                p2y,
+                bytes(networkHrp),
+                ethAddr
+            );
     }
 }

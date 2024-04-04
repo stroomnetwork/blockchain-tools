@@ -96,4 +96,20 @@ contract BTCDepositAddressDeriverTest is Test {
             0x4FEF9EF44EA93A90E91CB9ED229F0D684F6A56EBB0787174369D4DADDCB1A85C
         );
     }
+
+    function testGetBTCDepositAddress() public {
+        deriver.setSeed(
+            "tb1p7g532zgvuzv8fz3hs02wvn2almqh8qyvz4xdr564nannkxh28kdq62ewy3",
+            "tb1psfpmk6v8cvd8kr4rdda0l8gwyn42v5yfjlqkhnureprgs5tuumkqvdkewz",
+            "tb"
+        );
+
+        string memory btcAddress = deriver.getBTCDepositAddress(
+            0x1EaCa1277BcDFa83E60658D8938B3D63cD3E63C1
+        );
+        assertEq(
+            btcAddress,
+            "tb1pz66m5qeqae7mlqjwwz3hhf8lfz05w53djxxxzzjy47m6hej6cg8s0zs83c"
+        );
+    }
 }
