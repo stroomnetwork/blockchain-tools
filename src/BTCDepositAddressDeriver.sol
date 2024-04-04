@@ -18,9 +18,9 @@ contract BTCDepositAddressDeriver {
     event SeedChanged(string btcAddr1, string btcAddr2, string hrp);
 
     bool public wasSeedSet;
-    bytes public btcAddr1;
-    bytes public btcAddr2;
-    bytes public networkHrp;
+    string public btcAddr1;
+    string public btcAddr2;
+    string public networkHrp;
 
     uint256 public p1x;
     uint256 public p1y;
@@ -57,7 +57,15 @@ contract BTCDepositAddressDeriver {
         string memory _btcAddr1,
         string memory _btcAddr2,
         string memory _hrp
-    ) public {}
+    ) public {
+        networkHrp = _hrp;
+        (p1x, p1y) = parseBTCTaprootAddress(_hrp, _btcAddr1);
+        (p2x, p2y) = parseBTCTaprootAddress(_hrp, _btcAddr2);
+        btcAddr1 = _btcAddr1;
+        btcAddr2 = _btcAddr2;
+        wasSeedSet = true;
+        emit SeedChanged(_btcAddr1, _btcAddr2, _hrp);
+    }
 
     function getBTCDepositAddress(
         address ethEddr
