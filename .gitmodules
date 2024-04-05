@@ -4,9 +4,6 @@
 [submodule "lib/solmate"]
 	path = lib/solmate
 	url = https://github.com/transmissions11/solmate
-[submodule "lib/elliptic-curve-solidity"]
-	path = lib/elliptic-curve-solidity
-	url = https://github.com/witnet/elliptic-curve-solidity
 [submodule "lib/bitcoin-spv"]
 	path = lib/bitcoin-spv
 	url = https://github.com/summa-tx/bitcoin-spv
