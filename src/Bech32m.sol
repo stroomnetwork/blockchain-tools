@@ -676,8 +676,8 @@ library Bech32m {
     // return (data[0], decoded)
     // returns witVer, witProg, err
     function decodeSegwitAddress(
-        bytes memory expectedHrp,
-        bytes memory addr
+        bytes calldata expectedHrp,
+        bytes calldata addr
     ) public pure returns (uint8, bytes memory, DecodeError) {
         (
             bytes memory hrpGot,
