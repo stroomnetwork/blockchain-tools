@@ -32,8 +32,8 @@ contract BTCDepositAddressDeriver {
     }
 
     function parseBTCTaprootAddress(
-        string memory hrp,
-        string memory addr
+        string calldata hrp,
+        string calldata addr
     ) public pure returns (uint256, uint256) {
         (uint8 witVer, bytes memory witProg, Bech32m.DecodeError err) = Bech32m
             .decodeSegwitAddress(bytes(hrp), bytes(addr));
@@ -54,9 +54,9 @@ contract BTCDepositAddressDeriver {
     }
 
     function setSeed(
-        string memory _btcAddr1,
-        string memory _btcAddr2,
-        string memory _hrp
+        string calldata _btcAddr1,
+        string calldata _btcAddr2,
+        string calldata _hrp
     ) public {
         networkHrp = _hrp;
         (p1x, p1y) = parseBTCTaprootAddress(_hrp, _btcAddr1);

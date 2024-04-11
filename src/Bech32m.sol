@@ -266,26 +266,23 @@ library Bech32m {
         bytes memory chk = createChecksum(hrp, data, spec);
 
         // <hrp> 1 <data-5bit-format> <6bytes of chk-5bit-format>
-        // so total length is hrp.length + data.length + 7
-        bytes memory ret = new bytes(hrp.length + data.length + 7);
 
-        for (uint i = 0; i < hrp.length; i += 1) {
-            ret[i] = hrp[i];
-        }
+        // 1 byte for the separator
+        bytes1 SEPARATOR = bytes1(0x31);
 
-        ret[hrp.length] = 0x31; // '1'
+        // reuse data and chk arrays to modify data in place to save gas
 
         for (uint i = 0; i < data.length; i += 1) {
-            ret[i + hrp.length + 1] = CHARSET[uint8(data[i])];
+            // ret[i + hrp.length + 1] = CHARSET[uint8(data[i])];
+            data[i] = CHARSET[uint8(data[i])];
         }
 
-        // index of start of the checksum
-        uint startChk = hrp.length + 1 + data.length;
         for (uint i = 0; i < 6; i += 1) {
-            ret[startChk + i] = CHARSET[uint8(chk[i])];
+            // ret[startChk + i] = CHARSET[uint8(chk[i])];
+            chk[i] = CHARSET[uint8(chk[i])];
         }
 
-        return ret;
+        return bytes.concat(hrp, SEPARATOR, data, chk);
     }
 
     // with padding
@@ -371,12 +368,10 @@ library Bech32m {
         BechEncoding spec = witVer == 0
             ? BechEncoding.BECH32
             : BechEncoding.BECH32M;
+
         bytes memory witProg5bit = conver8To5(witProg);
-        bytes memory encArg = new bytes(witProg5bit.length + 1);
-        encArg[0] = bytes1(witVer);
-        for (uint i = 0; i < witProg5bit.length; i += 1) {
-            encArg[i + 1] = witProg5bit[i];
-        }
+        bytes memory encArg = bytes.concat(bytes1(witVer), witProg5bit);
+
         return bech32Encode(hrp, encArg, spec);
     }
 
