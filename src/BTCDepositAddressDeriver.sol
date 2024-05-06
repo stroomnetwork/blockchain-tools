@@ -57,7 +57,7 @@ contract BTCDepositAddressDeriver {
         string memory _btcAddr1,
         string memory _btcAddr2,
         string memory _hrp
-    ) public {
+    ) public virtual {
         networkHrp = _hrp;
         (p1x, p1y) = parseBTCTaprootAddress(_hrp, _btcAddr1);
         (p2x, p2y) = parseBTCTaprootAddress(_hrp, _btcAddr2);
