@@ -54,10 +54,10 @@ contract BTCDepositAddressDeriver {
     }
 
     function setSeed(
-        string calldata _btcAddr1,
-        string calldata _btcAddr2,
-        string calldata _hrp
-    ) public {
+        string memory _btcAddr1,
+        string memory _btcAddr2,
+        string memory _hrp
+    ) public virtual {
         networkHrp = _hrp;
         (p1x, p1y) = parseBTCTaprootAddress(_hrp, _btcAddr1);
         (p2x, p2y) = parseBTCTaprootAddress(_hrp, _btcAddr2);
