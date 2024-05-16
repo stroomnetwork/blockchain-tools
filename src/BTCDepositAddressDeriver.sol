@@ -32,8 +32,8 @@ contract BTCDepositAddressDeriver {
     }
 
     function parseBTCTaprootAddress(
-        string memory hrp,
-        string memory addr
+        string calldata hrp,
+        string calldata addr
     ) public pure returns (uint256, uint256) {
         (uint8 witVer, bytes memory witProg, Bech32m.DecodeError err) = Bech32m
             .decodeSegwitAddress(bytes(hrp), bytes(addr));
