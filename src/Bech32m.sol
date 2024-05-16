@@ -268,7 +268,7 @@ library Bech32m {
         // <hrp> 1 <data-5bit-format> <6bytes of chk-5bit-format>
 
         // 1 byte for the separator
-        bytes1 constant SEPARATOR = bytes1(0x31);
+        bytes1 SEPARATOR = bytes1(0x31);
 
         // reuse data and chk arrays to modify data in place to save gas
 
