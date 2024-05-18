@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.18;
 
 import {Deriver} from "./Deriver.sol";
 import {Bech32m} from "./Bech32m.sol";
@@ -54,9 +54,9 @@ contract BTCDepositAddressDeriver {
     }
 
     function setSeed(
-        string memory _btcAddr1,
-        string memory _btcAddr2,
-        string memory _hrp
+        string calldata _btcAddr1,
+        string calldata _btcAddr2,
+        string calldata _hrp
     ) public virtual {
         networkHrp = _hrp;
         (p1x, p1y) = parseBTCTaprootAddress(_hrp, _btcAddr1);

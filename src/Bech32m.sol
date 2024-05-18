@@ -2,7 +2,7 @@
 // TODO(mkl): what License?
 // based on https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki
 // https://github.com/sipa/bech32/blob/master/ref/python/segwit_addr.py
-pragma solidity ^0.8;
+pragma solidity ^0.8.18;
 
 error EncodingIsUnknown();
 
@@ -63,6 +63,9 @@ library Bech32m {
 
     // BECH32M_CONST = 0x2bc830a3
     uint256 public constant BECH32M_CONST = 0x2bc830a3;
+
+    // 1 byte for the separator
+    bytes1 public constant SEPARATOR = bytes1(0x31);
 
     // TODO(mkl): port implementation from C++ reference because it is more readable
     // https://github.com/sipa/bech32/blob/master/ref/c%2B%2B/bech32.cpp
@@ -266,9 +269,6 @@ library Bech32m {
         bytes memory chk = createChecksum(hrp, data, spec);
 
         // <hrp> 1 <data-5bit-format> <6bytes of chk-5bit-format>
-
-        // 1 byte for the separator
-        bytes1 constant SEPARATOR = bytes1(0x31);
 
         // reuse data and chk arrays to modify data in place to save gas
 
