@@ -51,15 +51,7 @@ contract BTCDepositAddressDeriver {
         BitcoinNetwork _network
     ) public virtual {
 
-        string memory _hrp;
-
-        if (_network == BitcoinNetwork.TESTNET) {
-            _hrp = 'tb';
-        } else if (_network == BitcoinNetwork.MAINNET) {
-            _hrp = 'bc';
-        } else if (_network == BitcoinNetwork.REGTEST) {
-            _hrp = 'brct';
-        }
+        string memory _hrp = getNetworkPrefix(_network);
 
         networkHrp = _hrp;
 
@@ -71,6 +63,24 @@ contract BTCDepositAddressDeriver {
 
         wasSeedSet = true;
         emit SeedChanged(_btcAddr1, _btcAddr2, _hrp);
+    }
+
+    // get address prefix from network type
+    function getNetworkPrefix(
+        BitcoinNetwork _network
+    ) public pure returns (string memory) {
+
+        string memory _hrp;
+
+        if (_network == BitcoinNetwork.TESTNET) {
+            _hrp = 'tb';
+        } else if (_network == BitcoinNetwork.MAINNET) {
+            _hrp = 'bc';
+        } else if (_network == BitcoinNetwork.REGTEST) {
+            _hrp = 'brct';
+        }
+
+        return _hrp;
     }
 
     // Derive pubkey's (x,y) coordinates from taproot address
