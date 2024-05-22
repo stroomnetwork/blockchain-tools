@@ -6,12 +6,8 @@ import {Test} from "forge-std/Test.sol";
 import {BTCDepositAddressDeriver} from "../src/BTCDepositAddressDeriver.sol";
 
 contract BTCDepositAddressDeriverTest is Test {
-    BTCDepositAddressDeriver deriver;
 
-    // Due to a bug/feature of Solidity, it is impossible to import events from other contract.abi
-    // https://github.com/ethereum/solidity/issues/13928
-    // It is copy-pasted here from src/BTCDepositAddressDeriver.sol
-    event SeedChanged(string btcAddr1, string btcAddr2, string hrp); 
+    BTCDepositAddressDeriver deriver;
 
     function setUp() public {
         deriver = new BTCDepositAddressDeriver();
@@ -58,7 +54,7 @@ contract BTCDepositAddressDeriverTest is Test {
         assertEq(deriver.p2y(), 0);
 
         vm.expectEmit(address(deriver));
-        emit SeedChanged(
+        emit BTCDepositAddressDeriver.SeedChanged(
             "tb1p7g532zgvuzv8fz3hs02wvn2almqh8qyvz4xdr564nannkxh28kdq62ewy3",
             "tb1psfpmk6v8cvd8kr4rdda0l8gwyn42v5yfjlqkhnureprgs5tuumkqvdkewz",
             "tb"
@@ -66,7 +62,7 @@ contract BTCDepositAddressDeriverTest is Test {
         deriver.setSeed(
             "tb1p7g532zgvuzv8fz3hs02wvn2almqh8qyvz4xdr564nannkxh28kdq62ewy3",
             "tb1psfpmk6v8cvd8kr4rdda0l8gwyn42v5yfjlqkhnureprgs5tuumkqvdkewz",
-            "tb"
+            BTCDepositAddressDeriver.BitcoinNetwork.TESTNET
         );
 
         assertEq(deriver.wasSeedSet(), true);
@@ -101,7 +97,7 @@ contract BTCDepositAddressDeriverTest is Test {
         deriver.setSeed(
             "tb1p7g532zgvuzv8fz3hs02wvn2almqh8qyvz4xdr564nannkxh28kdq62ewy3",
             "tb1psfpmk6v8cvd8kr4rdda0l8gwyn42v5yfjlqkhnureprgs5tuumkqvdkewz",
-            "tb"
+            BTCDepositAddressDeriver.BitcoinNetwork.TESTNET
         );
 
         string memory btcAddress = deriver.getBTCDepositAddress(
