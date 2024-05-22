@@ -16,13 +16,7 @@ library Deriver {
     uint256 public constant BB = 7;
     uint256 public constant PP =
         0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F;
-
     // END SECP256k1 CONSTANTS
-
-    // https://ethereum.stackexchange.com/questions/884/how-to-convert-an-address-to-bytes-in-solidity
-    function toBytes(address a) internal pure returns (bytes memory) {
-        return abi.encodePacked(a);
-    }
 
     // TODO(mkl): use tagged hashes
     function getCoefficient(
@@ -101,7 +95,6 @@ library Deriver {
 
     // calculate y coordinate from x coordinate
     function liftX(uint256 x) public pure returns (uint256) {
-        uint256 y = EllipticCurve.deriveY(0x02, x, AA, BB, PP);
-        return y;
+        return EllipticCurve.deriveY(0x02, x, AA, BB, PP);
     }
 }
