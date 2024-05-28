@@ -1,5 +1,5 @@
+// SPDX-License-Identifier: MIT
 // https://github.com/gregdhill/bech32-sol/blob/master/src/Bech32.sol
-// TODO(mkl): what License?
 // based on https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki
 // https://github.com/sipa/bech32/blob/master/ref/python/segwit_addr.py
 pragma solidity ^0.8.18;
