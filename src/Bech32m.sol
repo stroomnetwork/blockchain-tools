@@ -23,7 +23,9 @@ library Bech32m {
         IncorrectLength,
         CharacterOutOfRange,
         MixedCase,
+        //checksum does not match
         IncorrectChecksum,
+        //checksum bytes length is too short
         TooShortChecksum,
         InputIsTooLong,
         NotBech32Character,
@@ -47,7 +49,48 @@ library Bech32m {
         IncorrectEncodingForSegwitVn
     }
 
-    // TODO(mkl): implement ExplainDecodeError(DecodeError err) -> string
+    function explainDecodeError(DecodeError err) public pure returns (string memory) {
+        if (err == DecodeError.NoError) {
+            return string("No error");
+        } else if (err == DecodeError.IncorrectPadding) {
+            return string("Incorrect Padding");
+        } else if (err == DecodeError.IncorrectLength) {
+            return string("Incorrect address length");
+        } else if (err == DecodeError.CharacterOutOfRange) {
+            return string("Address contain character out of range");
+        } else if (err == DecodeError.MixedCase) {
+            return string("Address consists of both capital and small letters");
+        } else if (err == DecodeError.IncorrectChecksum) {
+            return string("Address checksum does not match");
+        } else if (err == DecodeError.TooShortChecksum) {
+            return string("Address checksum is too short");
+        } else if (err == DecodeError.InputIsTooLong) {
+            return string("Address is too long");
+        } else if (err == DecodeError.NotBech32Character) {
+            return string("Address contains character which is not in bech32 encoding");
+        } else if (err == DecodeError.HRPIsEmpty) {
+            return string("Network prefix is empty");
+        } else if (err == DecodeError.NoDelimiter) {
+            return string("No prefix delimiter in the address");
+        } else if (err == DecodeError.HRPMismatch) {
+            return string("Network prefix is different from expected");
+        } else if (err == DecodeError.WitnessProgramTooSmall) {
+            return string("Witness program should be at least 2 bytes");
+        } else if (err == DecodeError.EmptyData) {
+            return string("Witness program is empty");
+        } else if (err == DecodeError.WitnessProgramTooLarge) {
+            return string("Witness program should be maximum 40 bytes");
+        } else if (err == DecodeError.SegwitVersionTooLarge) {
+            return string("Segwit version should be from 0 to 16 (including). Got some larger number.");
+        } else if (err == DecodeError.IncorrectSegwitV0Program) {
+            return string("Length of segwit v0 program should be either 20 or 32 bytes");
+        } else if (err == DecodeError.IncorrectEncodingForSegwitV0) {
+            return string("Segwit v0 should be encoded using Bech32");
+        } else if (err == DecodeError.IncorrectEncodingForSegwitVn) {
+            return string("Segwit with versions 1-16 should be encoded with Bech32m");
+        }
+        return "";
+}
 
     // Possible characters for Bitcoin address
     bytes internal constant CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
