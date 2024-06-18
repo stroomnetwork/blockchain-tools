@@ -6,6 +6,10 @@ import {Test} from "forge-std/Test.sol";
 import {BTCDepositAddressDeriver} from "../src/BTCDepositAddressDeriver.sol";
 
 contract BTCDepositAddressDeriverTest is Test {
+    // We declare event SeedChanged second time here because Solidity
+    // does not allow importing events from other contracts.
+    // https://ethereum.stackexchange.com/questions/52967/can-a-contract-emit-another-contracts-event
+    event SeedChanged(string btcAddr1, string btcAddr2, string hrp);
 
     BTCDepositAddressDeriver deriver;
 
@@ -54,7 +58,7 @@ contract BTCDepositAddressDeriverTest is Test {
         assertEq(deriver.p2y(), 0);
 
         vm.expectEmit(address(deriver));
-        emit BTCDepositAddressDeriver.SeedChanged(
+        emit SeedChanged(
             "tb1p7g532zgvuzv8fz3hs02wvn2almqh8qyvz4xdr564nannkxh28kdq62ewy3",
             "tb1psfpmk6v8cvd8kr4rdda0l8gwyn42v5yfjlqkhnureprgs5tuumkqvdkewz",
             "tb"
