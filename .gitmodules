@@ -7,3 +7,6 @@
 [submodule "lib/elliptic-curve-solidity"]
 	path = lib/elliptic-curve-solidity
 	url = https://github.com/witnet/elliptic-curve-solidity
+[submodule "lib/openzeppelin-contracts"]
+	path = lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
