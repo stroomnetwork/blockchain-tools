@@ -17,12 +17,6 @@ error CannotParseBtcAddress(
 
 contract BTCDepositAddressDeriver {
 
-    enum BitcoinNetwork {
-        TESTNET,
-        MAINNET,
-        REGTEST
-    }
-
     event SeedChanged(string btcAddr1, string btcAddr2, string hrp);
 
     bool public wasSeedSet;
@@ -48,7 +42,7 @@ contract BTCDepositAddressDeriver {
     function setSeed(
         string calldata _btcAddr1,
         string calldata _btcAddr2,
-        BitcoinNetwork _network
+        uint8 _network
     ) public virtual {
 
         string memory _hrp = getNetworkPrefix(_network);
@@ -67,17 +61,19 @@ contract BTCDepositAddressDeriver {
 
     // get address prefix from network type
     function getNetworkPrefix(
-        BitcoinNetwork _network
+        uint8 _network
     ) public pure returns (string memory) {
 
         string memory _hrp;
 
-        if (_network == BitcoinNetwork.TESTNET) {
+        if (_network == 0) {
             _hrp = 'tb';
-        } else if (_network == BitcoinNetwork.MAINNET) {
+        } else if (_network == 1) {
             _hrp = 'bc';
-        } else if (_network == BitcoinNetwork.REGTEST) {
+        } else if (_network == 2) {
             _hrp = 'brct';
+        } else {
+            _hrp = 'unknown';
         }
 
         return _hrp;

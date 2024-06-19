@@ -62,7 +62,7 @@ contract BTCDepositAddressDeriverTest is Test {
         deriver.setSeed(
             "tb1p7g532zgvuzv8fz3hs02wvn2almqh8qyvz4xdr564nannkxh28kdq62ewy3",
             "tb1psfpmk6v8cvd8kr4rdda0l8gwyn42v5yfjlqkhnureprgs5tuumkqvdkewz",
-            BTCDepositAddressDeriver.BitcoinNetwork.TESTNET
+            0
         );
 
         assertEq(deriver.wasSeedSet(), true);
@@ -97,7 +97,7 @@ contract BTCDepositAddressDeriverTest is Test {
         deriver.setSeed(
             "tb1p7g532zgvuzv8fz3hs02wvn2almqh8qyvz4xdr564nannkxh28kdq62ewy3",
             "tb1psfpmk6v8cvd8kr4rdda0l8gwyn42v5yfjlqkhnureprgs5tuumkqvdkewz",
-            BTCDepositAddressDeriver.BitcoinNetwork.TESTNET
+            0
         );
 
         string memory btcAddress = deriver.getBTCDepositAddress(
