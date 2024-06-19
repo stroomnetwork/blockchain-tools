@@ -25,7 +25,9 @@ contract SetSeed is Script {
         console.log("BTC_ADDR2:", btcAddr2);
 
         // get network
-        uint network = vm.envUint("Network");
+        uint _network = vm.envUint("Network");
+        uint8 network = uint8(_network);
+        
         console.log("Network:", network);
 
         BTCDepositAddressDeriver deriver = BTCDepositAddressDeriver(
@@ -34,7 +36,7 @@ contract SetSeed is Script {
 
         // set validators' pubkeys and network prefix
         vm.startBroadcast();
-        deriver.setSeed(btcAddr1, btcAddr2, BTCDepositAddressDeriver.BitcoinNetwork(network));
+        deriver.setSeed(btcAddr1, btcAddr2, network);
         vm.stopBroadcast();
     }
 }
