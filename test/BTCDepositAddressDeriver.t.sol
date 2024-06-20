@@ -118,7 +118,7 @@ contract BTCDepositAddressDeriverTest is Test {
         deriver.setSeed(
             "tb1p5z8wl5tu7m0d79vzqqsl9gu0x4fkjug857fusx4fl4kfgwh5j25spa7245",
             "tb1pfusykjdt46ktwq03d20uqqf94uh9487344wr3q5v9szzsxnjdfks9apcjz",
-            BTCDepositAddressDeriver.BitcoinNetwork(0)
+            0
         );
 
         string memory btcAddress = deriver.getBTCDepositAddress(
