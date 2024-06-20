@@ -48,17 +48,13 @@ contract SetSeed is Script, AddressReaderWriter {
         console.log("deriver", address(deriver));
 
         // set validators' pubkeys and network prefix
-        console.log("SetSeed step 1");
         vm.startBroadcast();
-        console.log("SetSeed step 2");
         BTCDepositAddressDeriver.BitcoinNetwork btcNetwork = BTCDepositAddressDeriver.BitcoinNetwork(network);
-        console.log("SetSeed step 3");
         deriver.setSeed(
             btcAddr1,
             btcAddr2,
             btcNetwork 
         );
-        console.log("SetSeed step 4");
         vm.stopBroadcast();
     }
 }

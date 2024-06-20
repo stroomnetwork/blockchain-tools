@@ -51,7 +51,6 @@ contract BTCDepositAddressDeriver {
         string calldata _btcAddr2,
         BitcoinNetwork _network
     ) public virtual {
-        console.log("setSeed step 1");
         string memory _hrp = getNetworkPrefix(_network);
 
         networkHrp = _hrp;
