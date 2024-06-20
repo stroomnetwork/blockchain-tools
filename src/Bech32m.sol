@@ -3,7 +3,7 @@
 // based on https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki
 // https://github.com/sipa/bech32/blob/master/ref/python/segwit_addr.py
 
-pragma solidity ^0.8.25;
+pragma solidity ^0.8.24;
 
 error EncodingIsUnknown();
 
