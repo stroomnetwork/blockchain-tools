@@ -17,6 +17,9 @@ WHITE  := $(shell tput -Txterm setaf 7)
 CYAN   := $(shell tput -Txterm setaf 6)
 RESET  := $(shell tput -Txterm sgr0)
 
+.PHONY: default
+default: help
+
 ## Build:
 .PHONY: build
 build: ## Build library.
