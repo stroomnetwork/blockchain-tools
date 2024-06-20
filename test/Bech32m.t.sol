@@ -1,5 +1,6 @@
-// Solidity Version: ^0.8.13
-pragma solidity ^0.8.19;
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.25;
 
 import {Test, console} from "forge-std/Test.sol";
 import {Bech32m} from "../src/Bech32m.sol";
