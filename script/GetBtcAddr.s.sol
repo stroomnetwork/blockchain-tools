@@ -6,11 +6,9 @@ import {Script} from "forge-std/Script.sol";
 import {console} from "forge-std/console.sol";
 import {BTCDepositAddressDeriver} from "../src/BTCDepositAddressDeriver.sol";
 import {Tools} from "../src/Tools.sol";
-import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 import {AddressReaderWriter} from "./AddressReaderWriter.s.sol";
-import {console} from "forge-std/console.sol";
 
-contract SetSeed is Script, AddressReaderWriter {
+contract GetBtcAddr is Script, AddressReaderWriter {
     function run() external {
         // get contract address
         // if environmental variable is set then use its value
@@ -27,30 +25,23 @@ contract SetSeed is Script, AddressReaderWriter {
                 "BTCDepositAddressDeriver"
             );
         }
-
         console.log("contractAddress", contractAddress);
 
-        // get first validators' joint pubkey
-        string memory btcAddr1 = vm.envString("BTC_ADDR1");
-        console.log("BTC_ADDR1:", btcAddr1);
-
-        // get second validators' joint pubkey
-        string memory btcAddr2 = vm.envString("BTC_ADDR2");
-        console.log("BTC_ADDR2:", btcAddr2);
-
-        // get network
-        uint _network = vm.envUint("Network");
-        uint8 network = uint8(_network);
-        
-        console.log("Network:", network);
+        address ethAddr = vm.envAddress("ETH_ADDR");
+        console.log("ethAddr:", ethAddr);
 
         BTCDepositAddressDeriver deriver = BTCDepositAddressDeriver(
             contractAddress
         );
+        string memory btcAddr = deriver.getBTCDepositAddress(ethAddr);
+        console.log("btcAddr:", btcAddr);
 
-        // set validators' pubkeys and network prefix
-        vm.startBroadcast();
-        deriver.setSeed(btcAddr1, btcAddr2, network);
-        vm.stopBroadcast();
+        string memory btcAddrFileName = vm.envOr(
+            "BTC_ADDR_FILE",
+            string("")
+        );
+        if (!Tools.areStringsEqual(btcAddrFileName, "")) {
+            vm.writeFile(btcAddrFileName, btcAddr);
+        }
     }
 }

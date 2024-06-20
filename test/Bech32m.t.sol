@@ -1,5 +1,5 @@
 // Solidity Version: ^0.8.13
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.19;
 
 import {Test, console} from "forge-std/Test.sol";
 import {Bech32m} from "../src/Bech32m.sol";

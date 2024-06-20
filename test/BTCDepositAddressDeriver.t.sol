@@ -2,10 +2,15 @@
 
 pragma solidity ^0.8.19;
 
+import {console} from "forge-std/console.sol";
 import {Test} from "forge-std/Test.sol";
 import {BTCDepositAddressDeriver} from "../src/BTCDepositAddressDeriver.sol";
 
 contract BTCDepositAddressDeriverTest is Test {
+    // We declare event SeedChanged second time here because Solidity
+    // does not allow importing events from other contracts.
+    // https://ethereum.stackexchange.com/questions/52967/can-a-contract-emit-another-contracts-event
+    event SeedChanged(string btcAddr1, string btcAddr2, string hrp);
 
     BTCDepositAddressDeriver deriver;
 
@@ -54,7 +59,7 @@ contract BTCDepositAddressDeriverTest is Test {
         assertEq(deriver.p2y(), 0);
 
         vm.expectEmit(address(deriver));
-        emit BTCDepositAddressDeriver.SeedChanged(
+        emit SeedChanged(
             "tb1p7g532zgvuzv8fz3hs02wvn2almqh8qyvz4xdr564nannkxh28kdq62ewy3",
             "tb1psfpmk6v8cvd8kr4rdda0l8gwyn42v5yfjlqkhnureprgs5tuumkqvdkewz",
             "tb"
@@ -107,5 +112,26 @@ contract BTCDepositAddressDeriverTest is Test {
             btcAddress,
             "tb1pz66m5qeqae7mlqjwwz3hhf8lfz05w53djxxxzzjy47m6hej6cg8s0zs83c"
         );
+    }
+
+    function testGetBTCDepositAddress2() public {
+        deriver.setSeed(
+            "tb1p5z8wl5tu7m0d79vzqqsl9gu0x4fkjug857fusx4fl4kfgwh5j25spa7245",
+            "tb1pfusykjdt46ktwq03d20uqqf94uh9487344wr3q5v9szzsxnjdfks9apcjz",
+            0
+        );
+
+        string memory btcAddress = deriver.getBTCDepositAddress(
+            0x1EaCa1277BcDFa83E60658D8938B3D63cD3E63C1
+        );
+        console.log("btcAddress", btcAddress);
+        assertEq(
+            btcAddress,
+            "tb1phuqvamwdq7ynnydpc93h3sa9qhk9kntadg5vecgph38357jrlq5sqymks5"
+        );
+        // assertEq(
+        //     btcAddress,
+        //     "tb1pz66m5qeqae7mlqjwwz3hhf8lfz05w53djxxxzzjy47m6hej6cg8s0zs83c"
+        // );
     }
 }

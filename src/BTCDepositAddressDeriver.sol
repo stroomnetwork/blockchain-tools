@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.25;
 
 import {Deriver} from "./Deriver.sol";
 import {Bech32m} from "./Bech32m.sol";
+import {console} from "forge-std/console.sol";
 
 error SeedWasNotSetYet();
 error UnsupportedBtcAddress(string btcAddress);
@@ -44,7 +45,6 @@ contract BTCDepositAddressDeriver {
         string calldata _btcAddr2,
         uint8 _network
     ) public virtual {
-
         string memory _hrp = getNetworkPrefix(_network);
 
         networkHrp = _hrp;
