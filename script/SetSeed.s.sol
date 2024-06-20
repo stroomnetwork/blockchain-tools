@@ -39,10 +39,10 @@ contract SetSeed is Script, AddressReaderWriter {
         console.log("BTC_ADDR2:", btcAddr2);
 
         // get network
-        uint _network = vm.envUint("Network");
+        uint _network = vm.envUint("BTC_NETWORK");
         uint8 network = uint8(_network);
         
-        console.log("Network:", network);
+        console.log("BTC_NETWORK:", network);
 
         BTCDepositAddressDeriver deriver = BTCDepositAddressDeriver(
             contractAddress
