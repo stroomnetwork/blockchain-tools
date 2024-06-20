@@ -4,7 +4,6 @@ pragma solidity ^0.8.25;
 
 import {Script} from "forge-std/Script.sol";
 import {console} from "forge-std/console.sol";
-import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
 import {BTCDepositAddressDeriver} from "../src/BTCDepositAddressDeriver.sol";
 import {Tools} from "../src/Tools.sol";
 import {AddressReaderWriter} from "../src/AddressReaderWriter.sol";
