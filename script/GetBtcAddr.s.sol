@@ -6,7 +6,7 @@ import {Script} from "forge-std/Script.sol";
 import {console} from "forge-std/console.sol";
 import {BTCDepositAddressDeriver} from "../src/BTCDepositAddressDeriver.sol";
 import {Tools} from "../src/Tools.sol";
-import {AddressReaderWriter} from "../src/AddressReaderWriter.sol";
+import {AddressReaderWriter} from "./AddressReaderWriter.s.sol";
 
 contract GetBtcAddr is Script, AddressReaderWriter {
     function run() external {

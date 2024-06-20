@@ -7,7 +7,7 @@ import {console} from "forge-std/console.sol";
 import {BTCDepositAddressDeriver} from "../src/BTCDepositAddressDeriver.sol";
 import {Tools} from "../src/Tools.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
-import {AddressReaderWriter} from "../src/AddressReaderWriter.sol";
+import {AddressReaderWriter} from "./AddressReaderWriter.s.sol";
 
 contract Deploy is Script, AddressReaderWriter {
     function run() external returns (BTCDepositAddressDeriver) {

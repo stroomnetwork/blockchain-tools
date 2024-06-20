@@ -7,7 +7,7 @@ import {console} from "forge-std/console.sol";
 import {BTCDepositAddressDeriver} from "../src/BTCDepositAddressDeriver.sol";
 import {Tools} from "../src/Tools.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
-import {AddressReaderWriter} from "../src/AddressReaderWriter.sol";
+import {AddressReaderWriter} from "./AddressReaderWriter.s.sol";
 import {console} from "forge-std/console.sol";
 
 contract SetSeed is Script, AddressReaderWriter {
@@ -45,7 +45,6 @@ contract SetSeed is Script, AddressReaderWriter {
         BTCDepositAddressDeriver deriver = BTCDepositAddressDeriver(
             contractAddress
         );
-        console.log("deriver", address(deriver));
 
         // set validators' pubkeys and network prefix
         vm.startBroadcast();
