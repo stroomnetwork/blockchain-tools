@@ -2,6 +2,7 @@
 
 pragma solidity ^0.8.19;
 
+import {console} from "forge-std/console.sol";
 import {Test} from "forge-std/Test.sol";
 import {BTCDepositAddressDeriver} from "../src/BTCDepositAddressDeriver.sol";
 
@@ -111,5 +112,26 @@ contract BTCDepositAddressDeriverTest is Test {
             btcAddress,
             "tb1pz66m5qeqae7mlqjwwz3hhf8lfz05w53djxxxzzjy47m6hej6cg8s0zs83c"
         );
+    }
+
+    function testGetBTCDepositAddress2() public {
+        deriver.setSeed(
+            "tb1p5z8wl5tu7m0d79vzqqsl9gu0x4fkjug857fusx4fl4kfgwh5j25spa7245",
+            "tb1pfusykjdt46ktwq03d20uqqf94uh9487344wr3q5v9szzsxnjdfks9apcjz",
+            BTCDepositAddressDeriver.BitcoinNetwork(0)
+        );
+
+        string memory btcAddress = deriver.getBTCDepositAddress(
+            0x1EaCa1277BcDFa83E60658D8938B3D63cD3E63C1
+        );
+        console.log("btcAddress", btcAddress);
+        assertEq(
+            btcAddress,
+            "tb1phuqvamwdq7ynnydpc93h3sa9qhk9kntadg5vecgph38357jrlq5sqymks5"
+        );
+        // assertEq(
+        //     btcAddress,
+        //     "tb1pz66m5qeqae7mlqjwwz3hhf8lfz05w53djxxxzzjy47m6hej6cg8s0zs83c"
+        // );
     }
 }
