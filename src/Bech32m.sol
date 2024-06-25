@@ -50,11 +50,17 @@ library Bech32m {
         IncorrectEncodingForSegwitVn
     }
 
+    // Possible characters for Bitcoin address
+    bytes internal constant CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
+
     // index is character code in ASCII
     // value is Bech32 character value
     // if value is 0x7f=127 then character is not in the Bech32 charset
     bytes internal constant REVERSE_CHARSET =
         hex"7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f0f7f0a1115141a1e07057f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f1d7f180d190908177f12161f1b137f010003100b1c0c0e0604027f7f7f7f7f";
+
+    // Bech32m constant
+    uint256 internal constant BECH32M_CONST = 0x2bc830a3;
 
     // 1 byte for the separator
     bytes1 internal constant SEPARATOR = bytes1(0x31);
