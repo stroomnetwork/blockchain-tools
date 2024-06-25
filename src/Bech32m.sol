@@ -24,6 +24,6 @@ library Bech32m {
             data8Bit[i] = 0;
         }
 
-        return (0, data8Bit, DecodeError.NoError);
+        return (1, data8Bit, DecodeError.NoError);
     }
 }
