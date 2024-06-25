@@ -80,18 +80,6 @@ contract BTCDepositAddressDeriver {
         string calldata _bitcoinAddress
     ) public pure returns (uint256, uint256) {
 
-        (uint8 witVer, bytes memory witProg, Bech32m.DecodeError err) = Bech32m
-            .decodeSegwitAddress(bytes(_hrp), bytes(_bitcoinAddress));
-
-        if (err != Bech32m.DecodeError.NoError) {
-            revert CannotParseBtcAddress(_bitcoinAddress, _hrp, err);
-        }
-        if (witVer != 1 || witProg.length != 32) {
-            revert UnsupportedBtcAddress(_bitcoinAddress);
-        }
-
-        uint256 x = uint256(bytes32(witProg));
-
-        return (x, x);
+        return (0, 0);
     }
 }
