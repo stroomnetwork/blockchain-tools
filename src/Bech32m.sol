@@ -21,7 +21,7 @@ library Bech32m {
 
         bytes memory data8Bit = new bytes(32);
         for (uint i = 0; i < data8Bit.length; i += 1) {
-            data8Bit[i] = 0;
+            data8Bit[i] = 1;
         }
 
         return (1, data8Bit, DecodeError.NoError);
