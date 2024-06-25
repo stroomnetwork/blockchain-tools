@@ -2,14 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import {Bech32m} from "./Bech32m.sol";
-
-error UnsupportedBtcAddress(string btcAddress);
-error CannotParseBtcAddress(
-    string btcAddress,
-    string hrp,
-    Bech32m.DecodeError err
-);
+import "./Bech32m.sol";
 
 contract BTCDepositAddressDeriver {
 
@@ -80,8 +73,7 @@ contract BTCDepositAddressDeriver {
         string calldata _bitcoinAddress
     ) public pure returns (uint256, uint256) {
 
-        (uint8 witVer, bytes memory witProg, Bech32m.DecodeError err) = Bech32m
-            .decodeSegwitAddress(bytes(_hrp), bytes(_bitcoinAddress));
+        (uint8 witVer) = Bech32m.decodeSegwitAddress(bytes(_hrp), bytes(_bitcoinAddress));
 
         return (0, 0);
     }

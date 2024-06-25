@@ -9,21 +9,12 @@ error EncodingIsUnknown();
 
 library Bech32m {
 
-    enum DecodeError {
-        NoError
-    }
-
     // Decode a segwit address
     function decodeSegwitAddress(
         bytes calldata expectedHrp,
         bytes calldata addr
-    ) public pure returns (uint8, bytes memory, DecodeError) {
+    ) public pure returns (uint8) {
 
-        bytes memory data8Bit = new bytes(32);
-        for (uint i = 0; i < data8Bit.length; i += 1) {
-            data8Bit[i] = hex"01";
-        }
-
-        return (1, data8Bit, DecodeError.NoError);
+        return (1);
     }
 }
