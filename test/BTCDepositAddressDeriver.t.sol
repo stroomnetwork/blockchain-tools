@@ -5,6 +5,7 @@ pragma solidity ^0.8.24;
 import {console} from "forge-std/console.sol";
 import {Test} from "forge-std/Test.sol";
 import {BTCDepositAddressDeriver} from "../src/BTCDepositAddressDeriver.sol";
+import {BitcoinNetworkEncoder} from "../src/BitcoinNetworkEncoder.sol";
 
 contract BTCDepositAddressDeriverTest is Test {
 
@@ -206,7 +207,7 @@ contract BTCDepositAddressDeriverTest is Test {
         deriver.setSeed(
             "tb1p7g532zgvuzv8fz3hs02wvn2almqh8qyvz4xdr564nannkxh28kdq62ewy3",
             "tb1psfpmk6v8cvd8kr4rdda0l8gwyn42v5yfjlqkhnureprgs5tuumkqvdkewz",
-            0
+            BitcoinNetworkEncoder.Network.Testnet
         );
 
         assertEq(deriver.wasSeedSet(), true);
@@ -241,7 +242,7 @@ contract BTCDepositAddressDeriverTest is Test {
         deriver.setSeed(
             "tb1p7g532zgvuzv8fz3hs02wvn2almqh8qyvz4xdr564nannkxh28kdq62ewy3",
             "tb1psfpmk6v8cvd8kr4rdda0l8gwyn42v5yfjlqkhnureprgs5tuumkqvdkewz",
-            0
+            BitcoinNetworkEncoder.Network.Testnet
         );
 
         string memory btcAddress = deriver.getBTCDepositAddress(
@@ -257,7 +258,7 @@ contract BTCDepositAddressDeriverTest is Test {
         deriver.setSeed(
             "tb1p5z8wl5tu7m0d79vzqqsl9gu0x4fkjug857fusx4fl4kfgwh5j25spa7245",
             "tb1pfusykjdt46ktwq03d20uqqf94uh9487344wr3q5v9szzsxnjdfks9apcjz",
-            0
+            BitcoinNetworkEncoder.Network.Testnet
         );
 
         string memory btcAddress = deriver.getBTCDepositAddress(

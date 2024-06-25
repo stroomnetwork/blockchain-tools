@@ -9,6 +9,7 @@ import {Tools} from "../src/Tools.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 import {AddressReaderWriter} from "./AddressReaderWriter.s.sol";
 import {console} from "forge-std/console.sol";
+import {BitcoinNetworkEncoder} from "../src/BitcoinNetworkEncoder.sol";
 
 contract SetSeed is Script, AddressReaderWriter {
     function run() external {
@@ -40,9 +41,9 @@ contract SetSeed is Script, AddressReaderWriter {
 
         // get network
         uint _network = vm.envUint("BTC_NETWORK");
-        uint8 network = uint8(_network);
+        BitcoinNetworkEncoder.Network network = BitcoinNetworkEncoder.Network(_network);
         
-        console.log("BTC_NETWORK:", network);
+        console.log("BTC_NETWORK:", _network);
 
         BTCDepositAddressDeriver deriver = BTCDepositAddressDeriver(
             contractAddress
