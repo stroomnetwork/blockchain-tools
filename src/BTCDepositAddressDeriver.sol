@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.24;
 
-import {Deriver} from "./Deriver.sol";
 import {Bech32m} from "./Bech32m.sol";
 
 error UnsupportedBtcAddress(string btcAddress);
@@ -93,12 +92,6 @@ contract BTCDepositAddressDeriver {
 
         uint256 x = uint256(bytes32(witProg));
 
-        if (x == 0 || x >= Deriver.PP) {
-            revert UnsupportedBtcAddress(_bitcoinAddress);
-        }
-
-        uint256 y = Deriver.liftX(x);
-
-        return (x, y);
+        return (x, x);
     }
 }
