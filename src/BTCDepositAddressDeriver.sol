@@ -60,26 +60,6 @@ contract BTCDepositAddressDeriver {
         emit SeedChanged(_btcAddr1, _btcAddr2, _hrp);
     }
 
-    // get address prefix from network type
-    //function getNetworkPrefix(
-    //    uint8 _network
-    //) public pure returns (string memory) {
-
-    //    string memory _hrp;
-
-    //    if (_network == 0) {
-    //        _hrp = 'tb';
-    //    } else if (_network == 1) {
-    //        _hrp = 'bc';
-    //    } else if (_network == 2) {
-    //        _hrp = 'brct';
-    //    } else {
-    //        _hrp = 'unknown';
-    //    }
-
-    //    return _hrp;
-    //}
-
     // Derive pubkey's (x,y) coordinates from taproot address
     function parseBTCTaprootAddress(
         string memory _hrp,

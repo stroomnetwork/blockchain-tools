@@ -26,13 +26,6 @@ contract BitcoinUtils {
     // P2SH type starting with the number 2, eg: 2MzQwSSnBHWHqSAqtTVQ6v47XtaisrJa1Vc
     // Bech32 type starting with bcrt1, eg: bcrt1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx
 
-    //NB: don't forget to update `lnbtc_ext.go` when changing this enum!
-    //enum Network {
-    //    Mainnet,
-    //    Testnet,
-    //    Regtest
-    //}
-
     string constant BECH32_ALPHABET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
 
     function BECH32_ALPHABET_MAP(bytes1 char) public view returns (uint8) {
@@ -92,10 +85,6 @@ contract BitcoinUtils {
     bytes constant BTC_P2PKH_REGTEST = hex"32"; // prefix = 2
     bytes constant BTC_P2SH_REGTEST = hex"6d"; // prefix = m
 
-    //bytes constant BTC_BECH32_MAINNET = hex"626331"; // prefix = bc1
-    //bytes constant BTC_BECH32_REGTEST = hex"6263727431"; // prefix = bcrt1
-    //bytes constant BTC_BECH32_TESTNET = hex"746231"; // prefix = tb1
-
     function getBtcBase58_P2PKH(BitcoinNetworkEncoder.Network network) public pure returns (bytes memory) {
         if (network == BitcoinNetworkEncoder.Network.Mainnet) {
             return BTC_P2PKH_MAINNET;
@@ -119,18 +108,6 @@ contract BitcoinUtils {
             revert("Unknown network type");
         }
     }
-
-    //function getBtcBech32Prefix(Network network) public pure returns (bytes memory) {
-    //    if (network == Network.Mainnet) {
-    //        return BTC_BECH32_MAINNET;
-    //    } else if (network == Network.Regtest) {
-    //        return BTC_BECH32_REGTEST;
-    //    } else if (network == Network.Testnet) {
-    //        return BTC_BECH32_TESTNET;
-    //    } else {
-    //        revert("Unknown network type");
-    //    }
-    //}
 
     function validateBitcoinAddress(
         BitcoinNetworkEncoder.Network network,

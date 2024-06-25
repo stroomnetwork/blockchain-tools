@@ -7,7 +7,7 @@ library BitcoinNetworkEncoder {
     bytes constant BTC_BECH32_MAINNET_BYTES = hex"626331"; // prefix = bc1
     bytes constant BTC_BECH32_TESTNET_BYTES = hex"746231"; // prefix = tb1
     bytes constant BTC_BECH32_REGTEST_BYTES = hex"6263727431"; // prefix = bcrt1
-    
+
     string constant BTC_BECH32_MAINNET = 'bc';
     string constant BTC_BECH32_TESTNET = 'tb';
     string constant BTC_BECH32_REGTEST = 'brct';
