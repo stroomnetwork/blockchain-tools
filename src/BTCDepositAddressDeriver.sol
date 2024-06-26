@@ -3,7 +3,6 @@
 pragma solidity ^0.8.24;
 
 import {Deriver} from "./Deriver.sol";
-import {Bech32m} from "./Bech32m.sol";
 import {console} from "forge-std/console.sol";
 
 error SeedWasNotSetYet();
@@ -11,12 +10,12 @@ error UnsupportedBtcAddress(string btcAddress);
 error CannotParseBtcAddress(
     string btcAddress,
     string hrp,
-    Bech32m.DecodeError err
+    Deriver.DecodeError err
 );
 
 // Types of Bitcoin Network
 
-contract BTCDepositAddressDeriver {
+contract BTCDepositAddressDeriver is Deriver {
 
     event SeedChanged(string btcAddr1, string btcAddr2, string hrp);
 
@@ -85,10 +84,10 @@ contract BTCDepositAddressDeriver {
         string calldata _bitcoinAddress
     ) public pure returns (uint256, uint256) {
 
-        (uint8 witVer, bytes memory witProg, Bech32m.DecodeError err) = Bech32m
-            .decodeSegwitAddress(bytes(_hrp), bytes(_bitcoinAddress));
+        (uint8 witVer, bytes memory witProg, DecodeError err) = decodeSegwitAddress(
+            bytes(_hrp), bytes(_bitcoinAddress));
 
-        if (err != Bech32m.DecodeError.NoError) {
+        if (err != DecodeError.NoError) {
             revert CannotParseBtcAddress(_bitcoinAddress, _hrp, err);
         }
         if (witVer != 1 || witProg.length != 32) {
