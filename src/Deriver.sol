@@ -6,7 +6,7 @@ import {EllipticCurve} from "../lib/elliptic-curve-solidity/contracts/EllipticCu
 
 import {Bech32m} from "./Bech32m.sol";
 
-library Deriver {
+contract Deriver is Bech32m {
 
     // BEGIN SECP256k1 CONSTANTS
     uint256 public constant GX =
