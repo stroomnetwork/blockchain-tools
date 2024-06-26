@@ -10,10 +10,7 @@ error EncodingIsUnknown();
 library Bech32m {
 
     // Decode a segwit address
-    function decodeSegwitAddress(
-        bytes calldata expectedHrp,
-        bytes calldata addr
-    ) public pure returns (uint8) {
+    function decodeSegwitAddress() public pure returns (uint256) {
         return 1;
     }
 }
