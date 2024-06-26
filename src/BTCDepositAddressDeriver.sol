@@ -2,6 +2,8 @@
 
 pragma solidity ^0.8.24;
 
+import {Bech32m} from "./Bech32m.sol";
+
 contract BTCDepositAddressDeriver {
 
     event SeedChanged(string btcAddr1, string btcAddr2, string hrp);
@@ -68,12 +70,9 @@ contract BTCDepositAddressDeriver {
     // Derive pubkey's (x,y) coordinates from taproot address
     function parseBTCTaprootAddress() public pure returns (uint256, uint256) {
 
-        uint256 witVer = decodeSegwitAddress();
+        uint256 witVer = Bech32m.decodeSegwitAddress();
 
         return (witVer, witVer);
     }
 
-    function decodeSegwitAddress() public pure returns (uint256) {
-        return 1;
-    }
 }
