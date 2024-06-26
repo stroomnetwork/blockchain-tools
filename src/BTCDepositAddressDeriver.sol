@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 
 import {Bech32m} from "./Bech32m.sol";
 
-contract BTCDepositAddressDeriver {
+contract BTCDepositAddressDeriver is Bech32m {
 
     event SeedChanged(string btcAddr1, string btcAddr2, string hrp);
 

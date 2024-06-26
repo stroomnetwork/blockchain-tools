@@ -7,7 +7,7 @@ pragma solidity ^0.8.24;
 
 error EncodingIsUnknown();
 
-library Bech32m {
+contract Bech32m {
 
     // Decode a segwit address
     function decodeSegwitAddress() public pure returns (uint256) {
