@@ -17,7 +17,7 @@ error CannotParseBtcAddress(
 
 // Types of Bitcoin Network
 
-contract BTCDepositAddressDeriver {
+contract BTCDepositAddressDeriver is Bech32m, Deriver {
 
     event SeedChanged(string btcAddr1, string btcAddr2, string hrp);
 

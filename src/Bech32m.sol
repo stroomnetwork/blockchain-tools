@@ -7,7 +7,7 @@ pragma solidity ^0.8.24;
 
 error EncodingIsUnknown();
 
-library Bech32m {
+contract Bech32m {
 
     enum BechEncoding {
         // Used is SegWit v.0
@@ -617,7 +617,7 @@ library Bech32m {
 
     // Decode a segwit address
     function decodeSegwitAddress(
-        bytes calldata expectedHrp,
+        bytes memory expectedHrp,
         bytes calldata addr
     ) public pure returns (uint8, bytes memory, DecodeError) {
         (
