@@ -76,6 +76,6 @@ contract BTCDepositAddressDeriver {
         uint8 witVer = Bech32m
             .decodeSegwitAddress(bytes(_hrp), bytes(_bitcoinAddress));
 
-        return (witVer, witVer);
+        return (0, 0);
     }
 }
