@@ -14,7 +14,6 @@ library Bech32m {
         bytes calldata expectedHrp,
         bytes calldata addr
     ) public pure returns (uint8) {
-
-        return (1);
+        return 1;
     }
 }

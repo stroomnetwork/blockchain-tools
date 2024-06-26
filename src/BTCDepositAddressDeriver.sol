@@ -2,6 +2,8 @@
 
 pragma solidity ^0.8.24;
 
+import {Bech32m} from "./Bech32m.sol";
+
 contract BTCDepositAddressDeriver {
 
     event SeedChanged(string btcAddr1, string btcAddr2, string hrp);
@@ -70,6 +72,10 @@ contract BTCDepositAddressDeriver {
         string memory _hrp,
         string calldata _bitcoinAddress
     ) public pure returns (uint256, uint256) {
-        return (0, 0);
+
+        uint8 witVer = Bech32m
+            .decodeSegwitAddress(bytes(_hrp), bytes(_bitcoinAddress));
+
+        return (witVer, witVer);
     }
 }
