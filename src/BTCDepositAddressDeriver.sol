@@ -37,8 +37,8 @@ contract BTCDepositAddressDeriver is Bech32m {
 
         networkHrp = _hrp;
 
-        (p1x, p1y) = parseBTCTaprootAddress();
-        (p2x, p2y) = parseBTCTaprootAddress();
+        (p1x, p1y) = parseBTCTaprootAddress(_btcAddr1);
+        (p2x, p2y) = parseBTCTaprootAddress(_btcAddr2);
 
         btcAddr1 = _btcAddr1;
         btcAddr2 = _btcAddr2;
@@ -68,9 +68,12 @@ contract BTCDepositAddressDeriver is Bech32m {
     }
 
     // Derive pubkey's (x,y) coordinates from taproot address
-    function parseBTCTaprootAddress() public pure returns (uint256, uint256) {
+    function parseBTCTaprootAddress(
+        string calldata _bitcoinAddress
+    ) public pure returns (uint256, uint256) {
 
-        uint256 witVer = Bech32m.decodeSegwitAddress();
+        (uint8 witVer, bytes memory witProg, Bech32m.DecodeError err) = Bech32m.
+            decodeSegwitAddress(bytes(_bitcoinAddress));
 
         return (witVer, witVer);
     }
