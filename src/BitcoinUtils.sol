@@ -108,7 +108,7 @@ contract BitcoinUtils {
             return BTC_P2SH_REGTEST;
         } else if (network == BitcoinNetworkEncoder.Network.Testnet) {
             return BTC_P2SH_TESTNET;
-        } else if (network == Network.Simnet) {
+        } else if (network == BitcoinNetworkEncoder.Network.Simnet) {
             return BTC_P2SH_SIMNET;
         } else {
             revert("Unknown network type");
