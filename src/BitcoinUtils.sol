@@ -84,6 +84,8 @@ contract BitcoinUtils {
     bytes constant BTC_P2SH_TESTNET = hex"6d"; // prefix = m
     bytes constant BTC_P2PKH_REGTEST = hex"32"; // prefix = 2
     bytes constant BTC_P2SH_REGTEST = hex"6d"; // prefix = m
+    bytes constant BTC_P2PKH_SIMNET = hex"3f"; // prefix = S
+    bytes constant BTC_P2SH_SIMNET = hex"7b"; // prefix = s
 
     function getBtcBase58_P2PKH(BitcoinNetworkEncoder.Network network) public pure returns (bytes memory) {
         if (network == BitcoinNetworkEncoder.Network.Mainnet) {
@@ -92,6 +94,8 @@ contract BitcoinUtils {
             return BTC_P2PKH_REGTEST;
         } else if (network == BitcoinNetworkEncoder.Network.Testnet) {
             return BTC_P2PKH_TESTNET;
+        } else if (network == BitcoinNetworkEncoder.Network.Simnet) {
+            return BTC_P2PKH_SIMNET;
         } else {
             revert("Unknown network type");
         }
@@ -104,6 +108,8 @@ contract BitcoinUtils {
             return BTC_P2SH_REGTEST;
         } else if (network == BitcoinNetworkEncoder.Network.Testnet) {
             return BTC_P2SH_TESTNET;
+        } else if (network == BitcoinNetworkEncoder.Network.Simnet) {
+            return BTC_P2SH_SIMNET;
         } else {
             revert("Unknown network type");
         }
