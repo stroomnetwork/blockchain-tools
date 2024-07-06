@@ -48,7 +48,7 @@ deploy-on-anvil: ## Deploy BTCDepositAddressDeriver smart contract on local anvi
 set-sample-seed: ## Set sample seed on previously deployed BTCDepositAddressDeriver.
 	BTC_ADDR1=tb1p5z8wl5tu7m0d79vzqqsl9gu0x4fkjug857fusx4fl4kfgwh5j25spa7245 \
 	BTC_ADDR2=tb1pfusykjdt46ktwq03d20uqqf94uh9487344wr3q5v9szzsxnjdfks9apcjz \
-	BTC_NETWORK=0 \
+	BTC_NETWORK=1 \
 	forge script \
 		-vvv \
 		script/SetSeed.s.sol:SetSeed \
