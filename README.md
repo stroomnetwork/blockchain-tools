@@ -4,11 +4,11 @@
 
 It implements encoding/decoding bitcoin addresses. 
 Implementation is slightly optimized for Solidity (e.g. it uses the fact that uint256 is 256 bits).
-Currently it supports:
+Currently, it supports:
 1. Segwit v0 address BIP-0173
 2. Segwit v1 address (taproot) BIP-0350 
-3. Encoding/decoding returns specific error thus making debugging much easier.
-4. Almost all tests from [Python reference implementation](https://github.com/sipa/bech32/tree/master/ref/python) are implemented.
+3. Encoding/decoding returns specific error thus making debugging much easier
+4. Almost all tests from [Python reference implementation](https://github.com/sipa/bech32/tree/master/ref/python) are implemented
 
 Solidity code for tests was generated automatically using scripts from `python_ref` dir. This scripts use test data and functions from [Python reference implementation](https://github.com/sipa/bech32/tree/master/ref/python) for BIP-0350.
 
