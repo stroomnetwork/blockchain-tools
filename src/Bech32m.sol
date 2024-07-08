@@ -276,7 +276,7 @@ contract Bech32m {
         bytes memory hrp,
         uint8 witVer,
         bytes memory witProg
-    ) internal pure returns (bytes memory) {
+    ) public pure returns (bytes memory) {
         BechEncoding spec = witVer == 0
             ? BechEncoding.BECH32
             : BechEncoding.BECH32M;
