@@ -16,8 +16,7 @@ contract BitcoinUtils_Testnet_Test is Test {
 
     function testValidAddress() public {
         assertTrue(utils.validateBitcoinAddress(network, "ScuV2eqXfQCPcpxqqVSFtMVwkfqcwnQKB1"));
-        //assertTrue(utils.validateBitcoinAddress(network, "mrCDrCybB6J1vRfbwM5hemdJz73FwDBC8r"));
-        //assertTrue(utils.validateBitcoinAddress(network, "2NFPLS6TQVVvic6Nh85PGfcYesbGdm1fjpo"));
+        assertTrue(utils.validateBitcoinAddress(network, "SYi7rot5GKoyuRNUnjrfKYRBL7F4e9L8bN"));
     }
 
     function testInvalidAddress() public {
