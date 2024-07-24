@@ -78,42 +78,7 @@ contract BitcoinUtils {
     //   ALPHABET_MAP[x] = z;
     // }
 
-    bytes constant BTC_P2PKH_MAINNET = hex"31"; // prefix = 1
-    bytes constant BTC_P2SH_MAINNET = hex"33"; // prefix = 3
-    bytes constant BTC_P2PKH_TESTNET = hex"32"; // prefix = 2
-    bytes constant BTC_P2SH_TESTNET = hex"6d"; // prefix = m
-    bytes constant BTC_P2PKH_REGTEST = hex"32"; // prefix = 2
-    bytes constant BTC_P2SH_REGTEST = hex"6d"; // prefix = m
-    bytes constant BTC_P2PKH_SIMNET = hex"53"; // prefix = S
-    bytes constant BTC_P2SH_SIMNET = hex"73"; // prefix = s
 
-    function getBtcBase58_P2PKH(BitcoinNetworkEncoder.Network network) internal pure returns (bytes memory) {
-        if (network == BitcoinNetworkEncoder.Network.Mainnet) {
-            return BTC_P2PKH_MAINNET;
-        } else if (network == BitcoinNetworkEncoder.Network.Regtest) {
-            return BTC_P2PKH_REGTEST;
-        } else if (network == BitcoinNetworkEncoder.Network.Testnet) {
-            return BTC_P2PKH_TESTNET;
-        } else if (network == BitcoinNetworkEncoder.Network.Simnet) {
-            return BTC_P2PKH_SIMNET;
-        } else {
-            revert("Unknown network type");
-        }
-    }
-
-    function getBtcBase58_P2SH(BitcoinNetworkEncoder.Network network) internal pure returns (bytes memory) {
-        if (network == BitcoinNetworkEncoder.Network.Mainnet) {
-            return BTC_P2SH_MAINNET;
-        } else if (network == BitcoinNetworkEncoder.Network.Regtest) {
-            return BTC_P2SH_REGTEST;
-        } else if (network == BitcoinNetworkEncoder.Network.Testnet) {
-            return BTC_P2SH_TESTNET;
-        } else if (network == BitcoinNetworkEncoder.Network.Simnet) {
-            return BTC_P2SH_SIMNET;
-        } else {
-            revert("Unknown network type");
-        }
-    }
 
     function validateBitcoinAddress(
         BitcoinNetworkEncoder.Network network,
@@ -127,8 +92,8 @@ contract BitcoinUtils {
         console.log("\nraw address data");
         console.logBytes(bytes(BTCAddress));
 
-        bytes memory BTC_P2PKH = getBtcBase58_P2PKH(network);
-        bytes memory BTC_P2SH = getBtcBase58_P2SH(network);
+        bytes memory BTC_P2PKH = BitcoinNetworkEncoder.getBtcBase58_P2PKH(network);
+        bytes memory BTC_P2SH = BitcoinNetworkEncoder.getBtcBase58_P2SH(network);
         bytes memory prefix = BitcoinNetworkEncoder.getBtcBech32Prefix(network);
 
         if (equalBytes(bytes(BTCAddress)[: 1], BTC_P2PKH) || equalBytes(bytes(BTCAddress)[: 1], BTC_P2SH) &&
