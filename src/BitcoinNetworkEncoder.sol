@@ -14,6 +14,15 @@ library BitcoinNetworkEncoder {
     string constant BTC_BECH32_REGTEST = 'brct';
     string constant BTC_BECH32_SIMNET = 'sb';
 
+    bytes constant BTC_P2PKH_MAINNET = hex"31"; // prefix = 1
+    bytes constant BTC_P2SH_MAINNET = hex"33"; // prefix = 3
+    bytes constant BTC_P2PKH_TESTNET = hex"32"; // prefix = 2
+    bytes constant BTC_P2SH_TESTNET = hex"6d"; // prefix = m
+    bytes constant BTC_P2PKH_REGTEST = hex"32"; // prefix = 2
+    bytes constant BTC_P2SH_REGTEST = hex"6d"; // prefix = m
+    bytes constant BTC_P2PKH_SIMNET = hex"53"; // prefix = S
+    bytes constant BTC_P2SH_SIMNET = hex"73"; // prefix = s
+
     //NB: don't forget to update `lnbtc_ext.go` when changing this enum!
     enum Network {
         Mainnet,
@@ -22,7 +31,7 @@ library BitcoinNetworkEncoder {
         Simnet
     }
 
-    function getBtcBech32Prefix(Network _network) public pure returns (bytes memory) {
+    function getBtcBech32Prefix(Network _network) internal pure returns (bytes memory) {
         if (_network == Network.Mainnet) {
             return BTC_BECH32_MAINNET_BYTES;
         } else if (_network == Network.Regtest) {
@@ -36,7 +45,7 @@ library BitcoinNetworkEncoder {
         }
     }
 
-    function getNetworkPrefix(Network _network) public pure returns (string memory) {
+    function getNetworkPrefix(Network _network) internal pure returns (string memory) {
         if (_network == Network.Mainnet) {
             return BTC_BECH32_MAINNET;
         } else if (_network == Network.Testnet) {
@@ -50,5 +59,31 @@ library BitcoinNetworkEncoder {
         }
     }
 
+    function getBtcBase58_P2PKH(BitcoinNetworkEncoder.Network network) internal pure returns (bytes memory) {
+        if (network == BitcoinNetworkEncoder.Network.Mainnet) {
+            return BTC_P2PKH_MAINNET;
+        } else if (network == BitcoinNetworkEncoder.Network.Regtest) {
+            return BTC_P2PKH_REGTEST;
+        } else if (network == BitcoinNetworkEncoder.Network.Testnet) {
+            return BTC_P2PKH_TESTNET;
+        } else if (network == BitcoinNetworkEncoder.Network.Simnet) {
+            return BTC_P2PKH_SIMNET;
+        } else {
+            revert("Unknown network type");
+        }
+    }
 
+    function getBtcBase58_P2SH(BitcoinNetworkEncoder.Network network) internal pure returns (bytes memory) {
+        if (network == BitcoinNetworkEncoder.Network.Mainnet) {
+            return BTC_P2SH_MAINNET;
+        } else if (network == BitcoinNetworkEncoder.Network.Regtest) {
+            return BTC_P2SH_REGTEST;
+        } else if (network == BitcoinNetworkEncoder.Network.Testnet) {
+            return BTC_P2SH_TESTNET;
+        } else if (network == BitcoinNetworkEncoder.Network.Simnet) {
+            return BTC_P2SH_SIMNET;
+        } else {
+            revert("Unknown network type");
+        }
+    }
 }
