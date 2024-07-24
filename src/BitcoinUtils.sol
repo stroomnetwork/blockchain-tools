@@ -132,7 +132,7 @@ contract BitcoinUtils {
         bytes memory prefix = BitcoinNetworkEncoder.getBtcBech32Prefix(network);
 
         if (equalBytes(bytes(BTCAddress)[: 1], BTC_P2PKH) || equalBytes(bytes(BTCAddress)[: 1], BTC_P2SH) &&
-        !equalBytes(bytes(BTCAddress)[: 3], prefix)) {
+        !equalBytes(bytes(BTCAddress)[: prefix.length], prefix)) {
             if (bytes(BTCAddress).length < 26 || bytes(BTCAddress).length > 35 || !alphabetCheck(bytes(BTCAddress))) {
                 return false;
             }
