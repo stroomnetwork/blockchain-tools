@@ -84,10 +84,10 @@ contract BitcoinUtils {
     bytes constant BTC_P2SH_TESTNET = hex"6d"; // prefix = m
     bytes constant BTC_P2PKH_REGTEST = hex"32"; // prefix = 2
     bytes constant BTC_P2SH_REGTEST = hex"6d"; // prefix = m
-    bytes constant BTC_P2PKH_SIMNET = hex"3f"; // prefix = S
-    bytes constant BTC_P2SH_SIMNET = hex"7b"; // prefix = s
+    bytes constant BTC_P2PKH_SIMNET = hex"53"; // prefix = S
+    bytes constant BTC_P2SH_SIMNET = hex"73"; // prefix = s
 
-    function getBtcBase58_P2PKH(BitcoinNetworkEncoder.Network network) public pure returns (bytes memory) {
+    function getBtcBase58_P2PKH(BitcoinNetworkEncoder.Network network) internal pure returns (bytes memory) {
         if (network == BitcoinNetworkEncoder.Network.Mainnet) {
             return BTC_P2PKH_MAINNET;
         } else if (network == BitcoinNetworkEncoder.Network.Regtest) {
@@ -101,7 +101,7 @@ contract BitcoinUtils {
         }
     }
 
-    function getBtcBase58_P2SH(BitcoinNetworkEncoder.Network network) public pure returns (bytes memory) {
+    function getBtcBase58_P2SH(BitcoinNetworkEncoder.Network network) internal pure returns (bytes memory) {
         if (network == BitcoinNetworkEncoder.Network.Mainnet) {
             return BTC_P2SH_MAINNET;
         } else if (network == BitcoinNetworkEncoder.Network.Regtest) {
@@ -129,8 +129,10 @@ contract BitcoinUtils {
 
         bytes memory BTC_P2PKH = getBtcBase58_P2PKH(network);
         bytes memory BTC_P2SH = getBtcBase58_P2SH(network);
+        bytes memory prefix = BitcoinNetworkEncoder.getBtcBech32Prefix(network);
 
-        if (equalBytes(bytes(BTCAddress)[: 1], BTC_P2PKH) || equalBytes(bytes(BTCAddress)[: 1], BTC_P2SH)) {
+        if (equalBytes(bytes(BTCAddress)[: 1], BTC_P2PKH) || equalBytes(bytes(BTCAddress)[: 1], BTC_P2SH) &&
+        !equalBytes(bytes(BTCAddress)[: 3], prefix)) {
             if (bytes(BTCAddress).length < 26 || bytes(BTCAddress).length > 35 || !alphabetCheck(bytes(BTCAddress))) {
                 return false;
             }
@@ -139,7 +141,6 @@ contract BitcoinUtils {
             return validateBase58Checksum(BTCAddress);
         }
 
-        bytes memory prefix = BitcoinNetworkEncoder.getBtcBech32Prefix(network);
         if (equalBytes(bytes(BTCAddress)[: prefix.length], prefix)) {
             if (network == BitcoinNetworkEncoder.Network.Regtest) {
                 if (bytes(BTCAddress).length < 43 || bytes(BTCAddress).length > 63) return false;
