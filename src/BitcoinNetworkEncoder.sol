@@ -22,7 +22,7 @@ library BitcoinNetworkEncoder {
         Simnet
     }
 
-    function getBtcBech32Prefix(Network _network) public pure returns (bytes memory) {
+    function getBtcBech32Prefix(Network _network) internal pure returns (bytes memory) {
         if (_network == Network.Mainnet) {
             return BTC_BECH32_MAINNET_BYTES;
         } else if (_network == Network.Regtest) {
@@ -36,7 +36,7 @@ library BitcoinNetworkEncoder {
         }
     }
 
-    function getNetworkPrefix(Network _network) public pure returns (string memory) {
+    function getNetworkPrefix(Network _network) internal pure returns (string memory) {
         if (_network == Network.Mainnet) {
             return BTC_BECH32_MAINNET;
         } else if (_network == Network.Testnet) {
