@@ -50,7 +50,7 @@ library Bech32m {
         IncorrectEncodingForSegwitVn
     }
 
-    function explainDecodeError(DecodeError err) public pure returns (string memory) {
+    function explainDecodeError(DecodeError err) internal pure returns (string memory) {
         if (err == DecodeError.NoError) {
             return string("No error");
         } else if (err == DecodeError.IncorrectPadding) {
@@ -135,7 +135,7 @@ library Bech32m {
 
     // Expand the HRP into values for checksum computation.
     // hrpExpand DOES NOT check the validity of the HRP
-    function hrpExpand(bytes memory hrp) public pure returns (bytes memory) {
+    function hrpExpand(bytes memory hrp) internal pure returns (bytes memory) {
 
         bytes memory a = new bytes(hrp.length + hrp.length + 1);
         for (uint i = 0; i < hrp.length; i += 1) {
@@ -151,7 +151,7 @@ library Bech32m {
         bytes memory hrp,
         bytes memory data,
         BechEncoding spec
-    ) public pure returns (bytes memory) {
+    ) internal pure returns (bytes memory) {
 
         // TODO(mkl): add check for UNKNOWN encoding
         uint const = spec == BechEncoding.BECH32M ? BECH32M_CONST : 1;
@@ -215,7 +215,7 @@ library Bech32m {
         bytes memory hrp,
         bytes memory data,
         BechEncoding spec
-    ) public pure returns (bytes memory) {
+    ) internal pure returns (bytes memory) {
 
         if (spec == BechEncoding.UNKNOWN) {
             revert EncodingIsUnknown();
@@ -319,7 +319,7 @@ library Bech32m {
         bytes memory hrp,
         uint8 witVer,
         bytes memory witProg
-    ) public pure returns (bytes memory) {
+    ) internal pure returns (bytes memory) {
         BechEncoding spec = witVer == 0
             ? BechEncoding.BECH32
             : BechEncoding.BECH32M;
@@ -333,7 +333,7 @@ library Bech32m {
     // Convert 8 groups of 5 bits to 5 bytes
     function convert5to8(
         bytes memory data5Bits
-    ) public pure returns (bytes memory, DecodeError) {
+    ) internal pure returns (bytes memory, DecodeError) {
         uint vRest;
         uint nRest5Bits = data5Bits.length % 8;
         uint nRest8Bits;
@@ -441,7 +441,7 @@ library Bech32m {
     // check that all characters are in the range 33-126 inclusive\
     function isValidCharacterRange(
         bytes memory bech
-    ) public pure returns (bool) {
+    ) internal pure returns (bool) {
         for (uint i = 0; i < bech.length; i += 1) {
             if (uint8(bech[i]) < 33 || uint8(bech[i]) > 126) {
                 return false;
@@ -450,7 +450,7 @@ library Bech32m {
         return true;
     }
 
-    function isMixedCase(bytes memory b) public pure returns (bool) {
+    function isMixedCase(bytes memory b) internal pure returns (bool) {
         bool hasLower = false;
         bool hasUpper = false;
 
@@ -470,7 +470,7 @@ library Bech32m {
         return false;
     }
 
-    function toLower(bytes memory a) public pure returns (bytes memory) {
+    function toLower(bytes memory a) internal pure returns (bytes memory) {
         bytes memory b = new bytes(a.length);
         for (uint i = 0; i < a.length; i += 1) {
             if (uint8(a[i]) >= 65 && uint8(a[i]) <= 90) {
@@ -488,7 +488,7 @@ library Bech32m {
         bytes memory bech,
         uint start,
         uint stop
-    ) public pure returns (bytes memory, DecodeError) {
+    ) internal pure returns (bytes memory, DecodeError) {
         bytes memory decoded = new bytes(stop - start);
         for (uint i = start; i < stop; i += 1) {
             uint8 c = uint8(bech[i]);
@@ -503,7 +503,7 @@ library Bech32m {
     function bech32Decode(
         bytes memory bech
     )
-        public
+        internal
         pure
         returns (bytes memory, bytes memory, BechEncoding, DecodeError)
     {
@@ -603,7 +603,7 @@ library Bech32m {
     function areBytesEqual(
         bytes memory a,
         bytes memory b
-    ) public pure returns (bool) {
+    ) internal pure returns (bool) {
         if (a.length != b.length) {
             return false;
         }
@@ -617,9 +617,9 @@ library Bech32m {
 
     // Decode a segwit address
     function decodeSegwitAddress(
-        bytes calldata expectedHrp,
-        bytes calldata addr
-    ) public pure returns (uint8, bytes memory, DecodeError) {
+        bytes memory expectedHrp,
+        bytes memory addr
+    ) internal pure returns (uint8, bytes memory, DecodeError) {
         (
             bytes memory hrpGot,
             bytes memory data5Bit,

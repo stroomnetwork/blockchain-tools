@@ -69,7 +69,7 @@ library Deriver {
         uint256 p2x,
         uint256 p2y,
         address addr
-    ) public pure returns (uint256, uint256) {
+    ) internal pure returns (uint256, uint256) {
         uint256 c1 = getCoefficient(p1x, p1y, addr);
         uint256 c2 = getCoefficient(p2x, p2y, addr);
         return getCombinedPubkey(p1x, p1y, p2x, p2y, c1, c2);
@@ -83,7 +83,7 @@ library Deriver {
         uint256 p2y,
         bytes memory hrp,
         address ethAddr
-    ) public pure returns (string memory) {
+    ) internal pure returns (string memory) {
         (uint256 x, uint256 y) = getPubkeyFromAddress(
             p1x,
             p1y,
@@ -95,7 +95,7 @@ library Deriver {
     }
 
     // calculate y coordinate from x coordinate
-    function liftX(uint256 x) public pure returns (uint256) {
+    function liftX(uint256 x) internal pure returns (uint256) {
         return EllipticCurve.deriveY(0x02, x, AA, BB, PP);
     }
 }

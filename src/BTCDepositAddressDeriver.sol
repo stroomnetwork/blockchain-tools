@@ -5,7 +5,6 @@ pragma solidity ^0.8.24;
 import {Deriver} from "./Deriver.sol";
 import {Bech32m} from "./Bech32m.sol";
 import {BitcoinNetworkEncoder} from "./BitcoinNetworkEncoder.sol";
-import {console} from "forge-std/console.sol";
 
 error SeedWasNotSetYet();
 error UnsupportedBtcAddress(string btcAddress);
