@@ -11,7 +11,7 @@ library BitcoinNetworkEncoder {
 
     string constant BTC_BECH32_MAINNET = 'bc';
     string constant BTC_BECH32_TESTNET = 'tb';
-    string constant BTC_BECH32_REGTEST = 'brct';
+    string constant BTC_BECH32_REGTEST = 'bcrt';
     string constant BTC_BECH32_SIMNET = 'sb';
 
     bytes constant BTC_P2PKH_MAINNET = hex"31"; // prefix = 1
