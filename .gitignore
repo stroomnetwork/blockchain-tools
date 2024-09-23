@@ -16,6 +16,5 @@ docs/
 __pycache__
 
 .vscode
-temp/
-
 .idea
+temp/
