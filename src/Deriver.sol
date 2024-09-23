@@ -84,7 +84,7 @@ library Deriver {
         bytes memory hrp,
         address ethAddr
     ) internal pure returns (string memory) {
-        (uint256 x, uint256 _y) = getPubkeyFromAddress(
+        (uint256 x, uint256 y) = getPubkeyFromAddress(
             p1x,
             p1y,
             p2x,
