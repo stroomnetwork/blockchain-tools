@@ -105,12 +105,4 @@ contract BTCDepositAddressDeriver {
                 ethAddr
             );
     }
-
-    function getBtcAddress1() public view returns (string memory) {
-        return btcAddr1;
-    }
-
-    function getBtcAddress2() public view returns (string memory) {
-        return btcAddr2;
-    }
 }
