@@ -25,6 +25,7 @@ contract BitcoinUtils {
     // P2PKH which begin with the number m or n, eg: mipcBbFg9gMiCh81Kj8tqqdgoZub1ZJRfn
     // P2SH type starting with the number 2, eg: 2MzQwSSnBHWHqSAqtTVQ6v47XtaisrJa1Vc
     // Bech32 type starting with bcrt1, eg: bcrt1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx
+    // Taproot address, eg: bcrt1pnmrmugapastum8ztvgwcn8hvq2avmcwh2j4ssru7rtyygkpqq98q4wyd6s
 
     string constant BECH32_ALPHABET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
 
@@ -108,7 +109,7 @@ contract BitcoinUtils {
 
         if (equalBytes(bytes(BTCAddress)[: prefix.length], prefix)) {
             if (network == BitcoinNetworkEncoder.Network.Regtest) {
-                if (bytes(BTCAddress).length < 43 || bytes(BTCAddress).length > 63) return false;
+                if (bytes(BTCAddress).length < 43 || bytes(BTCAddress).length > 64) return false;
             } else {
                 if (bytes(BTCAddress).length < 42 || bytes(BTCAddress).length > 62) return false;
             }
