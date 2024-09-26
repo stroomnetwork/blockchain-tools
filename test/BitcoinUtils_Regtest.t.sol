@@ -26,6 +26,7 @@ contract BitcoinUtils_Regtest_Test is Test {
 
     function testBech32ValidAddress() public {
         assertTrue(utils.validateBitcoinAddress(network, "bcrt1qnd2xm45v0uy5nx3qzt28qrhq42w4udrms8sz52"));
+        assertTrue(utils.validateBitcoinAddress(network, "bcrt1pnmrmugapastum8ztvgwcn8hvq2avmcwh2j4ssru7rtyygkpqq98q4wyd6s"));
     }
 
     function testBech32ValidMainnetAddressIsNotValidForRegtest() public {
