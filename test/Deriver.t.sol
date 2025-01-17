@@ -231,26 +231,83 @@ contract DeriverTest is Test {
         assertEq(expectedBtcAddr5, btcAddr5);
     }
 
-    // function testGetBtcAddressTaprootNoScriptFromEth() public {
-    //     // Test cases were automatically generated in Go.
+    function testGetBtcAddressTaprootNoScriptFromEth() public {
+        // Test cases were automatically generated in Go.
 
-    //     uint256 x1_0 = 54147769457631533710022564500742536038246727812137618871549590227497793828474;
-    //     uint256 y1_0 = 96091192197178033512370658560500964796461556892477693557977072200584849793968;
-    //     uint256 x2_0 = 67261561909726473286993603243929025817028541803191223835743288887468871643510;
-    //     uint256 y2_0 = 49473559344142397756767891385407723329456329883991697784595543981689192800614;
-    //     address ethAddr_0 = 0x388C818CA8B9251b393131C08a736A67ccB19297;
-    //     string
-    //         memory expectedBtcAddr_0 = "bcrt1pr53pdru9x6vmshdwhqs2znq5gy5kfwvfjtms340mac6ahvft42cqd42f4x";
-    //     string
-    //         memory expectedBtcDesc_0 = "tr(46b8b5d09b655da4885a4383a5ef22b36285f106d31dae232ad42f7a7cd4dd42)";
-    //     string memory btcAddr_0 = Deriver.getBtcAddressTaprootNoScriptFromEth(
-    //         x1_0,
-    //         y1_0,
-    //         x2_0,
-    //         y2_0,
-    //         bytes("bcrt"),
-    //         ethAddr_0
-    //     );
-    //     assertEq(expectedBtcAddr_0, btcAddr_0);
-    // }
+        uint256 x1_0 = 54147769457631533710022564500742536038246727812137618871549590227497793828474;
+        uint256 y1_0 = 96091192197178033512370658560500964796461556892477693557977072200584849793968;
+        uint256 x2_0 = 67261561909726473286993603243929025817028541803191223835743288887468871643510;
+        uint256 y2_0 = 49473559344142397756767891385407723329456329883991697784595543981689192800614;
+        address ethAddr_0 = 0x388C818CA8B9251b393131C08a736A67ccB19297;
+        string
+            memory expectedBtcAddr_0 = "bcrt1paz50paqaeph7xecyt8hzc9ly3sfyuaw0nmaaahat8mn37hrlhcjq5cm0kq";
+        string
+            memory expectedBtcDesc_0 = "tr(73e0ef552f3e3a4b1b35d1be0476107fb060afb49634ef5ef22ac54171ff0541)";
+        string memory btcAddr_0 = Deriver.getBtcAddressTaprootNoScriptFromEth(
+            x1_0,
+            y1_0,
+            x2_0,
+            y2_0,
+            bytes("bcrt"),
+            ethAddr_0
+        );
+        assertEq(expectedBtcAddr_0, btcAddr_0);
+
+        uint256 x1_1 = 1;
+        uint256 y1_1 = 29896722852569046015560700294576055776214335159245303116488692907525646231534;
+        uint256 x2_1 = 109425434543890623006875089384956782646038918384464063743018502921509251658712;
+        uint256 y2_1 = 105040070358470594764068890032032104493554430042352852644935734267919855545570;
+        address ethAddr_1 = 0x5e17BFfaD9f5D57Bcc17071aec4249C9176A728d;
+        string
+            memory expectedBtcAddr_1 = "bcrt1pc5ydppgpkeg5nrcetqu8g0rjeytsqww3j6xq50tlulqvwnfhhxcslync0s";
+        string
+            memory expectedBtcDesc_1 = "tr(9829a5f5185b5556d42ee4fcd80cceabacc6abd6eea3904b0d95547b265a6b80)";
+        string memory btcAddr_1 = Deriver.getBtcAddressTaprootNoScriptFromEth(
+            x1_1,
+            y1_1,
+            x2_1,
+            y2_1,
+            bytes("bcrt"),
+            ethAddr_1
+        );
+        assertEq(expectedBtcAddr_1, btcAddr_1);
+
+        uint256 x1_2 = 1004;
+        uint256 y1_2 = 50566750680002108827280051043316308483979214535572331408301622620618248094164;
+        uint256 x2_2 = 59175011958650668134192622663723128104568439824145117716282659597024212199440;
+        uint256 y2_2 = 80820378799967249230036383627285913857484256274800501889702018267851848282858;
+        address ethAddr_2 = 0x5e17BFfaD9f5D57Bcc17071aec4249C9176A728d;
+        string
+            memory expectedBtcAddr_2 = "bcrt1pu8e52ej8y50hdmnpzmusnxp8dxxa4nkp80l6n9k6vt2jm9matxaqtseyv9";
+        string
+            memory expectedBtcDesc_2 = "tr(1c8abe597846aca60ecbc845dc921303a5ee52af29f235c985e93eca4d8f19bd)";
+        string memory btcAddr_2 = Deriver.getBtcAddressTaprootNoScriptFromEth(
+            x1_2,
+            y1_2,
+            x2_2,
+            y2_2,
+            bytes("bcrt"),
+            ethAddr_2
+        );
+        assertEq(expectedBtcAddr_2, btcAddr_2);
+
+        uint256 x1_3 = 12;
+        uint256 y1_3 = 31068864722486242021761838950999795945745157936084027215252040495978276421796;
+        uint256 x2_3 = 1;
+        uint256 y2_3 = 29896722852569046015560700294576055776214335159245303116488692907525646231534;
+        address ethAddr_3 = 0x5e17BFfaD9f5D57Bcc17071aec4249C9176A728d;
+        string
+            memory expectedBtcAddr_3 = "bcrt1pfufcg3vafamdnfgtl95r7fwxln0457n8dlrz0crw99swzkp0ddms7z2lqx";
+        string
+            memory expectedBtcDesc_3 = "tr(1fd8ab78bb02e83d42076c7615920e03597171c67237bff548bc3eae6f9d0051)";
+        string memory btcAddr_3 = Deriver.getBtcAddressTaprootNoScriptFromEth(
+            x1_3,
+            y1_3,
+            x2_3,
+            y2_3,
+            bytes("bcrt"),
+            ethAddr_3
+        );
+        assertEq(expectedBtcAddr_3, btcAddr_3);
+    }
 }

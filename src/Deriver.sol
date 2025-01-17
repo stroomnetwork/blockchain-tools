@@ -54,6 +54,9 @@ library Deriver {
     }
 
     // linear combination of two pubkeys
+    // Note: resulting point may have odd y coordinate(not compatible with BIP-340), however
+    // if it is used for address derivation which requires only x coordinate, it is not a problem.
+    // But if you use this pubkey for other purposes, you should check y coordinate and negate the point if necessary.
     function getCombinedPubkey(
         uint256 p1x,
         uint256 p1y,
@@ -167,13 +170,13 @@ library Deriver {
         );
 
         // TODO: maybe fix this in getPubkeyFromAddress
+        // Because we use pubkey for further calculations we should make it BIP-340 compatible
         if (y % 2 == 1) {
             y = PP - y;
         }
 
         (uint256 xTweaked, uint256 _yTweaked) = computeTaprootKeyNoScript(x, y);
 
-        // TODO(mkl): maybe we should use `abi.encode` here. Because length of serialized x should be always 32 bytes.
         return getBtcTaprootAddrFromPubkey(xTweaked, hrp);
     }
 }
