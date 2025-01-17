@@ -89,6 +89,15 @@ library Deriver {
         return getCombinedPubkey(p1x, p1y, p2x, p2y, c1, c2);
     }
 
+    // derive Bitcoin address from pubkey
+    // only x coordinate is used for address generation
+    function getBtcTaprootAddrFromPubkey(
+        uint256 x,
+        bytes memory hrp
+    ) internal pure returns (string memory) {
+        return string(Bech32m.encodeSegwitAddress(hrp, 1, abi.encodePacked(x)));
+    }
+
     // derive Bitcoin address from user's Ethereum address and validators' pubkeys
     // Better use getBtcAddressTaprootNoScriptFromEth instead of this function
     function getBtcAddressFromEth(
@@ -107,7 +116,7 @@ library Deriver {
             ethAddr
         );
         // TODO(mkl): maybe we should use `abi.encode` here. Because length of serialized x should be always 32 bytes.
-        return string(Bech32m.encodeSegwitAddress(hrp, 1, abi.encodePacked(x)));
+        return getBtcTaprootAddrFromPubkey(x, hrp);
     }
 
     // calculate y coordinate from x coordinate
@@ -163,9 +172,6 @@ library Deriver {
         (uint256 xTweaked, uint256 _yTweaked) = computeTaprootKeyNoScript(x, y);
 
         // TODO(mkl): maybe we should use `abi.encode` here. Because length of serialized x should be always 32 bytes.
-        return
-            string(
-                Bech32m.encodeSegwitAddress(hrp, 1, abi.encodePacked(xTweaked))
-            );
+        return getBtcTaprootAddrFromPubkey(xTweaked, hrp);
     }
 }
