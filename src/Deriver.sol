@@ -21,6 +21,8 @@ library Deriver {
     // sha256("TapTweak")
     bytes32 public constant SHA256_TAP_TWEAK =
         hex"e80fe1639c9ca050e3af1b39c143c63e429cbceb15d940fbb5c5a1f4af57c5e9";
+    
+    
 
     // TODO(mkl): use tagged hashes
     function getCoefficient(

@@ -47,6 +47,36 @@ contract DeriverTest is Test {
         );
     }
 
+    function testCoefficientDerivation_2() public {
+        uint256 x_0 = 1;
+        uint256 y_0 = 29896722852569046015560700294576055776214335159245303116488692907525646231534;
+        address ethAddr_0 = 0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5;
+        uint256 expectedCoef_0 = 0x8e42e5c13f5cbeb86d71b7da134e17815a8d2679b58ac62bf77c0bcda88af048;
+        uint256 coef_0 = Deriver.getCoefficient(x_0, y_0, ethAddr_0);
+        assertEq(expectedCoef_0, coef_0);
+
+        uint256 x_1 = 100000001;
+        uint256 y_1 = 6187697718246333927483135664988668927828752610007079514140924362238612640234;
+        address ethAddr_1 = 0x4675C7e5BaAFBFFbca748158bEcBA61ef3b0a263;
+        uint256 expectedCoef_1 = 0xe57b99b605b15585b06b5111e5bf25f625fa0883a5a5dbe39630e09fa0333fc7;
+        uint256 coef_1 = Deriver.getCoefficient(x_1, y_1, ethAddr_1);
+        assertEq(expectedCoef_1, coef_1);
+
+        uint256 x_2 = 10000000000000001;
+        uint256 y_2 = 19058164647355796972794349987072136692774271288946368805784800428345550206840;
+        address ethAddr_2 = 0x9c595f9518b11b2876B2A5E89996B1Fd2c748726;
+        uint256 expectedCoef_2 = 0x836fc7d9c5288be60128dda0a3f5b6b48d5aac1eff1b248b259fd19caaa78192;
+        uint256 coef_2 = Deriver.getCoefficient(x_2, y_2, ethAddr_2);
+        assertEq(expectedCoef_2, coef_2);
+
+        uint256 x_3 = 49638490350653890404049973095656032488753139080487109443386992570973932368088;
+        uint256 y_3 = 55561757371571341431703784879667865348336433843616233757864721735452092825326;
+        address ethAddr_3 = 0x36A35fB10d9d273da615f4b658829901326e0d00;
+        uint256 expectedCoef_3 = 0x5d36326d019bc25f9f3119b630890fc745d72fdff1928f858194ce87b2be57a1;
+        uint256 coef_3 = Deriver.getCoefficient(x_3, y_3, ethAddr_3);
+        assertEq(expectedCoef_3, coef_3);
+    }
+
     function testPubkeyFromAddree() public {
         (uint256 x, uint256 y) = Deriver.getPubkeyFromAddress(
             0xF22915090CE098748A3783D4E64D5DFEC173808C154CD1D3559F673B1AEA3D9A,
