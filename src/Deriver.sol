@@ -113,7 +113,7 @@ library Deriver {
         bytes memory hrp,
         address ethAddr
     ) internal pure returns (string memory) {
-        (uint256 x, uint256 _y) = getPubkeyFromAddress(
+        (uint256 x,) = getPubkeyFromAddress(
             p1x,
             p1y,
             p2x,
@@ -175,7 +175,7 @@ library Deriver {
             y = PP - y;
         }
 
-        (uint256 xTweaked, uint256 _yTweaked) = computeTaprootKeyNoScript(x, y);
+        (uint256 xTweaked,) = computeTaprootKeyNoScript(x, y);
 
         return getBtcTaprootAddrFromPubkey(xTweaked, hrp);
     }

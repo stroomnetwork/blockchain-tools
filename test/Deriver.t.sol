@@ -6,7 +6,7 @@ import {Test, console} from "forge-std/Test.sol";
 import {Deriver} from "../src/Deriver.sol";
 
 contract DeriverTest is Test {
-    function testDerivationPubkey() public {
+    function testDerivationPubkey() public pure {
         (uint256 x1, uint256 y1) = Deriver.getCombinedPubkey(
             0xF22915090CE098748A3783D4E64D5DFEC173808C154CD1D3559F673B1AEA3D9A,
             0xEE340CB6B7C08A2B96B7C34A70B5B980FAD90AD4E9D0BE50302DA7542A73C0E0,
@@ -25,7 +25,7 @@ contract DeriverTest is Test {
         );
     }
 
-    function testCoefficientDerivation() public {
+    function testCoefficientDerivation() public pure {
         uint256 c1 = Deriver.getCoefficient(
             0xF22915090CE098748A3783D4E64D5DFEC173808C154CD1D3559F673B1AEA3D9A,
             0xEE340CB6B7C08A2B96B7C34A70B5B980FAD90AD4E9D0BE50302DA7542A73C0E0,
@@ -47,7 +47,7 @@ contract DeriverTest is Test {
         );
     }
 
-    function testCoefficientDerivation_2() public {
+    function testCoefficientDerivation_2() public pure {
         uint256 x_0 = 1;
         uint256 y_0 = 29896722852569046015560700294576055776214335159245303116488692907525646231534;
         address ethAddr_0 = 0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5;
@@ -77,7 +77,7 @@ contract DeriverTest is Test {
         assertEq(expectedCoef_3, coef_3);
     }
 
-    function testPubkeyFromAddree() public {
+    function testPubkeyFromAddree() public pure {
         (uint256 x, uint256 y) = Deriver.getPubkeyFromAddress(
             0xF22915090CE098748A3783D4E64D5DFEC173808C154CD1D3559F673B1AEA3D9A,
             0xEE340CB6B7C08A2B96B7C34A70B5B980FAD90AD4E9D0BE50302DA7542A73C0E0,
@@ -95,7 +95,7 @@ contract DeriverTest is Test {
         );
     }
 
-    function testGetBtcAddressFromEth() public {
+    function testGetBtcAddressFromEth() public pure {
         string memory btcAddress = Deriver.getBtcAddressFromEth(
             0xF22915090CE098748A3783D4E64D5DFEC173808C154CD1D3559F673B1AEA3D9A,
             0xEE340CB6B7C08A2B96B7C34A70B5B980FAD90AD4E9D0BE50302DA7542A73C0E0,
@@ -110,7 +110,7 @@ contract DeriverTest is Test {
         );
     }
 
-    function testComputeTaprootKeyNoScript() public {
+    function testComputeTaprootKeyNoScript() public pure {
         // Test cases were automatically generated in Go.
         // Correspondence between descriptor and regtest address was checked in bitcoind.
 
@@ -187,7 +187,7 @@ contract DeriverTest is Test {
         assertEq(y5Tweaked, y5TweakedExpected);
     }
 
-    function testgetBtcTaprootAddrFromPubkey() public {
+    function testgetBtcTaprootAddrFromPubkey() public pure {
         uint256 x0 = 1;
         bytes memory hrp0 = bytes("bcrt");
         string
@@ -231,7 +231,7 @@ contract DeriverTest is Test {
         assertEq(expectedBtcAddr5, btcAddr5);
     }
 
-    function testGetBtcAddressTaprootNoScriptFromEth() public {
+    function testGetBtcAddressTaprootNoScriptFromEth() public pure {
         // Test cases were automatically generated in Go.
 
         uint256 x1_0 = 54147769457631533710022564500742536038246727812137618871549590227497793828474;
@@ -241,8 +241,8 @@ contract DeriverTest is Test {
         address ethAddr_0 = 0x388C818CA8B9251b393131C08a736A67ccB19297;
         string
             memory expectedBtcAddr_0 = "bcrt1paz50paqaeph7xecyt8hzc9ly3sfyuaw0nmaaahat8mn37hrlhcjq5cm0kq";
-        string
-            memory expectedBtcDesc_0 = "tr(73e0ef552f3e3a4b1b35d1be0476107fb060afb49634ef5ef22ac54171ff0541)";
+        // string
+        //     memory expectedBtcDesc_0 = "tr(73e0ef552f3e3a4b1b35d1be0476107fb060afb49634ef5ef22ac54171ff0541)";
         string memory btcAddr_0 = Deriver.getBtcAddressTaprootNoScriptFromEth(
             x1_0,
             y1_0,
@@ -260,8 +260,8 @@ contract DeriverTest is Test {
         address ethAddr_1 = 0x5e17BFfaD9f5D57Bcc17071aec4249C9176A728d;
         string
             memory expectedBtcAddr_1 = "bcrt1pc5ydppgpkeg5nrcetqu8g0rjeytsqww3j6xq50tlulqvwnfhhxcslync0s";
-        string
-            memory expectedBtcDesc_1 = "tr(9829a5f5185b5556d42ee4fcd80cceabacc6abd6eea3904b0d95547b265a6b80)";
+        // string
+        //     memory expectedBtcDesc_1 = "tr(9829a5f5185b5556d42ee4fcd80cceabacc6abd6eea3904b0d95547b265a6b80)";
         string memory btcAddr_1 = Deriver.getBtcAddressTaprootNoScriptFromEth(
             x1_1,
             y1_1,
@@ -279,8 +279,8 @@ contract DeriverTest is Test {
         address ethAddr_2 = 0x5e17BFfaD9f5D57Bcc17071aec4249C9176A728d;
         string
             memory expectedBtcAddr_2 = "bcrt1pu8e52ej8y50hdmnpzmusnxp8dxxa4nkp80l6n9k6vt2jm9matxaqtseyv9";
-        string
-            memory expectedBtcDesc_2 = "tr(1c8abe597846aca60ecbc845dc921303a5ee52af29f235c985e93eca4d8f19bd)";
+        // string
+        //     memory expectedBtcDesc_2 = "tr(1c8abe597846aca60ecbc845dc921303a5ee52af29f235c985e93eca4d8f19bd)";
         string memory btcAddr_2 = Deriver.getBtcAddressTaprootNoScriptFromEth(
             x1_2,
             y1_2,
@@ -298,8 +298,8 @@ contract DeriverTest is Test {
         address ethAddr_3 = 0x5e17BFfaD9f5D57Bcc17071aec4249C9176A728d;
         string
             memory expectedBtcAddr_3 = "bcrt1pfufcg3vafamdnfgtl95r7fwxln0457n8dlrz0crw99swzkp0ddms7z2lqx";
-        string
-            memory expectedBtcDesc_3 = "tr(1fd8ab78bb02e83d42076c7615920e03597171c67237bff548bc3eae6f9d0051)";
+        // string
+        //     memory expectedBtcDesc_3 = "tr(1fd8ab78bb02e83d42076c7615920e03597171c67237bff548bc3eae6f9d0051)";
         string memory btcAddr_3 = Deriver.getBtcAddressTaprootNoScriptFromEth(
             x1_3,
             y1_3,
