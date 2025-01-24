@@ -96,7 +96,7 @@ contract BTCDepositAddressDeriver {
         }
 
         return
-            Deriver.getBtcAddressFromEth(
+            Deriver.getBtcAddressTaprootNoScriptFromEth(
                 p1x,
                 p1y,
                 p2x,
