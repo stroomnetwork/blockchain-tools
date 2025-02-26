@@ -74,7 +74,7 @@ contract BitcoinUtils {
     }
 
     // const ALPHABET_MAP: { [key: string]: number } = {};
-    // for (let z = 0; z < ALPHABET.length; z++) {
+    // for (let z = 0; z < ALPHABET.length; ++z) {
     //   const x = ALPHABET.charAt(z);
     //   ALPHABET_MAP[x] = z;
     // }
@@ -125,7 +125,7 @@ contract BitcoinUtils {
         if (!(one.length == two.length)) {
             return false;
         }
-        for (uint256 i = 0; i < one.length; i++) {
+        for (uint256 i = 0; i < one.length; ++i) {
             if (!(one[i] == two[i])) {
                 return false;
             }
@@ -134,7 +134,7 @@ contract BitcoinUtils {
     }
 
     function alphabetCheck(bytes memory BTCAddress) public pure returns (bool) {
-        for (uint256 i = 0; i < BTCAddress.length; i++) {
+        for (uint256 i = 0; i < BTCAddress.length; ++i) {
             uint8 charCode = uint8(BTCAddress[i]);
             bool contains = isLetter(charCode);
             if (!contains) return false;
@@ -234,7 +234,7 @@ contract BitcoinUtils {
 
         uint256 split = 0;
 
-        for (uint256 i = 0; i < _btcAddress.length; i++) {
+        for (uint256 i = 0; i < _btcAddress.length; ++i) {
             if (_btcAddress[i] == "1") {
                 split = i;
                 break;
@@ -254,11 +254,11 @@ contract BitcoinUtils {
         bytes memory prefix = new bytes(split);
         bytes memory wordChars = new bytes(_btcAddress.length - split - 1);
 
-        for (uint256 i = 0; i < split; i++) {
+        for (uint256 i = 0; i < split; ++i) {
             prefix[i] = _btcAddress[i];
         }
 
-        for (uint256 i = 0; i < wordChars.length; i++) {
+        for (uint256 i = 0; i < wordChars.length; ++i) {
             wordChars[i] = _btcAddress[i + split + 1];
         }
 
@@ -282,7 +282,7 @@ contract BitcoinUtils {
 
         bytes memory words = new bytes(wordChars.length);
 
-        for (uint256 i = 0; i < wordChars.length; i++) {
+        for (uint256 i = 0; i < wordChars.length; ++i) {
             bytes1 c = wordChars[i];
             uint8 v = BECH32_ALPHABET_MAP(c);
 
@@ -367,7 +367,7 @@ contract BitcoinUtils {
         console.logBytes(version);
 
         bytes memory payload = new bytes(rawData.length - 1 - 4);
-        for (uint256 i = 0; i < rawData.length - 1 - 4; i++) {
+        for (uint256 i = 0; i < rawData.length - 1 - 4; ++i) {
             payload[i] = rawData[i + 1];
         }
 
@@ -377,7 +377,7 @@ contract BitcoinUtils {
         if (payload.length != 20) return false;
 
         bytes memory checksum = new bytes(4);
-        for (uint256 i = 0; i < 4; i++) {
+        for (uint256 i = 0; i < 4; ++i) {
             checksum[i] = rawData[rawData.length - 4 + i];
         }
 

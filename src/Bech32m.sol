@@ -124,7 +124,7 @@ library Bech32m {
         for (uint p = 0; p < values.length; p++) {
             uint top = chk >> 25;
             chk = ((chk & 0x1ffffff) << 5) ^ values[p];
-            for (uint i = 0; i < 5; i++) {
+            for (uint i = 0; i < 5; ++i) {
                 if ((top >> i) & 1 == 1) {
                     chk ^= GENERATOR[i];
                 }
