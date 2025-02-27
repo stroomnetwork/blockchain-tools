@@ -91,7 +91,7 @@ library Bech32m {
             return string("Segwit with versions 1-16 should be encoded with Bech32m");
         }
         return "";
-}
+    }
 
     // Possible characters for Bitcoin address
     bytes internal constant CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
@@ -536,19 +536,25 @@ library Bech32m {
 
         bytes memory bechLow = toLower(bech);
         int delimiterPos = int256(bechLow.length) - 1;
-        while (true) {
-            delimiterPos -= 1;
-            if (delimiterPos < 0) {
-                return (
-                    new bytes(0),
-                    new bytes(0),
-                    BechEncoding.UNKNOWN,
-                    DecodeError.NoDelimiter
-                );
-            }
-            // 0x31 is '1'
-            if (bechLow[uint256(delimiterPos)] == 0x31) {
-                break;
+
+        if (bechLow.length > 2 && bechLow[2] == 0x31) {
+            delimiterPos = 2;
+        } else {
+            delimiterPos = int256(bechLow.length) - 1;
+            while (true) {
+                delimiterPos -= 1;
+                if (delimiterPos < 0) {
+                    return (
+                        new bytes(0),
+                        new bytes(0),
+                        BechEncoding.UNKNOWN,
+                        DecodeError.NoDelimiter
+                    );
+                }
+                // 0x31 is '1'
+                if (bechLow[uint256(delimiterPos)] == 0x31) {
+                    break;
+                }
             }
         }
         if (delimiterPos < 1) {
