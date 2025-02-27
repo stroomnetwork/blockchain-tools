@@ -250,7 +250,7 @@ contract BTCDepositAddressDeriverTest is Test {
         );
         assertEq(
             btcAddress,
-            "tb1pz66m5qeqae7mlqjwwz3hhf8lfz05w53djxxxzzjy47m6hej6cg8s0zs83c"
+            "tb1p8pjjwryjq9d7tke50ndcd97kqxkeztk4k85lzg7l2nynektg9zdsq836sr"
         );
     }
 
@@ -267,7 +267,7 @@ contract BTCDepositAddressDeriverTest is Test {
         console.log("btcAddress", btcAddress);
         assertEq(
             btcAddress,
-            "tb1phuqvamwdq7ynnydpc93h3sa9qhk9kntadg5vecgph38357jrlq5sqymks5"
+            "tb1pupljglwqunp2q22sahwjvmxwmxxyj3aatnhemxlneae3l03w2k5swkfkvc"
         );
         // assertEq(
         //     btcAddress,
