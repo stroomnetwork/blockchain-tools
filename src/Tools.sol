@@ -28,7 +28,7 @@ library Tools {
     }
 
     // https://stackoverflow.com/questions/69551020/trying-to-convert-address-string-to-type-address-in-solidity
-    function hexStringToAddress(
+    function hexStringToBytes(
         string memory s
     ) internal pure returns (bytes memory) {
         bytes memory ss = bytes(s);
@@ -48,7 +48,7 @@ library Tools {
 
     // https://stackoverflow.com/questions/69551020/trying-to-convert-address-string-to-type-address-in-solidity
     function toAddress(string memory s) public pure returns (address) {
-        bytes memory _bytes = hexStringToAddress(s);
+        bytes memory _bytes = hexStringToBytes(s);
         require(_bytes.length >= 1 + 20, "toAddress_outOfBounds");
         address tempAddress;
 
