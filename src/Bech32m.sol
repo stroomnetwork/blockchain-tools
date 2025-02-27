@@ -121,7 +121,8 @@ library Bech32m {
         ];
 
         uint chk = 1;
-        for (uint p = 0; p < values.length; p++) {
+        uint valuesLength = values.length;
+        for (uint p = 0; p < valuesLength; p++) {
             uint top = chk >> 25;
             chk = ((chk & 0x1ffffff) << 5) ^ values[p];
             for (uint i = 0; i < 5; ++i) {
@@ -138,7 +139,8 @@ library Bech32m {
     function hrpExpand(bytes memory hrp) internal pure returns (bytes memory) {
 
         bytes memory a = new bytes(hrp.length + hrp.length + 1);
-        for (uint i = 0; i < hrp.length; i += 1) {
+        uint256 hrpLength = hrp.length;
+        for (uint i = 0; i < hrpLength; i += 1) {
             a[i] = hrp[i] >> 5;
             a[i + hrp.length + 1] = bytes1(uint8(hrp[i]) & 31);
         }
@@ -160,10 +162,12 @@ library Bech32m {
             hrpExpandBytes.length + data.length + 6
         );
 
-        for (uint i = 0; i < hrpExpandBytes.length; i += 1) {
+        uint256 hrpExpandBytesLength = hrpExpandBytes.length;
+        for (uint i = 0; i < hrpExpandBytesLength; i += 1) {
             polymodArg[i] = uint8(hrpExpandBytes[i]);
         }
-        for (uint i = 0; i < data.length; i += 1) {
+        uint256 dataLength = data.length;
+        for (uint i = 0; i < dataLength; i += 1) {
             polymodArg[i + hrpExpandBytes.length] = uint8(data[i]);
         }
 
@@ -192,10 +196,12 @@ library Bech32m {
         uint[] memory polymodArg = new uint[](
             hrpExpandBytes.length + data.length
         );
-        for (uint i = 0; i < hrpExpandBytes.length; i += 1) {
+        uint256 hrpExpandBytesLength = hrpExpandBytes.length;
+        for (uint i = 0; i < hrpExpandBytesLength; i += 1) {
             polymodArg[i] = uint8(hrpExpandBytes[i]);
         }
-        for (uint i = 0; i < data.length; i += 1) {
+        uint256 dataLength = data.length;
+        for (uint i = 0; i < dataLength; i += 1) {
             polymodArg[i + hrpExpandBytes.length] = uint8(data[i]);
         }
 
@@ -227,7 +233,8 @@ library Bech32m {
 
         // reuse data and chk arrays to modify data in place to save gas
 
-        for (uint i = 0; i < data.length; i += 1) {
+        uint256 dataLength = data.length;
+        for (uint i = 0; i < dataLength; i += 1) {
             // ret[i + hrp.length + 1] = CHARSET[uint8(data[i])];
             data[i] = CHARSET[uint8(data[i])];
         }
@@ -301,7 +308,8 @@ library Bech32m {
 
         if (nRemainOut5Bit > 0) {
             uint w;
-            for (uint i = nGroup40bit * 5; i < a.length; i += 1) {
+            uint aLength = a.length;
+            for (uint i = nGroup40bit * 5; i < aLength; i += 1) {
                 w = (w << 8) + uint(uint8(a[i]));
             }
             w <<= nPadBits;
@@ -442,7 +450,8 @@ library Bech32m {
     function isValidCharacterRange(
         bytes memory bech
     ) internal pure returns (bool) {
-        for (uint i = 0; i < bech.length; i += 1) {
+        uint256 bechLength = bech.length;
+        for (uint i = 0; i < bechLength; i += 1) {
             if (uint8(bech[i]) < 33 || uint8(bech[i]) > 126) {
                 return false;
             }
@@ -472,7 +481,8 @@ library Bech32m {
 
     function toLower(bytes memory a) internal pure returns (bytes memory) {
         bytes memory b = new bytes(a.length);
-        for (uint i = 0; i < a.length; i += 1) {
+        uint256 aLength = a.length;
+        for (uint i = 0; i < aLength; i += 1) {
             if (uint8(a[i]) >= 65 && uint8(a[i]) <= 90) {
                 b[i] = bytes1(uint8(a[i]) + 32);
             } else {
@@ -599,7 +609,8 @@ library Bech32m {
         }
 
         bytes memory data5Bit = new bytes(dataAll5Bit.length - 6);
-        for (uint i = 0; i < data5Bit.length; i += 1) {
+        uint256 data5BitLength = data5Bit.length;
+        for (uint i = 0; i < data5BitLength; i += 1) {
             data5Bit[i] = dataAll5Bit[i];
         }
 
@@ -613,7 +624,8 @@ library Bech32m {
         if (a.length != b.length) {
             return false;
         }
-        for (uint i = 0; i < a.length; i += 1) {
+        uint256 aLength = a.length;
+        for (uint i = 0; i < aLength; i += 1) {
             if (a[i] != b[i]) {
                 return false;
             }
@@ -649,7 +661,8 @@ library Bech32m {
         }
 
         bytes memory data5BitNoVer = new bytes(data5Bit.length - 1);
-        for (uint i = 0; i < data5BitNoVer.length; i += 1) {
+        uint256 data5BitNoVerLength = data5BitNoVer.length; 
+        for (uint i = 0; i < data5BitNoVerLength; i += 1) {
             data5BitNoVer[i] = data5Bit[i + 1];
         }
 

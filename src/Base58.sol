@@ -21,7 +21,8 @@ function encode(bytes memory data_) pure returns (bytes memory) {
         uint32 carry;
         int256 m;
         int256 high = int256(size) - 1;
-        for (uint256 i = 0; i < data_.length; ++i) {
+        uint256 dataLength = data_.length;
+        for (uint256 i = 0; i < dataLength; ++i) {
             m = int256(size - 1);
             for (carry = uint8(data_[i]); m > high || carry != 0; m--) {
                 carry = carry + 256 * uint8(slot[uint256(m)]);
@@ -60,7 +61,8 @@ function decode(bytes memory data_) pure returns (bytes memory) {
         bool f;
         bytes memory binu = new bytes(2 * (((b58sz * 8351) / 6115) + 1));
         uint32[] memory outi = new uint32[]((b58sz + 3) / 4);
-        for (uint256 i = 0; i < data_.length; ++i) {
+        uint256 dataLength = data_.length;
+        for (uint256 i = 0; i < dataLength; ++i) {
             bytes1 r = data_[i];
             (c, f) = indexOf(ALPHABET, r);
             require(f, "invalid base58 digit");
@@ -76,7 +78,8 @@ function decode(bytes memory data_) pure returns (bytes memory) {
         }
         mask -= 8;
         uint256 outLen = 0;
-        for (uint256 j = 0; j < outi.length; j++) {
+        uint256 outiLength = outi.length;
+        for (uint256 j = 0; j < outiLength; j++) {
             while (mask < 32) {
                 binu[outLen] = bytes1(uint8(outi[j] >> mask));
                 outLen++;
@@ -87,7 +90,8 @@ function decode(bytes memory data_) pure returns (bytes memory) {
             }
             mask = 24;
         }
-        for (uint256 msb = zcount; msb < binu.length; msb++) {
+        uint256 binuLength = binu.length;
+        for (uint256 msb = zcount; msb < binuLength; msb++) {
             if (binu[msb] > 0) {
                 return slice(binu, msb - zcount, outLen);
             }
@@ -148,7 +152,8 @@ function slice(bytes memory data_, uint256 start_, uint256 end_) pure returns (b
  */
 function indexOf(bytes memory data_, bytes1 char_) pure returns (uint256, bool) {
     unchecked {
-        for (uint256 i = 0; i < data_.length; ++i) {
+        uint256 dataLength = data_.length;
+        for (uint256 i = 0; i < dataLength; ++i) {
             if (data_[i] == char_) {
                 return (i, true);
             }

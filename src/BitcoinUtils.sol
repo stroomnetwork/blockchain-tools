@@ -134,7 +134,8 @@ contract BitcoinUtils {
     }
 
     function alphabetCheck(bytes memory BTCAddress) public pure returns (bool) {
-        for (uint256 i = 0; i < BTCAddress.length; ++i) {
+        uint256 BTCAddressLength = BTCAddress.length;
+        for (uint256 i = 0; i < BTCAddressLength; ++i) {
             uint8 charCode = uint8(BTCAddress[i]);
             bool contains = isLetter(charCode);
             if (!contains) return false;
@@ -233,8 +234,8 @@ contract BitcoinUtils {
         _btcAddress = bytes(btcAddress);
 
         uint256 split = 0;
-
-        for (uint256 i = 0; i < _btcAddress.length; ++i) {
+        uint256 _btcAddressLength = _btcAddress.length;
+        for (uint256 i = 0; i < _btcAddressLength; ++i) {
             if (_btcAddress[i] == "1") {
                 split = i;
                 break;
@@ -252,13 +253,13 @@ contract BitcoinUtils {
         }
 
         bytes memory prefix = new bytes(split);
-        bytes memory wordChars = new bytes(_btcAddress.length - split - 1);
+        uint256 wordCharsLength = _btcAddress.length - split - 1;
+        bytes memory wordChars = new bytes(wordCharsLength);
 
         for (uint256 i = 0; i < split; ++i) {
             prefix[i] = _btcAddress[i];
         }
-
-        for (uint256 i = 0; i < wordChars.length; ++i) {
+        for (uint256 i = 0; i < wordCharsLength; ++i) {
             wordChars[i] = _btcAddress[i + split + 1];
         }
 
@@ -281,8 +282,8 @@ contract BitcoinUtils {
         }
 
         bytes memory words = new bytes(wordChars.length);
-
-        for (uint256 i = 0; i < wordChars.length; ++i) {
+        uint256 wordsLength = words.length;
+        for (uint256 i = 0; i < wordsLength; ++i) {
             bytes1 c = wordChars[i];
             uint8 v = BECH32_ALPHABET_MAP(c);
 
@@ -332,7 +333,8 @@ contract BitcoinUtils {
 
     function prefixChk(bytes memory prefix) public pure returns (uint256) {
         uint256 chk = 1;
-        for (uint256 i = 0; i < bytes(prefix).length; ++i) {
+        uint256 prefixLength = bytes(prefix).length;
+        for (uint256 i = 0; i < prefixLength; ++i) {
             uint256 c = uint8(prefix[i]);
             if (c < 33 || c > 126) revert("Invalid prefix");
 
@@ -340,7 +342,8 @@ contract BitcoinUtils {
         }
         chk = polymodStep(chk);
 
-        for (uint256 i = 0; i < prefix.length; ++i) {
+        prefixLength = prefix.length;
+        for (uint256 i = 0; i < prefixLength; ++i) {
             uint256 v = uint8(prefix[i]);
             chk = polymodStep(chk) ^ (v & 0x1f);
         }
@@ -367,7 +370,8 @@ contract BitcoinUtils {
         console.logBytes(version);
 
         bytes memory payload = new bytes(rawData.length - 1 - 4);
-        for (uint256 i = 0; i < rawData.length - 1 - 4; ++i) {
+        uint256 payloadLength = rawData.length - 1 - 4;
+        for (uint256 i = 0; i < payloadLength; ++i) {
             payload[i] = rawData[i + 1];
         }
 

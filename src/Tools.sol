@@ -34,7 +34,8 @@ library Tools {
         bytes memory ss = bytes(s);
         require(ss.length % 2 == 0, "string with hex encoded data should have even length"); // length must be even
         bytes memory r = new bytes(ss.length / 2);
-        for (uint i = 0; i < ss.length / 2; ++i) {
+        uint256 ssLength = ss.length;
+        for (uint i = 0; i < ssLength / 2; ++i) {
             r[i] = bytes1(
                 fromHexChar(uint8(ss[2 * i])) *
                     16 +
