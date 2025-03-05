@@ -101,27 +101,6 @@ library Deriver {
         return string(Bech32m.encodeSegwitAddress(hrp, 1, abi.encodePacked(x)));
     }
 
-    // derive Bitcoin address from user's Ethereum address and validators' pubkeys
-    // Better use getBtcAddressTaprootNoScriptFromEth instead of this function
-    // function getBtcAddressFromEth(
-    //     uint256 p1x,
-    //     uint256 p1y,
-    //     uint256 p2x,
-    //     uint256 p2y,
-    //     bytes memory hrp,
-    //     address ethAddr
-    // ) internal pure returns (string memory) {
-    //     (uint256 x,) = getPubkeyFromAddress(
-    //         p1x,
-    //         p1y,
-    //         p2x,
-    //         p2y,
-    //         ethAddr
-    //     );
-    //     // TODO(mkl): maybe we should use `abi.encode` here. Because length of serialized x should be always 32 bytes.
-    //     return getBtcTaprootAddrFromPubkey(x, hrp);
-    // }
-
     // calculate y coordinate from x coordinate
     function liftX(uint256 x) internal pure returns (uint256) {
         return EllipticCurve.deriveY(0x02, x, AA, BB, PP);
