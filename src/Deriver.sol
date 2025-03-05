@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.27;
 
 import {EllipticCurve} from "../lib/elliptic-curve-solidity/contracts/EllipticCurve.sol";
 
@@ -22,8 +22,6 @@ library Deriver {
     bytes32 public constant SHA256_TAP_TWEAK =
         hex"e80fe1639c9ca050e3af1b39c143c63e429cbceb15d940fbb5c5a1f4af57c5e9";
     
-    
-
     // TODO(mkl): use tagged hashes
     function getCoefficient(
         uint256 x1,
@@ -101,27 +99,6 @@ library Deriver {
         bytes memory hrp
     ) internal pure returns (string memory) {
         return string(Bech32m.encodeSegwitAddress(hrp, 1, abi.encodePacked(x)));
-    }
-
-    // derive Bitcoin address from user's Ethereum address and validators' pubkeys
-    // Better use getBtcAddressTaprootNoScriptFromEth instead of this function
-    function getBtcAddressFromEth(
-        uint256 p1x,
-        uint256 p1y,
-        uint256 p2x,
-        uint256 p2y,
-        bytes memory hrp,
-        address ethAddr
-    ) internal pure returns (string memory) {
-        (uint256 x,) = getPubkeyFromAddress(
-            p1x,
-            p1y,
-            p2x,
-            p2y,
-            ethAddr
-        );
-        // TODO(mkl): maybe we should use `abi.encode` here. Because length of serialized x should be always 32 bytes.
-        return getBtcTaprootAddrFromPubkey(x, hrp);
     }
 
     // calculate y coordinate from x coordinate
