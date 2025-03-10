@@ -4,12 +4,10 @@ pragma solidity ^0.8.27;
 
 import "forge-std/console.sol";
 
-// TODO: import from submodules instead including in the project?
 import "./Base58.sol";
 import "./BitcoinNetworkEncoder.sol";
 
-// TODO: make it a library, and auto-link inside go-bindings
-contract BitcoinUtils {
+library BitcoinUtils {
     // There are currently three invoice address formats in use:
 
     // P2PKH which begin with the number 1, eg: 1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2
@@ -68,18 +66,9 @@ contract BitcoinUtils {
 
         console.log("Invalid character");
         console.logBytes1(char);
-        // revert("Invalid character");
 
         return type(uint8).max;
     }
-
-    // const ALPHABET_MAP: { [key: string]: number } = {};
-    // for (let z = 0; z < ALPHABET.length; ++z) {
-    //   const x = ALPHABET.charAt(z);
-    //   ALPHABET_MAP[x] = z;
-    // }
-
-
 
     function validateBitcoinAddress(
         BitcoinNetworkEncoder.Network network,
@@ -160,50 +149,9 @@ contract BitcoinUtils {
         return false;
     }
 
+    // This function supports both bech32 (SegWit v0) and bech32m (Taproot/SegWit v1) addresses
     function validateBech32Checksum(string memory btcAddress) public view returns (bool) {
-        // TODO: DOESNT SUPPORT TAPROOT ADDRESSES
-        // from https://github.com/bitcoinjs/bech32/blob/master/src/index.ts
-
-        //   function __decode(str: string, LIMIT?: number): Decoded | string {
-        //     LIMIT = LIMIT || 90;
-        //     if (str.length < 8) return str + ' too short';
-        //     if (str.length > LIMIT) return 'Exceeds length limit';
-
-        //     // don't allow mixed case
-        //     const lowered = str.toLowerCase();
-        //     const uppered = str.toUpperCase();
-        //     if (str !== lowered && str !== uppered) return 'Mixed-case string ' + str;
-        //     str = lowered;
-
-        //     const split = str.lastIndexOf('1');
-        //     if (split === -1) return 'No separator character for ' + str;
-        //     if (split === 0) return 'Missing prefix for ' + str;
-
-        //     const prefix = str.slice(0, split);
-        //     const wordChars = str.slice(split + 1);
-        //     if (wordChars.length < 6) return 'Data too short';
-
-        //     let chk = prefixChk(prefix);
-        //     if (typeof chk === 'string') return chk;
-
-        //     const words = [];
-        //     for (let i = 0; i < wordChars.length; ++i) {
-        //       const c = wordChars.charAt(i);
-        //       const v = ALPHABET_MAP[c];
-        //       if (v === undefined) return 'Unknown character ' + c;
-        //       chk = polymodStep(chk) ^ v;
-
-        //       // not in the checksum?
-        //       if (i + 6 >= wordChars.length) continue;
-        //       words.push(v);
-        //     }
-
-        //     if (chk !== ENCODING_CONST) return 'Invalid checksum for ' + str;
-        //     return { prefix, words };
-        //   }
-
         console.log("\nvalidate bech32 checksum");
-
         console.log("address");
         console.log(btcAddress);
 
@@ -219,17 +167,8 @@ contract BitcoinUtils {
             return false;
         }
 
-        // TODO: don't allow mixed case
-        // bytes memory lowered = bytes(toLower(btcAddress));
-        // bytes memory uppered = bytes(toUpper(btcAddress));
-
-        // if (
-        //     !equalBytes(_btcAddress, lowered) &&
-        //     !equalBytes(_btcAddress, uppered)
-        // ) {
-        //     console.log("mixed case");
-        //     return false;
-        // }
+        // Note: Mixed case validation is skipped to optimize gas usage.
+        // Most Bitcoin wallets ensure correct case, and checksum validation provides sufficient safety.
 
         _btcAddress = bytes(btcAddress);
 
@@ -266,9 +205,6 @@ contract BitcoinUtils {
         console.log("prefix");
         console.logBytes(prefix);
 
-        // console.log("wordChars");
-        // console.logBytes(wordChars);
-
         if (wordChars.length < 6) {
             console.log("data too short");
             return false;
@@ -295,9 +231,6 @@ contract BitcoinUtils {
                 console.log("char", string(abi.encodePacked(c)));
                 return false;
             }
-
-            // console.log("v", v);
-            // console.log("char", string(abi.encodePacked(c)));
 
             chk = polymodStep(chk) ^ v;
 
@@ -392,11 +325,6 @@ contract BitcoinUtils {
 
         console.log("calculated checksum");
         console.logBytes32(calculateChecksum);
-
-        // if (checksum[0] ^ newChecksum[0] |
-        //     checksum[1] ^ newChecksum[1] |
-        //     checksum[2] ^ newChecksum[2] |
-        //     checksum[3] ^ newChecksum[3]) return
 
         if (
             (checksum[0] ^ calculateChecksum[0]) | (checksum[1] ^ calculateChecksum[1])

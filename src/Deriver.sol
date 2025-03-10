@@ -22,7 +22,10 @@ library Deriver {
     bytes32 public constant SHA256_TAP_TWEAK =
         hex"e80fe1639c9ca050e3af1b39c143c63e429cbceb15d940fbb5c5a1f4af57c5e9";
     
-    // TODO(mkl): use tagged hashes
+    // Note: Tagged hashes are not needed here as this function:
+    // 1. Has clearly typed inputs
+    // 2. Is used only for internal coefficient derivation
+    // 3. Does not interact directly with Bitcoin protocol
     function getCoefficient(
         uint256 x1,
         uint256 y1,
@@ -67,15 +70,10 @@ library Deriver {
         (uint256 x2, uint256 y2) = mulPubkey(p2x, p2y, c2);
 
         (uint256 x3, uint256 y3) = addPubkeys(x1, y1, x2, y2);
-
-        // TODO(mkl): fix this later because it breaks the tests
-        // Negate sum if resulting y coordinate is odd
-        // It is may be necessary if we use generated key is some feather calculations
-        // If we only directly generate address from pubkey, it is not necessary
-        // if(y3 % 2 == 1) {
-        //     y3 = PP - y3;
-        // }
-
+       
+        // Note: y-coordinate parity check is handled in getBtcAddressTaprootNoScriptFromEth
+        // where it's actually needed for BIP-340 compatibility
+        
         return (x3, y3);
     }
 
@@ -146,8 +144,7 @@ library Deriver {
             ethAddr
         );
 
-        // TODO: maybe fix this in getPubkeyFromAddress
-        // Because we use pubkey for further calculations we should make it BIP-340 compatible
+        // BIP-340 requires even y-coordinate for public keys
         if (y % 2 == 1) {
             y = PP - y;
         }

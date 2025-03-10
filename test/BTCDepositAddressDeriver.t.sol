@@ -15,7 +15,7 @@ contract BTCDepositAddressDeriverTest is Test {
         deriver = new BTCDepositAddressDeriver();
     }
 
-    function testParseBTCTaprootAddress1() public {
+    function testParseBTCTaprootAddress1() public view{
         (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
             "tb",
             "tb1p7g532zgvuzv8fz3hs02wvn2almqh8qyvz4xdr564nannkxh28kdq62ewy3"
@@ -30,7 +30,7 @@ contract BTCDepositAddressDeriverTest is Test {
         );
     }
 
-    function testParseBTCTaprootAddress2() public {
+    function testParseBTCTaprootAddress2() public view {
         (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
             "tb",
             "tb1psfpmk6v8cvd8kr4rdda0l8gwyn42v5yfjlqkhnureprgs5tuumkqvdkewz"
@@ -47,7 +47,7 @@ contract BTCDepositAddressDeriverTest is Test {
 
     function testParseBTCTaprootAddress3() public {
         vm.expectRevert();
-        (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
+        deriver.parseBTCTaprootAddress(
             "tb",
             "tc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vq5zuyut"
         );
@@ -55,7 +55,7 @@ contract BTCDepositAddressDeriverTest is Test {
 
     function testParseBTCTaprootAddress4() public {
         vm.expectRevert();
-        (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
+        deriver.parseBTCTaprootAddress(
             "bc",
             "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqh2y7hd"
         );
@@ -63,7 +63,7 @@ contract BTCDepositAddressDeriverTest is Test {
 
     function testParseBTCTaprootAddress5() public {
         vm.expectRevert();
-        (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
+        deriver.parseBTCTaprootAddress(
             "bc",
             "BC1S0XLXVLHEMJA6C4DQV22UAPCTQUPFHLXM9H8Z3K2E72Q4K9HCZ7VQ54WELL"
         );
@@ -71,7 +71,7 @@ contract BTCDepositAddressDeriverTest is Test {
 
     function testParseBTCTaprootAddress6() public {
         vm.expectRevert();
-        (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
+        deriver.parseBTCTaprootAddress(
             "tb",
             "tb1q0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vq24jc47"
         );
@@ -79,7 +79,7 @@ contract BTCDepositAddressDeriverTest is Test {
 
     function testParseBTCTaprootAddress7() public {
         vm.expectRevert();
-        (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
+        deriver.parseBTCTaprootAddress(
             "bc",
             "bc1p38j9r5y49hruaue7wxjce0updqjuyyx0kh56v8s25huc6995vvpql3jow4"
         );
@@ -87,7 +87,7 @@ contract BTCDepositAddressDeriverTest is Test {
 
     function testParseBTCTaprootAddress8() public {
         vm.expectRevert();
-        (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
+        deriver.parseBTCTaprootAddress(
             "bc",
             "BC130XLXVLHEMJA6C4DQV22UAPCTQUPFHLXM9H8Z3K2E72Q4K9HCZ7VQ7ZWS8R"
         );
@@ -95,7 +95,7 @@ contract BTCDepositAddressDeriverTest is Test {
 
     function testParseBTCTaprootAddress9() public {
         vm.expectRevert();
-        (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
+        deriver.parseBTCTaprootAddress(
             "bc",
             "bc1pw5dgrnzv"
         );
@@ -103,7 +103,7 @@ contract BTCDepositAddressDeriverTest is Test {
 
     function testParseBTCTaprootAddress10() public {
         vm.expectRevert();
-        (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
+        deriver.parseBTCTaprootAddress(
             "bc",
             "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7v8n0nx0muaewav253zgeav"
         );
@@ -111,7 +111,7 @@ contract BTCDepositAddressDeriverTest is Test {
 
     function testParseBTCTaprootAddress11() public {
         vm.expectRevert();
-        (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
+        deriver.parseBTCTaprootAddress(
             "tb",
             "tb1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vq47Zagq"
         );
@@ -119,7 +119,7 @@ contract BTCDepositAddressDeriverTest is Test {
 
     function testParseBTCTaprootAddress12() public {
         vm.expectRevert();
-        (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
+        deriver.parseBTCTaprootAddress(
             "bc",
             "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7v07qwwzcrf"
         );
@@ -127,7 +127,7 @@ contract BTCDepositAddressDeriverTest is Test {
 
     function testParseBTCTaprootAddress13() public {
         vm.expectRevert();
-        (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
+        deriver.parseBTCTaprootAddress(
             "tb",
             "tb1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vpggkg4j"
         );
@@ -135,13 +135,13 @@ contract BTCDepositAddressDeriverTest is Test {
 
     function testParseBTCTaprootAddress14() public {
         vm.expectRevert();
-        (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
+        deriver.parseBTCTaprootAddress(
             "bc",
             "bc1gmk9yu"
         );
     }
 
-    function testParseBTCTaprootAddress15() public {
+    function testParseBTCTaprootAddress15() public view{
         (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
             "bc",
             "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0"
@@ -156,7 +156,7 @@ contract BTCDepositAddressDeriverTest is Test {
         );
     }
 
-    function testParseBTCTaprootAddress16() public {
+    function testParseBTCTaprootAddress16() public view{
         (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
             "tb",
             "tb1pqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesf3hn0c"
@@ -171,7 +171,7 @@ contract BTCDepositAddressDeriverTest is Test {
         );
     }
 
-    function testParseBTCTaprootAddress17() public {
+    function testParseBTCTaprootAddress17() public view{
         (uint256 x, uint256 y) = deriver.parseBTCTaprootAddress(
             "bc",
             "bc1pldma57nkrdrvtx7elspzgfa23qcxglzzunxxmqkwq8pnwpa4sd6s3406mu"

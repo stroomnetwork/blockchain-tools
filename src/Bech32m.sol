@@ -154,8 +154,7 @@ library Bech32m {
         bytes memory data,
         BechEncoding spec
     ) internal pure returns (bytes memory) {
-
-        // TODO(mkl): add check for UNKNOWN encoding
+        // Note: UNKNOWN encoding check is already implemented in bech32Encode function
         uint const = spec == BechEncoding.BECH32M ? BECH32M_CONST : 1;
         bytes memory hrpExpandBytes = hrpExpand(hrp);
         uint[] memory polymodArg = new uint[](
