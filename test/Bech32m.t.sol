@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.27;
 
 import {Test, console} from "forge-std/Test.sol";
 import {Bech32m} from "../src/Bech32m.sol";
@@ -18,15 +18,15 @@ contract Bech32Test is Test {
         return result;
     }
 
-    function testCharset() public {
+    function testCharset() public pure{
         assertEq(Bech32m.CHARSET, "qpzry9x8gf2tvdw0s3jn54khce6mua7l");
     }
 
-    function testBech32mConstant() public {
+    function testBech32mConstant() public pure {
         assertEq(Bech32m.BECH32M_CONST, 0x2bc830a3);
     }
 
-    function testPolymod() public {
+    function testPolymod() public pure {
         // This test was generated automatically by gen_ref_data_bech32_polymod.py
 
         // bech32_polymod([0]) == 32
@@ -94,7 +94,7 @@ contract Bech32Test is Test {
         assertEq(polymodExpected6, polymodActual6);
     }
 
-    function testHrpExpand() public {
+    function testHrpExpand() public pure {
         // This test was generated automatically by gen_ref_data_bech32_hrp_expand.py
 
         // bech32_hrp_expand("""a""") == [3, 0, 1]
@@ -118,7 +118,7 @@ contract Bech32Test is Test {
         assertEq(hrpExpandExpected2, hrpExpandActual2);
     }
 
-    function testCreateChecksum() public {
+    function testCreateChecksum() public pure {
         // This test was generated automatically by gen_ref_data_bech32_create_checksum.py
 
         // bech32_create_checksum("""tb""", [], Encoding.BECH32) == [24, 4, 15, 0, 30, 1]
@@ -146,7 +146,7 @@ contract Bech32Test is Test {
         assertEq(chkExpected2, chkActual2);
     }
 
-    function testBech32Encode() public {
+    function testBech32Encode() public pure {
         // This test was generated automatically by gen_ref_data_bech32_encode.py
 
         // bech32_encode("""tb""", [], Encoding.BECH32) == """tb1cy0q7p"""
@@ -182,7 +182,7 @@ contract Bech32Test is Test {
         assertEq(encodedExpected3, encodedActual3);
     }
 
-    function testConvert8To5() public {
+    function testConvert8To5() public pure {
         // This test was generated automatically by gen_ref_data_convertbits_8_to_5.py
 
         // convertbits(b'', 8, 5) == []
@@ -287,7 +287,7 @@ contract Bech32Test is Test {
         assertEq(dataOutExpected15, dataOutActual15);
     }
 
-    function testEncodeSegwitAddress() public {
+    function testEncodeSegwitAddress() public pure {
         // This test was generated automatically by gen_ref_data_encode.py
 
         // encode("bt", 0, b'01010101010101010101') == "bt1qxqcnqvfsxycrzvp3xqcnqvfsxycrzvp3ytzryq"
@@ -346,7 +346,7 @@ contract Bech32Test is Test {
         assertEq(expectedAddr3, actualAddr3);
     }
 
-    function testConvert5To8() public {
+    function testConvert5To8() public pure {
         // This test was generated automatically by gen_ref_data_convertbits_5_to_8.py
 
         // convertbits([], 5, 8, False) == []
@@ -1274,7 +1274,7 @@ contract Bech32Test is Test {
         assertTrue(err102 != Bech32m.DecodeError.NoError);
     }
 
-    function testIsValidCharacterRange() public {
+    function testIsValidCharacterRange() public pure {
         bytes memory s1 = bytes("abcdef");
         assertTrue(Bech32m.isValidCharacterRange(s1));
 
@@ -1288,14 +1288,14 @@ contract Bech32Test is Test {
         assertFalse(Bech32m.isValidCharacterRange(s4));
     }
 
-    function testIsMixedCase() public {
+    function testIsMixedCase() public pure {
         assertTrue(Bech32m.isMixedCase(bytes("aBcDeF")));
         assertFalse(Bech32m.isMixedCase(bytes("aaaa")));
         assertFalse(Bech32m.isMixedCase(bytes("AAAAA")));
         assertFalse(Bech32m.isMixedCase(bytes("")));
     }
 
-    function testToLower() public {
+    function testToLower() public pure {
         assertEq(Bech32m.toLower(bytes("aaaBB")), bytes("aaabb"));
         assertEq(Bech32m.toLower(bytes("+a1+B- ")), bytes("+a1+b- "));
         assertEq(Bech32m.toLower(bytes("")), bytes(""));
@@ -1305,7 +1305,7 @@ contract Bech32Test is Test {
         );
     }
 
-    function testDecodeCharactersBech32() public {
+    function testDecodeCharactersBech32() public pure {
         // This test was generated automatically by gen_reverse_charset_test_data.py
 
         bytes
@@ -1376,7 +1376,7 @@ contract Bech32Test is Test {
         assertTrue(errExpected6 == errActual6);
     }
 
-    function testBech32Decode() public {
+    function testBech32Decode() public pure {
         // This test was generated automatically by gen_ref_data_bech32_decode.py
 
         // bech32_encode('''tb''', [0, 1, 2], Encoding.BECH32) == '''tb1qpz0a0mjz'''
@@ -1423,13 +1423,13 @@ contract Bech32Test is Test {
         assertTrue(err2 == Bech32m.DecodeError.NoError);
     }
 
-    function testAreBytesEqual() public {
+    function testAreBytesEqual() public pure {
         assertTrue(Bech32m.areBytesEqual(bytes("abc"), bytes("abc")));
         assertFalse(Bech32m.areBytesEqual(bytes("abc"), bytes("ab")));
         assertFalse(Bech32m.areBytesEqual(bytes("abc"), bytes("bbb")));
     }
 
-    function testBech32DecodeSpecBech32() public {
+    function testBech32DecodeSpecBech32() public pure {
         // This test was generated automatically by gen_ref_data_spec_valid_bech32.py
 
         // A12UEL5L
@@ -1560,7 +1560,7 @@ contract Bech32Test is Test {
         assertTrue(errExpected6 == errActual6);
     }
 
-    function testBech32DecodeSpecBech32m() public {
+    function testBech32DecodeSpecBech32m() public pure {
         // A1LQFN3A
         bytes memory bech0 = hex"41314c51464e3341";
         bytes memory hrpExpected0 = hex"61";
@@ -1689,9 +1689,8 @@ contract Bech32Test is Test {
         assertTrue(errExpected6 == errActual6);
     }
 
-    function testBech32DecodeSpecInvalidBech32() public {
+    function testBech32DecodeSpecInvalidBech32() public pure {
         // tests from reference python implementation INVALID_BECH32
-        // TODO(mkl): install reference to BIP
         // mostly generated automatically by gen_ref_data_spec_invalid_bech32.py
         // error codes and comments are added manually from comments in test.py and manual analysis
         // fixed some unicode bugs
@@ -2094,9 +2093,8 @@ contract Bech32Test is Test {
         );
     }
 
-    function testBech32DecodeSpecInvalidBech32m() public {
+    function testBech32DecodeSpecInvalidBech32m() public pure {
         // tests from reference python implementation INVALID_BECH32M
-        // TODO(mkl): install reference to BIP
         // mostly generated automatically by gen_ref_data_spec_invalid_bech32m.py
         // error codes and comments are added manually from comments in test.py and manual analysis
         // fixed some unicode bugs
@@ -2553,7 +2551,7 @@ contract Bech32Test is Test {
         );
     }
 
-    function testValidAddressDecodeEncode() public {
+    function testValidAddressDecodeEncode() public pure {
         // tests from reference python implementation VALID_ADDRESS
         // this tests was generated automatically by gen_ref_data_spec_valid_address.py
 
@@ -2878,9 +2876,8 @@ contract Bech32Test is Test {
         );
     }
 
-    function testInvalidAddress() public {
+    function testInvalidAddress() public pure {
         // tests from reference python implementation INVALID_ADDRESS for invalid segwit addresses
-        // TODO(mkl): install reference to BIP
         // mostly generated automatically by gen_ref_data_spec_invalid_address.py
         // error codes and comments are added manually from comments in test.py and manual analysis
 

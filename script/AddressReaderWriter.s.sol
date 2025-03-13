@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.27;
 
 import {Script} from "forge-std/Script.sol";
 import {Tools} from "../src/Tools.sol";
@@ -24,7 +24,7 @@ contract AddressReaderWriter is Script {
 
     function readContractAddress(
         string memory contractName
-    ) public returns (address) {
+    ) public view returns (address) {
         string memory addressFileName = string.concat(
             "./temp/",
             contractName,
