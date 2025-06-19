@@ -8,7 +8,6 @@ import {BTCDepositAddressDeriver} from "../src/BTCDepositAddressDeriver.sol";
 import {BitcoinNetworkEncoder} from "../src/BitcoinNetworkEncoder.sol";
 
 contract BTCDepositAddressDeriverTest is Test {
-
     BTCDepositAddressDeriver deriver;
 
     function setUp() public {
@@ -187,7 +186,6 @@ contract BTCDepositAddressDeriverTest is Test {
         //console.log("pubkey:", x, y);
     }
 
-
     function testSetSeed() public {
         assertEq(deriver.wasSeedSet(), false);
         assertEq(deriver.btcAddr1(), "");
@@ -238,40 +236,163 @@ contract BTCDepositAddressDeriverTest is Test {
         );
     }
 
-    function testGetBTCDepositAddress() public {
+    // This test was generated automatically in Go.
+    // pk1: 77b68d2b2eb93a1d44118cce2bf40a870c13b33cb2fc34ff51ed474e747f367a
+    // pk2: 94b4b1e7676caf70c0c07ceb84c723fce2099689efcd741a852598086043f176
+    // resulting descriptor: tr(73e0ef552f3e3a4b1b35d1be0476107fb060afb49634ef5ef22ac54171ff0541)
+    function testGetBTCDepositAddress_0_mainnet() public {
         deriver.setSeed(
-            "tb1p7g532zgvuzv8fz3hs02wvn2almqh8qyvz4xdr564nannkxh28kdq62ewy3",
-            "tb1psfpmk6v8cvd8kr4rdda0l8gwyn42v5yfjlqkhnureprgs5tuumkqvdkewz",
-            BitcoinNetworkEncoder.Network.Testnet
+            "bc1pw7mg62ewhyap63q33n8zhaq2suxp8veukt7rfl63a4r5uarlxeaqdvrymq",
+            "bc1pjj6trem8djhhpsxq0n4cf3erln3qn95falxhgx59ykvqsczr79mqnuzsa3",
+            BitcoinNetworkEncoder.Network.Mainnet
         );
 
         string memory btcAddress = deriver.getBTCDepositAddress(
-            0x1EaCa1277BcDFa83E60658D8938B3D63cD3E63C1
+            0x388C818CA8B9251b393131C08a736A67ccB19297
         );
         assertEq(
             btcAddress,
-            "tb1p8pjjwryjq9d7tke50ndcd97kqxkeztk4k85lzg7l2nynektg9zdsq836sr"
+            "bc1paz50paqaeph7xecyt8hzc9ly3sfyuaw0nmaaahat8mn37hrlhcjqwf8xe4"
         );
     }
 
-    function testGetBTCDepositAddress2() public {
+    // This test was generated automatically in Go.
+    // pk1: 77b68d2b2eb93a1d44118cce2bf40a870c13b33cb2fc34ff51ed474e747f367a
+    // pk2: 94b4b1e7676caf70c0c07ceb84c723fce2099689efcd741a852598086043f176
+    // resulting descriptor: tr(73e0ef552f3e3a4b1b35d1be0476107fb060afb49634ef5ef22ac54171ff0541)
+    function testGetBTCDepositAddress_0_testnet() public {
         deriver.setSeed(
-            "tb1p5z8wl5tu7m0d79vzqqsl9gu0x4fkjug857fusx4fl4kfgwh5j25spa7245",
-            "tb1pfusykjdt46ktwq03d20uqqf94uh9487344wr3q5v9szzsxnjdfks9apcjz",
+            "tb1pw7mg62ewhyap63q33n8zhaq2suxp8veukt7rfl63a4r5uarlxeaq6y4tp0",
+            "tb1pjj6trem8djhhpsxq0n4cf3erln3qn95falxhgx59ykvqsczr79mqy55l87",
             BitcoinNetworkEncoder.Network.Testnet
         );
 
         string memory btcAddress = deriver.getBTCDepositAddress(
-            0x1EaCa1277BcDFa83E60658D8938B3D63cD3E63C1
+            0x388C818CA8B9251b393131C08a736A67ccB19297
         );
-        console.log("btcAddress", btcAddress);
         assertEq(
             btcAddress,
-            "tb1pupljglwqunp2q22sahwjvmxwmxxyj3aatnhemxlneae3l03w2k5swkfkvc"
+            "tb1paz50paqaeph7xecyt8hzc9ly3sfyuaw0nmaaahat8mn37hrlhcjqep3fr6"
         );
-        // assertEq(
-        //     btcAddress,
-        //     "tb1pz66m5qeqae7mlqjwwz3hhf8lfz05w53djxxxzzjy47m6hej6cg8s0zs83c"
-        // );
+    }
+
+    // This test was generated automatically in Go.
+    // pk1: 77b68d2b2eb93a1d44118cce2bf40a870c13b33cb2fc34ff51ed474e747f367a
+    // pk2: 94b4b1e7676caf70c0c07ceb84c723fce2099689efcd741a852598086043f176
+    // resulting descriptor: tr(73e0ef552f3e3a4b1b35d1be0476107fb060afb49634ef5ef22ac54171ff0541)
+    function testGetBTCDepositAddress_0_regtest() public {
+        deriver.setSeed(
+            "bcrt1pw7mg62ewhyap63q33n8zhaq2suxp8veukt7rfl63a4r5uarlxeaqhald54",
+            "bcrt1pjj6trem8djhhpsxq0n4cf3erln3qn95falxhgx59ykvqsczr79mqfd7ejy",
+            BitcoinNetworkEncoder.Network.Regtest
+        );
+
+        string memory btcAddress = deriver.getBTCDepositAddress(
+            0x388C818CA8B9251b393131C08a736A67ccB19297
+        );
+        assertEq(
+            btcAddress,
+            "bcrt1paz50paqaeph7xecyt8hzc9ly3sfyuaw0nmaaahat8mn37hrlhcjq5cm0kq"
+        );
+    }
+
+    // This test was generated automatically in Go.
+    // pk1: 77b68d2b2eb93a1d44118cce2bf40a870c13b33cb2fc34ff51ed474e747f367a
+    // pk2: 94b4b1e7676caf70c0c07ceb84c723fce2099689efcd741a852598086043f176
+    // resulting descriptor: tr(73e0ef552f3e3a4b1b35d1be0476107fb060afb49634ef5ef22ac54171ff0541)
+    function testGetBTCDepositAddress_0_simnet() public {
+        deriver.setSeed(
+            "sb1pw7mg62ewhyap63q33n8zhaq2suxp8veukt7rfl63a4r5uarlxeaqa4lvc2",
+            "sb1pjj6trem8djhhpsxq0n4cf3erln3qn95falxhgx59ykvqsczr79mqr97c7m",
+            BitcoinNetworkEncoder.Network.Simnet
+        );
+
+        string memory btcAddress = deriver.getBTCDepositAddress(
+            0x388C818CA8B9251b393131C08a736A67ccB19297
+        );
+        assertEq(
+            btcAddress,
+            "sb1paz50paqaeph7xecyt8hzc9ly3sfyuaw0nmaaahat8mn37hrlhcjq7smw6l"
+        );
+    }
+
+    // This test was generated automatically in Go.
+    // pk1: 0000000000000000000000000000000000000000000000000000000000000001
+    // pk2: f1ec99e484b7c7f31f22a19d6f8f59508abb3e86bdf8ff4d4f6afbd8bb4133d8
+    // resulting descriptor: tr(9829a5f5185b5556d42ee4fcd80cceabacc6abd6eea3904b0d95547b265a6b80)
+    function testGetBTCDepositAddress_1_mainnet() public {
+        deriver.setSeed(
+            "bc1pqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqs5pgpxg",
+            "bc1p78kfneyyklrlx8ez5xwklr6e2z9tk05xhhu07n20dtaa3w6px0vqa3ptvn",
+            BitcoinNetworkEncoder.Network.Mainnet
+        );
+
+        string memory btcAddress = deriver.getBTCDepositAddress(
+            0x5e17BFfaD9f5D57Bcc17071aec4249C9176A728d
+        );
+        assertEq(
+            btcAddress,
+            "bc1pc5ydppgpkeg5nrcetqu8g0rjeytsqww3j6xq50tlulqvwnfhhxcs9403q9"
+        );
+    }
+
+    // This test was generated automatically in Go.
+    // pk1: 0000000000000000000000000000000000000000000000000000000000000001
+    // pk2: f1ec99e484b7c7f31f22a19d6f8f59508abb3e86bdf8ff4d4f6afbd8bb4133d8
+    // resulting descriptor: tr(9829a5f5185b5556d42ee4fcd80cceabacc6abd6eea3904b0d95547b265a6b80)
+    function testGetBTCDepositAddress_1_testnet() public {
+        deriver.setSeed(
+            "tb1pqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqsrf7wu8",
+            "tb1p78kfneyyklrlx8ez5xwklr6e2z9tk05xhhu07n20dtaa3w6px0vq2ehyku",
+            BitcoinNetworkEncoder.Network.Testnet
+        );
+
+        string memory btcAddress = deriver.getBTCDepositAddress(
+            0x5e17BFfaD9f5D57Bcc17071aec4249C9176A728d
+        );
+        assertEq(
+            btcAddress,
+            "tb1pc5ydppgpkeg5nrcetqu8g0rjeytsqww3j6xq50tlulqvwnfhhxcsjae762"
+        );
+    }
+
+    // This test was generated automatically in Go.
+    // pk1: 0000000000000000000000000000000000000000000000000000000000000001
+    // pk2: f1ec99e484b7c7f31f22a19d6f8f59508abb3e86bdf8ff4d4f6afbd8bb4133d8
+    // resulting descriptor: tr(9829a5f5185b5556d42ee4fcd80cceabacc6abd6eea3904b0d95547b265a6b80)
+    function testGetBTCDepositAddress_1_regtest() public {
+        deriver.setSeed(
+            "bcrt1pqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqsws5gfa",
+            "bcrt1p78kfneyyklrlx8ez5xwklr6e2z9tk05xhhu07n20dtaa3w6px0vq8qazrx",
+            BitcoinNetworkEncoder.Network.Regtest
+        );
+
+        string memory btcAddress = deriver.getBTCDepositAddress(
+            0x5e17BFfaD9f5D57Bcc17071aec4249C9176A728d
+        );
+        assertEq(
+            btcAddress,
+            "bcrt1pc5ydppgpkeg5nrcetqu8g0rjeytsqww3j6xq50tlulqvwnfhhxcslync0s"
+        );
+    }
+
+    // This test was generated automatically in Go.
+    // pk1: 0000000000000000000000000000000000000000000000000000000000000001
+    // pk2: f1ec99e484b7c7f31f22a19d6f8f59508abb3e86bdf8ff4d4f6afbd8bb4133d8
+    // resulting descriptor: tr(9829a5f5185b5556d42ee4fcd80cceabacc6abd6eea3904b0d95547b265a6b80)
+    function testGetBTCDepositAddress_1_simnet() public {
+        deriver.setSeed(
+            "sb1pqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqsyc5f9z",
+            "sb1p78kfneyyklrlx8ez5xwklr6e2z9tk05xhhu07n20dtaa3w6px0vqdgar0e",
+            BitcoinNetworkEncoder.Network.Simnet
+        );
+
+        string memory btcAddress = deriver.getBTCDepositAddress(
+            0x5e17BFfaD9f5D57Bcc17071aec4249C9176A728d
+        );
+        assertEq(
+            btcAddress,
+            "sb1pc5ydppgpkeg5nrcetqu8g0rjeytsqww3j6xq50tlulqvwnfhhxcs4vner0"
+        );
     }
 }
