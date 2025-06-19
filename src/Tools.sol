@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.27;
 
 library Tools {
     // https://www.educative.io/answers/how-to-compare-two-strings-in-solidity
@@ -28,13 +28,14 @@ library Tools {
     }
 
     // https://stackoverflow.com/questions/69551020/trying-to-convert-address-string-to-type-address-in-solidity
-    function hexStringToAddress(
+    function hexStringToBytes(
         string memory s
     ) internal pure returns (bytes memory) {
         bytes memory ss = bytes(s);
         require(ss.length % 2 == 0, "string with hex encoded data should have even length"); // length must be even
         bytes memory r = new bytes(ss.length / 2);
-        for (uint i = 0; i < ss.length / 2; ++i) {
+        uint256 ssLength = ss.length;
+        for (uint i = 0; i < ssLength / 2; ++i) {
             r[i] = bytes1(
                 fromHexChar(uint8(ss[2 * i])) *
                     16 +
@@ -47,7 +48,7 @@ library Tools {
 
     // https://stackoverflow.com/questions/69551020/trying-to-convert-address-string-to-type-address-in-solidity
     function toAddress(string memory s) public pure returns (address) {
-        bytes memory _bytes = hexStringToAddress(s);
+        bytes memory _bytes = hexStringToBytes(s);
         require(_bytes.length >= 1 + 20, "toAddress_outOfBounds");
         address tempAddress;
 

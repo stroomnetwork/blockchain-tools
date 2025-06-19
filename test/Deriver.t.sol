@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.27;
 
 import {Test, console} from "forge-std/Test.sol";
 import {Deriver} from "../src/Deriver.sol";
@@ -96,7 +96,7 @@ contract DeriverTest is Test {
     }
 
     function testGetBtcAddressFromEth() public pure {
-        string memory btcAddress = Deriver.getBtcAddressFromEth(
+        string memory btcAddress = Deriver.getBtcAddressTaprootNoScriptFromEth(
             0xF22915090CE098748A3783D4E64D5DFEC173808C154CD1D3559F673B1AEA3D9A,
             0xEE340CB6B7C08A2B96B7C34A70B5B980FAD90AD4E9D0BE50302DA7542A73C0E0,
             0x8243BB6987C31A7B0EA36B7AFF9D0E24EAA6508997C16BCF83C84688517CE6EC,
@@ -106,7 +106,7 @@ contract DeriverTest is Test {
         );
         assertEq(
             btcAddress,
-            "tb1plpqmgx2jz5y7d3g82negq8v5lgljt4325t64qww6raagfr7l0w7sefvmzw"
+            "tb1purjtasss2e7qsw6dyw54zf29t54t26u0l4hcyaruq472r83naces8c8k6h"
         );
     }
 
