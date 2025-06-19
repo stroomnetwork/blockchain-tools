@@ -7,7 +7,7 @@ import "forge-std/console.sol";
 import "./Base58.sol";
 import "./BitcoinNetworkEncoder.sol";
 
-library BitcoinUtils {
+contract BitcoinUtils {
     // There are currently three invoice address formats in use:
 
     // P2PKH which begin with the number 1, eg: 1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2
