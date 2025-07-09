@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.27;
+pragma solidity 0.8.27;
 
 library Tools {
     // https://www.educative.io/answers/how-to-compare-two-strings-in-solidity
