@@ -89,7 +89,7 @@ contract BTCDepositAddressDeriver {
     // Get users' Bitcoin deposit address from user's Ethereum address
     function getBTCDepositAddress(
         address ethAddr
-    ) public view returns (string memory) {
+    ) public virtual view returns (string memory) {
 
         if (!wasSeedSet) {
             revert SeedWasNotSetYet();
