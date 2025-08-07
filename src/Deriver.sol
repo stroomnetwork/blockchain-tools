@@ -127,7 +127,6 @@ library Deriver {
 
     // derive Bitcoin address from user's Ethereum address and validators' pubkeys
     // It generate taproot address with taproot commitment and no script path(preferred way according to BIP-341)
-    // Better to use this function instead of getBtcAddressFromEth
     function getBtcAddressTaprootNoScriptFromEth(
         uint256 p1x,
         uint256 p1y,
