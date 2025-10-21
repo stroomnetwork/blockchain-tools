@@ -310,4 +310,173 @@ contract DeriverTest is Test {
         );
         assertEq(expectedBtcAddr_3, btcAddr_3);
     }
+
+    function testDeriveChildPubkeyBip32() public pure {
+        uint256 px0 = 57074945586406715334625111669072956770253198967468104181021882430082100612963;
+        uint256 py0 = 23142750304142828437953232435448444948300648252183245674679985556457305450420;
+        bytes32 chainCode0 = hex"93071d00a68b251e2556974c5a9cba5fd3ceebfdf3d6b083978cb3f3072bdc6b";
+        uint256 index0 = 2;
+        (uint256 cx0, uint256 cy0) = Deriver.deriveChildPubkeyBip32(
+            px0,
+            py0,
+            chainCode0,
+            index0
+        );
+        assertEq(
+            cx0,
+            74070375407870803772383716147851670902687590661570579425410879994591649090379
+        );
+        assertEq(
+            cy0,
+            22360565704915606957816728902241275983499976804656018213898267138481100992100
+        );
+
+        uint256 px1 = 30742219803864166600272570996883887958649406957278654474409962972519929889405;
+        uint256 py1 = 70513211465368901219354942416364416752777296449079386521912399107647951595716;
+        bytes32 chainCode1 = hex"190e31c385f819a048cabffdb0b3d0dbd3789d788a49cffc68261ef71b8263c8";
+        uint256 index1 = 17;
+        (uint256 cx1, uint256 cy1) = Deriver.deriveChildPubkeyBip32(
+            px1,
+            py1,
+            chainCode1,
+            index1
+        );
+        assertEq(
+            cx1,
+            5087411184501414391835649840157068842008489572913385638823261961588855293850
+        );
+        assertEq(
+            cy1,
+            110550600879399219428880348010790347930829296535905640329050505014535179606341
+        );
+
+        uint256 px2 = 107140830029448792289342525244896270065376582144659706402692854250688314563220;
+        uint256 py2 = 79935496324080726152605555942072989487007435347931064453233281410555623580053;
+        bytes32 chainCode2 = hex"bc9a6e462c0f8143a5f66a31cd445d849a7773a54ad7b04fef65497f7961c01a";
+        uint256 index2 = 130;
+        (uint256 cx2, uint256 cy2) = Deriver.deriveChildPubkeyBip32(
+            px2,
+            py2,
+            chainCode2,
+            index2
+        );
+        assertEq(
+            cx2,
+            29618804800753246453676863992713689288577981054331407572395640099596072070334
+        );
+        assertEq(
+            cy2,
+            19012186344758431981077100555529013400608836327149189423685420650092980251608
+        );
+
+        uint256 px3 = 50447842649702692613222804199309429964729864494053468570763353341059104687484;
+        uint256 py3 = 88549452749358207275533961140370602316997088319769331567603926522170617984074;
+        bytes32 chainCode3 = hex"502cc99c8c3090ebb776054f2016b18c04fb5ee9a281f7d0a4ed14761d9c0894";
+        uint256 index3 = 1027;
+        (uint256 cx3, uint256 cy3) = Deriver.deriveChildPubkeyBip32(
+            px3,
+            py3,
+            chainCode3,
+            index3
+        );
+        assertEq(
+            cx3,
+            39410688582448126829209298776445037307408821414810593880153166428268607576812
+        );
+        assertEq(
+            cy3,
+            27955881002545452218257578656005771940987221892190183476469781542040442979146
+        );
+
+        uint256 px4 = 83492360506258972363229007168259843798874789271615741208051464981258120268822;
+        uint256 py4 = 76191252864540787586774708913716597080653872773324753541711814103970596290506;
+        bytes32 chainCode4 = hex"dd5c8089a398c500c1a23245aba1179ac6d798facf695d7a600301891c8e8760";
+        uint256 index4 = 8196;
+        (uint256 cx4, uint256 cy4) = Deriver.deriveChildPubkeyBip32(
+            px4,
+            py4,
+            chainCode4,
+            index4
+        );
+        assertEq(
+            cx4,
+            70050336265972352500022718553585380558030667178344386277189596126374957151588
+        );
+        assertEq(
+            cy4,
+            42291296715940497887745101979021449602442772175864971502864329278021423114042
+        );
+    }
+
+    function testDeriveReceivingAddressFromIndex() public pure {
+        uint256 px0 = 92827281731274008954803586629051298518909571261423619289955380343486580347456;
+        uint256 py0 = 73102114537722655223140831762751126960901222634499698479313524413007101409342;
+        uint256 index0 = 2;
+        string memory addr0 = Deriver.deriveReceivingAddressFromIndex(
+            px0,
+            py0,
+            index0,
+            bytes("bcrt")
+        );
+        assertEq(
+            addr0,
+            "bcrt1pnxsxys8vd0zyznm8hrzukyh9dkvhvalxg9fk6mgd4e4awur2v7uqgrq4sc"
+        );
+
+        uint256 px1 = 42043242194725732014842968116051319138334003633183842263306037194578700909017;
+        uint256 py1 = 105821727192811762117189587761380553359906792616517208870399232874956654784394;
+        uint256 index1 = 33;
+        string memory addr1 = Deriver.deriveReceivingAddressFromIndex(
+            px1,
+            py1,
+            index1,
+            bytes("bcrt")
+        );
+        assertEq(
+            addr1,
+            "bcrt1pqmenx5decj6z7w0flwdlapuyqran78w0jq44sk7wkf7s37x3pp7s0yv6qp"
+        );
+
+        uint256 px2 = 64704383364590153413480446292465727728387599614170842002472827633593419784476;
+        uint256 py2 = 100573695907478917642263950404364417572064838031945548826282911915821399827971;
+        uint256 index2 = 514;
+        string memory addr2 = Deriver.deriveReceivingAddressFromIndex(
+            px2,
+            py2,
+            index2,
+            bytes("bcrt")
+        );
+        assertEq(
+            addr2,
+            "bcrt1pgpqxw0dagcsxlyae2hj34a0538jnmtvarpwtqm5txwnusnmygpqqucvsvt"
+        );
+
+        uint256 px3 = 52672097719492178455192603747575185348778895943012542362274508865272077582372;
+        uint256 py3 = 22715561287017813787869506730496377822788860365548411913263474592148236937818;
+        uint256 index3 = 8195;
+        string memory addr3 = Deriver.deriveReceivingAddressFromIndex(
+            px3,
+            py3,
+            index3,
+            bytes("bcrt")
+        );
+        assertEq(
+            addr3,
+            "bcrt1p97yvrl0dc67l3l42q3894k5x8nx7vt0z7jcjfwxzp066vqm5uk5ssszat7"
+        );
+
+        uint256 px4 = 7762222604264485911983061564766040050645982976758130076669678366079793347684;
+        uint256 py4 = 77842275810050337275361784865384886754506198694389874207460975687961431123894;
+        uint256 index4 = 131076;
+        string memory addr4 = Deriver.deriveReceivingAddressFromIndex(
+            px4,
+            py4,
+            index4,
+            bytes("bcrt")
+        );
+        assertEq(
+            addr4,
+            "bcrt1ph246t99e89ruellljuqnekwuf2p523lsmugw2kqu4u4uk32dmsasz086s8"
+        );
+    }
 }
