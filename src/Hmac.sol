@@ -4,6 +4,9 @@ pragma solidity 0.8.27;
 import {Sha2Ext} from "./sha2/Sha2Ext.sol";
 
 library Hmac {
+    error KeyCannotBeEmpty();
+    error MessageCannotBeEmpty();
+
     // SHA-512 block size in bytes
     uint256 constant BLOCK_SIZE = 128;
 
@@ -18,8 +21,12 @@ library Hmac {
         bytes memory key,
         bytes memory message
     ) internal pure returns (bytes32, bytes32) {
-        require(key.length > 0, "Key cannot be empty");
-        require(message.length > 0, "Message cannot be empty");
+        if(key.length == 0) {
+            revert KeyCannotBeEmpty();
+        }
+        if(message.length == 0) {
+            revert MessageCannotBeEmpty();
+        }
 
         bytes memory paddedKey = key;
 
