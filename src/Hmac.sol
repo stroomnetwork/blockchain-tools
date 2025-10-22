@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.27;
 
 import {Sha2Ext} from "./sha2/Sha2Ext.sol";
@@ -17,6 +18,9 @@ library Hmac {
         bytes memory key,
         bytes memory message
     ) internal pure returns (bytes32, bytes32) {
+        require(key.length > 0, "Key cannot be empty");
+        require(message.length > 0, "Message cannot be empty");
+
         bytes memory paddedKey = key;
 
         // If key is longer than block size, hash it
