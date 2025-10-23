@@ -18,13 +18,12 @@ error CannotParseBtcAddress(
 
 contract BTCDepositAddressDeriver {
 
-    event SeedChanged(string btcAddr1, string btcAddr2, string hrp);
+    event SeedChanged(string btcAddr, string hrp);
 
     bool public wasSeedSet;
 
-    // Validators' joint pubkeys in format of taproot addresses
-    string public btcAddr1;
-    string public btcAddr2;
+    // Validators' joint pubkey in format of taproot addresses
+    string public btcAddr;
 
     // Bitcoin address's network prefix
     string public networkHrp;
@@ -32,31 +31,26 @@ contract BTCDepositAddressDeriver {
     // Validators' pubkey both coordinates deconstructed from taproot addresses
     uint256 public p1x;
     uint256 public p1y;
-    uint256 public p2x;
-    uint256 public p2y;
 
     constructor() {
         wasSeedSet = false;
     }
 
-    // Set Validators' joint pubkeys and network prefix, must be called after contract deployment
+    // Set Validators' joint pubkey and network prefix, must be called after contract deployment
     function setSeed(
-        string calldata _btcAddr1,
-        string calldata _btcAddr2,
+        string calldata _btcAddr,
         BitcoinNetworkEncoder.Network _network
     ) public virtual {
         string memory _hrp = BitcoinNetworkEncoder.getNetworkPrefix(_network);
 
         networkHrp = _hrp;
 
-        (p1x, p1y) = parseBTCTaprootAddress(_hrp, _btcAddr1);
-        (p2x, p2y) = parseBTCTaprootAddress(_hrp, _btcAddr2);
+        (p1x, p1y) = parseBTCTaprootAddress(_hrp, _btcAddr);
 
-        btcAddr1 = _btcAddr1;
-        btcAddr2 = _btcAddr2;
+        btcAddr = _btcAddr;
 
         wasSeedSet = true;
-        emit SeedChanged(_btcAddr1, _btcAddr2, _hrp);
+        emit SeedChanged(_btcAddr, _hrp);
     }
 
     // Derive pubkey's (x,y) coordinates from taproot address
@@ -86,9 +80,9 @@ contract BTCDepositAddressDeriver {
         return (x, y);
     }
 
-    // Get users' Bitcoin deposit address from user's Ethereum address
+    // Get users' Bitcoin deposit address from user's Stroom NFT token ID
     function getBTCDepositAddress(
-        address ethAddr
+        uint256 index
     ) public virtual view returns (string memory) {
 
         if (!wasSeedSet) {
@@ -96,13 +90,11 @@ contract BTCDepositAddressDeriver {
         }
 
         return
-            Deriver.getBtcAddressTaprootNoScriptFromEth(
+            Deriver.deriveReceivingAddressFromIndex(
                 p1x,
                 p1y,
-                p2x,
-                p2y,
-                bytes(networkHrp),
-                ethAddr
+                index,
+                bytes(networkHrp)
             );
     }
 }

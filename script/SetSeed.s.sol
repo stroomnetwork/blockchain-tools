@@ -32,12 +32,8 @@ contract SetSeed is Script, AddressReaderWriter {
         console.log("contractAddress", contractAddress);
 
         // get first validators' joint pubkey
-        string memory btcAddr1 = vm.envString("BTC_ADDR1");
-        console.log("BTC_ADDR1:", btcAddr1);
-
-        // get second validators' joint pubkey
-        string memory btcAddr2 = vm.envString("BTC_ADDR2");
-        console.log("BTC_ADDR2:", btcAddr2);
+        string memory btcAddr = vm.envString("BTC_ADDR");
+        console.log("BTC_ADDR:", btcAddr);
 
         // get network
         uint _network = vm.envUint("BTC_NETWORK");
@@ -51,7 +47,7 @@ contract SetSeed is Script, AddressReaderWriter {
 
         // set validators' pubkeys and network prefix
         vm.startBroadcast();
-        deriver.setSeed(btcAddr1, btcAddr2, network);
+        deriver.setSeed(btcAddr, network);
         vm.stopBroadcast();
     }
 }
