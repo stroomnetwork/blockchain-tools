@@ -27,13 +27,13 @@ contract GetBtcAddr is Script, AddressReaderWriter {
         }
         console.log("contractAddress", contractAddress);
 
-        address ethAddr = vm.envAddress("ETH_ADDR");
-        console.log("ethAddr:", ethAddr);
+        uint256 tokenId = vm.envUint("TOKEN_ID");
+        console.log("TOKEN_ID:", tokenId);
 
         BTCDepositAddressDeriver deriver = BTCDepositAddressDeriver(
             contractAddress
         );
-        string memory btcAddr = deriver.getBTCDepositAddress(ethAddr);
+        string memory btcAddr = deriver.getBTCDepositAddress(tokenId);
         console.log("btcAddr:", btcAddr);
 
         string memory btcAddrFileName = vm.envOr(
