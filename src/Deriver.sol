@@ -4,6 +4,7 @@ pragma solidity 0.8.27;
 
 import {EllipticCurve} from "../lib/elliptic-curve-solidity/contracts/EllipticCurve.sol";
 
+import {Hmac} from "./Hmac.sol";
 import {Bech32m} from "./Bech32m.sol";
 
 library Deriver {
@@ -16,7 +17,15 @@ library Deriver {
     uint256 public constant BB = 7;
     uint256 public constant PP =
         0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F;
+    uint256 public constant NN = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141; 
     // END SECP256k1 CONSTANTS
+
+    // HardenedKeyStart is the index at which a hardened key starts.  Each
+	// extended key has 2^31 normal child keys and 2^31 hardened child keys.
+	// Thus the range for normal child keys is [0, 2^31 - 1] and the range
+	// for hardened child keys is [2^31, 2^32 - 1].
+    // Pubkey derivation is only supported for normal(not hardened) child keys.
+	uint256 public constant HARDENED_KEY_START = 0x80000000; // 2^31
 
     // sha256("TapTweak")
     bytes32 public constant SHA256_TAP_TWEAK =
@@ -151,5 +160,68 @@ library Deriver {
         (uint256 xTweaked,) = computeTaprootKeyNoScript(x, y);
 
         return getBtcTaprootAddrFromPubkey(xTweaked, hrp);
+    }
+
+    // Public key derivation works only for normal(not hardened) child keys.
+    // index < HARDENED_KEY_START
+    function deriveChildPubkeyBip32(
+        uint256 px,
+        uint256 py,
+        bytes32 chainCode,
+        uint256 index
+    ) internal pure returns (uint256, uint256) {
+        require(index < HARDENED_KEY_START, "Index must be less than HARDENED_KEY_START");
+
+        bytes1 prefix = 0x02;
+        if (py % 2 == 1) {
+            prefix = 0x03;
+        }
+
+        bytes memory data = abi.encodePacked(
+            prefix, 
+            bytes32(px),
+            uint32(index)
+        );
+
+        (bytes32 ilBytes32, bytes32 irBytes32) = Hmac.hmacSha512(abi.encodePacked(chainCode), data);
+        uint256 il = uint256(ilBytes32);
+
+        require(il < NN, "il must be less than NN");
+
+        (uint256 ilx, uint256 ily) = mulPubkey(GX, GY, il);
+        (uint256 x1, uint256 y1) = addPubkeys(px, py, ilx, ily);
+
+        require(x1 != 0 || y1 != 0, "child pubkey is point at infinity");
+
+        return (x1, y1);
+    }
+
+    function deriveReceivingAddressFromIndex(
+        uint256 parentX,
+        uint256 parentY,
+        uint256 index,
+        bytes memory hrp
+    ) internal pure returns (string memory){
+        bytes1 prefix = 0x02;
+        if (parentY % 2 == 1) {
+            prefix = 0x03;
+        }
+
+        bytes memory parentSerialized = abi.encodePacked(
+            prefix, 
+            bytes32(parentX)
+        );
+
+        bytes32 chainCode = sha256(parentSerialized);
+
+        (uint256 childX, uint256 childY) = deriveChildPubkeyBip32(parentX, parentY, chainCode, index);
+
+        if (childY % 2 == 1) {
+            childY = PP - childY;
+        }
+
+        (uint256 childXTweaked,) = computeTaprootKeyNoScript(childX, childY);
+
+        return getBtcTaprootAddrFromPubkey(childXTweaked, hrp);
     }
 }
