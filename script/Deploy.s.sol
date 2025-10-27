@@ -12,7 +12,7 @@ import {AddressReaderWriter} from "./AddressReaderWriter.s.sol";
 contract Deploy is Script, AddressReaderWriter {
     function run() external returns (BTCDepositAddressDeriver) {
         vm.startBroadcast();
-        BTCDepositAddressDeriver btcDepositAddressDeriver = new BTCDepositAddressDeriver();
+        BTCDepositAddressDeriver btcDepositAddressDeriver = new BTCDepositAddressDeriver(msg.sender);
         vm.stopBroadcast();
         writeContractAddress("BTCDepositAddressDeriver", address(btcDepositAddressDeriver));
         return btcDepositAddressDeriver;
