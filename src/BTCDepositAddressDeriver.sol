@@ -2,22 +2,18 @@
 
 pragma solidity 0.8.27;
 
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Deriver} from "./Deriver.sol";
 import {Bech32m} from "./Bech32m.sol";
 import {BitcoinNetworkEncoder} from "./BitcoinNetworkEncoder.sol";
 
 error SeedWasNotSetYet();
 error UnsupportedBtcAddress(string btcAddress);
-error CannotParseBtcAddress(
-    string btcAddress,
-    string hrp,
-    Bech32m.DecodeError err
-);
+error CannotParseBtcAddress(string btcAddress, string hrp, Bech32m.DecodeError err);
 
 // Types of Bitcoin Network
 
-contract BTCDepositAddressDeriver {
-
+contract BTCDepositAddressDeriver is Ownable {
     event SeedChanged(string btcAddr, string hrp);
 
     bool public wasSeedSet;
@@ -32,15 +28,12 @@ contract BTCDepositAddressDeriver {
     uint256 public p1x;
     uint256 public p1y;
 
-    constructor() {
+    constructor(address initialOwner) Ownable(initialOwner) {
         wasSeedSet = false;
     }
 
     // Set Validators' joint pubkey and network prefix, must be called after contract deployment
-    function setSeed(
-        string calldata _btcAddr,
-        BitcoinNetworkEncoder.Network _network
-    ) public virtual {
+    function setSeed(string calldata _btcAddr, BitcoinNetworkEncoder.Network _network) public virtual onlyOwner {
         string memory _hrp = BitcoinNetworkEncoder.getNetworkPrefix(_network);
 
         networkHrp = _hrp;
@@ -54,13 +47,13 @@ contract BTCDepositAddressDeriver {
     }
 
     // Derive pubkey's (x,y) coordinates from taproot address
-    function parseBTCTaprootAddress(
-        string memory _hrp,
-        string calldata _bitcoinAddress
-    ) public pure returns (uint256, uint256) {
-
-        (uint8 witVer, bytes memory witProg, Bech32m.DecodeError err) = Bech32m
-            .decodeSegwitAddress(bytes(_hrp), bytes(_bitcoinAddress));
+    function parseBTCTaprootAddress(string memory _hrp, string calldata _bitcoinAddress)
+        public
+        pure
+        returns (uint256, uint256)
+    {
+        (uint8 witVer, bytes memory witProg, Bech32m.DecodeError err) =
+            Bech32m.decodeSegwitAddress(bytes(_hrp), bytes(_bitcoinAddress));
 
         if (err != Bech32m.DecodeError.NoError) {
             revert CannotParseBtcAddress(_bitcoinAddress, _hrp, err);
@@ -81,20 +74,11 @@ contract BTCDepositAddressDeriver {
     }
 
     // Get users' Bitcoin deposit address from user's Stroom NFT token ID
-    function getBTCDepositAddress(
-        uint256 index
-    ) public virtual view returns (string memory) {
-
+    function getBTCDepositAddress(uint256 index) public view virtual returns (string memory) {
         if (!wasSeedSet) {
             revert SeedWasNotSetYet();
         }
 
-        return
-            Deriver.deriveReceivingAddressFromIndex(
-                p1x,
-                p1y,
-                index,
-                bytes(networkHrp)
-            );
+        return Deriver.deriveReceivingAddressFromIndex(p1x, p1y, index, bytes(networkHrp));
     }
 }
