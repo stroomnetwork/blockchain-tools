@@ -3,7 +3,6 @@
 pragma solidity 0.8.27;
 
 import {EllipticCurve} from "../lib/elliptic-curve-solidity/contracts/EllipticCurve.sol";
-
 import {Hmac} from "./Hmac.sol";
 import {Bech32m} from "./Bech32m.sol";
 
@@ -30,19 +29,6 @@ library Deriver {
     // sha256("TapTweak")
     bytes32 public constant SHA256_TAP_TWEAK =
         hex"e80fe1639c9ca050e3af1b39c143c63e429cbceb15d940fbb5c5a1f4af57c5e9";
-    
-    // Note: Tagged hashes are not needed here as this function:
-    // 1. Has clearly typed inputs
-    // 2. Is used only for internal coefficient derivation
-    // 3. Does not interact directly with Bitcoin protocol
-    function getCoefficient(
-        uint256 x1,
-        uint256 y1,
-        address a
-    ) internal pure returns (uint256) {
-        uint256 c = uint256(sha256(abi.encode(x1, y1, a)));
-        return c;
-    }
 
     // pubkey add operation
     function addPubkeys(
@@ -61,42 +47,6 @@ library Deriver {
         uint256 scalar
     ) internal pure returns (uint256, uint256) {
         return EllipticCurve.ecMul(scalar, x, y, AA, PP);
-    }
-
-    // linear combination of two pubkeys
-    // Note: resulting point may have odd y coordinate(not compatible with BIP-340), however
-    // if it is used for address derivation which requires only x coordinate, it is not a problem.
-    // But if you use this pubkey for other purposes, you should check y coordinate and negate the point if necessary.
-    function getCombinedPubkey(
-        uint256 p1x,
-        uint256 p1y,
-        uint256 p2x,
-        uint256 p2y,
-        uint256 c1,
-        uint256 c2
-    ) internal pure returns (uint256, uint256) {
-        (uint256 x1, uint256 y1) = mulPubkey(p1x, p1y, c1);
-        (uint256 x2, uint256 y2) = mulPubkey(p2x, p2y, c2);
-
-        (uint256 x3, uint256 y3) = addPubkeys(x1, y1, x2, y2);
-       
-        // Note: y-coordinate parity check is handled in getBtcAddressTaprootNoScriptFromEth
-        // where it's actually needed for BIP-340 compatibility
-        
-        return (x3, y3);
-    }
-
-    // derive pubkey from Validators' pubkeys and user's Ethereum address
-    function getPubkeyFromAddress(
-        uint256 p1x,
-        uint256 p1y,
-        uint256 p2x,
-        uint256 p2y,
-        address addr
-    ) internal pure returns (uint256, uint256) {
-        uint256 c1 = getCoefficient(p1x, p1y, addr);
-        uint256 c2 = getCoefficient(p2x, p2y, addr);
-        return getCombinedPubkey(p1x, p1y, p2x, p2y, c1, c2);
     }
 
     // derive Bitcoin address from pubkey
@@ -134,34 +84,6 @@ library Deriver {
         return (x2, y2);
     }
 
-    // derive Bitcoin address from user's Ethereum address and validators' pubkeys
-    // It generate taproot address with taproot commitment and no script path(preferred way according to BIP-341)
-    function getBtcAddressTaprootNoScriptFromEth(
-        uint256 p1x,
-        uint256 p1y,
-        uint256 p2x,
-        uint256 p2y,
-        bytes memory hrp,
-        address ethAddr
-    ) internal pure returns (string memory) {
-        (uint256 x, uint256 y) = getPubkeyFromAddress(
-            p1x,
-            p1y,
-            p2x,
-            p2y,
-            ethAddr
-        );
-
-        // BIP-340 requires even y-coordinate for public keys
-        if (y % 2 == 1) {
-            y = PP - y;
-        }
-
-        (uint256 xTweaked,) = computeTaprootKeyNoScript(x, y);
-
-        return getBtcTaprootAddrFromPubkey(xTweaked, hrp);
-    }
-
     // Public key derivation works only for normal(not hardened) child keys.
     // index < HARDENED_KEY_START
     function deriveChildPubkeyBip32(
@@ -183,7 +105,7 @@ library Deriver {
             uint32(index)
         );
 
-        (bytes32 ilBytes32, bytes32 irBytes32) = Hmac.hmacSha512(abi.encodePacked(chainCode), data);
+        (bytes32 ilBytes32,) = Hmac.hmacSha512(abi.encodePacked(chainCode), data);
         uint256 il = uint256(ilBytes32);
 
         require(il < NN, "il must be less than NN");
