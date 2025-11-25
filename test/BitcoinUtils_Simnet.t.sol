@@ -13,24 +13,33 @@ contract BitcoinUtils_Simnet_Test is Test {
     using BitcoinUtils for BitcoinNetworkEncoder.Network; 
     BitcoinNetworkEncoder.Network private network = BitcoinNetworkEncoder.Network.Simnet;
 
+    // Helper function to convert memory to calldata
+    function _validate(string memory addr) private view returns (bool) {
+        return this._validateCalldata(addr);
+    }
+    
+    function _validateCalldata(string calldata addr) external view returns (bool) {
+        return network.validateBitcoinAddress(addr);
+    }
+
     function testValidAddress() public view {
-        assertTrue(network.validateBitcoinAddress("ScuV2eqXfQCPcpxqqVSFtMVwkfqcwnQKB1"));
-        assertTrue(network.validateBitcoinAddress("SYi7rot5GKoyuRNUnjrfKYRBL7F4e9L8bN"));
+        assertTrue(_validate("ScuV2eqXfQCPcpxqqVSFtMVwkfqcwnQKB1"));
+        assertTrue(_validate("SYi7rot5GKoyuRNUnjrfKYRBL7F4e9L8bN"));
     }
 
     function testInvalidAddress() public view {
-        assertFalse(network.validateBitcoinAddress(""));
-        assertFalse(network.validateBitcoinAddress("7SeEnXWPaCCALbVrTnszCVGfRU8cGfx"));
-        assertFalse(network.validateBitcoinAddress("j9ywUkWg2fTQrouxxh5rSZhRvrjMkEUfuiKe"));
+        assertFalse(_validate(""));
+        assertFalse(_validate("7SeEnXWPaCCALbVrTnszCVGfRU8cGfx"));
+        assertFalse(_validate("j9ywUkWg2fTQrouxxh5rSZhRvrjMkEUfuiKe"));
     }
 
     function testBech32ValidAddress() public view {
-        assertTrue(network.validateBitcoinAddress("sb1p5z8wl5tu7m0d79vzqqsl9gu0x4fkjug857fusx4fl4kfgwh5j25sxv5dv3"));
-        assertTrue(network.validateBitcoinAddress("sb1pfusykjdt46ktwq03d20uqqf94uh9487344wr3q5v9szzsxnjdfkszvtlt8"));
+        assertTrue(_validate("sb1p5z8wl5tu7m0d79vzqqsl9gu0x4fkjug857fusx4fl4kfgwh5j25sxv5dv3"));
+        assertTrue(_validate("sb1pfusykjdt46ktwq03d20uqqf94uh9487344wr3q5v9szzsxnjdfkszvtlt8"));
     }
 
     function testBech32ValidMainnetAddressIsNotValidForTestnet() public view {
-        assertFalse(network.validateBitcoinAddress("bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0"));
-        assertFalse(network.validateBitcoinAddress("bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4"));
+        assertFalse(_validate("bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0"));
+        assertFalse(_validate("bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4"));
     }
 }
