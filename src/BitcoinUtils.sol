@@ -27,7 +27,7 @@ library BitcoinUtils {
 
     string constant BECH32_ALPHABET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
 
-    function BECH32_ALPHABET_MAP(bytes1 char) public view returns (uint8) {
+    function BECH32_ALPHABET_MAP(bytes1 char) internal view returns (uint8) {
         // '{"0":15,"2":10,"3":17,"4":21,"5":20,"6":26,"7":30,"8":7,"9":5,"q":0,"p":1,"z":2,"r":3,"y":4,"x":6,"g":8,"f":9,"t":11,"v":12,"d":13,"w":14,"s":16,"j":18,"n":19,"k":22,"h":23,"c":24,"e":25,"m":27,"u":28,"a":29,"l":31}'
 
         if (char == bytes1("0")) return 15;
@@ -73,7 +73,7 @@ library BitcoinUtils {
     function validateBitcoinAddress(
         BitcoinNetworkEncoder.Network network,
         string calldata BTCAddress
-    ) public view returns (bool)
+    ) internal view returns (bool)
     {
         bytes memory empty;
 
@@ -110,7 +110,7 @@ library BitcoinUtils {
         return false;
     }
 
-    function equalBytes(bytes memory one, bytes memory two) public pure returns (bool) {
+    function equalBytes(bytes memory one, bytes memory two) internal pure returns (bool) {
         if (!(one.length == two.length)) {
             return false;
         }
@@ -122,7 +122,7 @@ library BitcoinUtils {
         return true;
     }
 
-    function alphabetCheck(bytes memory BTCAddress) public pure returns (bool) {
+    function alphabetCheck(bytes memory BTCAddress) internal pure returns (bool) {
         uint256 BTCAddressLength = BTCAddress.length;
         for (uint256 i = 0; i < BTCAddressLength; ++i) {
             uint8 charCode = uint8(BTCAddress[i]);
@@ -150,7 +150,7 @@ library BitcoinUtils {
     }
 
     // This function supports both bech32 (SegWit v0) and bech32m (Taproot/SegWit v1) addresses
-    function validateBech32Checksum(string memory btcAddress) public view returns (bool) {
+    function validateBech32Checksum(string memory btcAddress) internal view returns (bool) {
         console.log("\nvalidate bech32 checksum");
         console.log("address");
         console.log(btcAddress);
@@ -254,7 +254,7 @@ library BitcoinUtils {
         return true;
     }
 
-    function polymodStep(uint256 pre) public pure returns (uint256) {
+    function polymodStep(uint256 pre) internal pure returns (uint256) {
         uint256 b = pre >> 25;
 
         return (
@@ -264,7 +264,7 @@ library BitcoinUtils {
         );
     }
 
-    function prefixChk(bytes memory prefix) public pure returns (uint256) {
+    function prefixChk(bytes memory prefix) internal pure returns (uint256) {
         uint256 chk = 1;
         uint256 prefixLength = bytes(prefix).length;
         for (uint256 i = 0; i < prefixLength; ++i) {
@@ -283,7 +283,7 @@ library BitcoinUtils {
         return chk;
     }
 
-    function validateBase58Checksum(string calldata btcAddress) public view returns (bool) {
+    function validateBase58Checksum(string calldata btcAddress) internal view returns (bool) {
         bytes memory rawData = decodeFromString(btcAddress);
 
         console.log("validateBase58Checksum");
